@@ -13,3 +13,7 @@ services:
     volumes:
       - ./:/app/delorean/
     command: ["tail", "-f", "/dev/null"]
+
+  delorean-test:
+    image: delorean:${IMAGE_TAG:-latest}
+    command: make test

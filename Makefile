@@ -9,6 +9,12 @@ run: build clean-container
 ssh:
 	docker-compose exec delorean-run /bin/sh
 
+test:
+	python -m pytest -sv --cov-report term-missing --disable-warnings -p no:cacheprovider tests/
+
+testd: build clean-container
+	docker-compose up --exit-code-from delorean-test delorean-test
+
 clean-pyc:
 	# clean all pyc files
 	find . -name '__pycache__' | xargs rm -rf | cat
