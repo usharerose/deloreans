@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+
+  delorean-build:
+    build:
+      context: .
+      target: dev
+    image: delorean:${IMAGE_TAG:-latest}
+
+  delorean-run:
+    image: delorean:${IMAGE_TAG:-latest}
+    volumes:
+      - ./:/app/delorean/
+    command: ["tail", "-f", "/dev/null"]

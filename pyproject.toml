@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "delorean"
+version = "0.1.0"
+description = "Provide compared date range according to your scenario"
+authors = ["usharerose <ushareroses@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "7.34.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
