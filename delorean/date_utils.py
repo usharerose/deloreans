@@ -154,3 +154,15 @@ class DateSpan:
             raise TypeError(
                 f'Invalid span granularity {self._span_granularity!r}, should be SpanGranularity'
             )
+
+
+# Commonly, finer date range can offset with rougher span granularity
+# Here is the collection of valid combinations
+# Please register the valid span granularity when support new date granularity
+VALID_GRAINS_COMB = dict(zip(
+    [item for name, item in DateGranularity.__members__.items()],
+    [
+        {SpanGranularity.DAILY},
+    ],
+    strict=True,
+))
