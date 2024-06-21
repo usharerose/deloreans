@@ -150,7 +150,11 @@ class SpanGranularity(Enum):
     """
     supported date span granularity
     """
-    DAILY = 'daily'
+    DAILY = Daily()
+    WEEKLY = Weekly()
+    MONTHLY = Monthly()
+    YEARLY = Yearly()
+    PERIODIC = Periodic()
 
 
 class DateSpan:
