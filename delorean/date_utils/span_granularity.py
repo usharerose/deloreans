@@ -1,4 +1,149 @@
+import datetime
 from enum import Enum
+
+from delorean.date_utils.common import (
+    get_start_date_of_monthly_start_week,
+    get_week_anchor_date,
+    get_weeks_offset_between_dates,
+)
+from delorean.date_utils.date_range import DateRange
+
+
+class BaseGranularity:
+
+    name: str
+
+    def get_first_period_index(
+        self,
+        date_range: DateRange,
+    ) -> int:
+        """
+        get the index of date range's first period inner the span-granularity date period
+        can only support finer DateGranularity than SpanGranularity
+
+        private methods should be named as '_get_%(date_granularity_name)s_period_index'
+        """
+        granularity_name = date_range.date_granularity.name.lower()
+        try:
+            func = getattr(self, f'_get_{granularity_name}_period_index')
+        except AttributeError:
+            raise NotImplementedError(
+                f'get_index on {granularity_name} has not been implemented'
+            )
+        return func(date_range.start_date)
+
+
+class Daily(BaseGranularity):
+
+    name = 'daily'
+
+    def _get_daily_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+
+class Weekly(BaseGranularity):
+
+    name = 'weekly'
+
+    def _get_daily_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return a_date.weekday()
+
+    def _get_weekly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+
+class Monthly(BaseGranularity):
+
+    name = 'monthly'
+
+    def _get_daily_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return a_date.day - 1
+
+    def _get_weekly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        key_date = get_week_anchor_date(a_date)
+        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
+        return get_weeks_offset_between_dates(first_week_start_date, a_date)
+
+    def _get_monthly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+
+class Yearly(BaseGranularity):
+
+    name = 'yearly'
+
+    def _get_daily_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return (a_date - datetime.date(a_date.year, 1, 1)).days
+
+    def _get_weekly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        key_date = get_week_anchor_date(a_date)
+        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+        return get_weeks_offset_between_dates(first_week_start_date, a_date)
+
+    def _get_monthly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return a_date.month - 1
+
+    def _get_yearly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+
+class Periodic(BaseGranularity):
+
+    name = 'periodic'
+
+    def _get_daily_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+    def _get_weekly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+    def _get_monthly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
+
+    def _get_yearly_period_index(  # NOQA
+        self,
+        a_date: datetime.date,  # NOQA
+    ) -> int:
+        return 0
 
 
 class SpanGranularity(Enum):
