@@ -120,6 +120,9 @@ class DateGranularity(Enum):
     supported date granularity
     """
     DAILY = Daily()
+    WEEKLY = Weekly()
+    MONTHLY = Monthly()
+    YEARLY = Yearly()
 
     def validate_date_completion(
         self,
