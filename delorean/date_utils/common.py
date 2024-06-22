@@ -47,3 +47,68 @@ def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date
         date_delta = 10 - first_date_weekday
     first_week_start_date = belonging_month_first_date + timedelta(days=date_delta) - timedelta(days=3)
     return first_week_start_date
+
+
+def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:  # NOQA
+    return 0
+
+
+def get_daily_period_idx_of_located_weekly(a_date: datetime.date) -> int:
+    return a_date.weekday()
+
+
+def get_daily_period_idx_of_located_monthly(a_date: datetime.date) -> int:
+    return a_date.day - 1
+
+
+def get_daily_period_idx_of_located_yearly(a_date: datetime.date) -> int:
+    return (a_date - datetime.date(a_date.year, 1, 1)).days
+
+
+def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:  # NOQA
+    """
+    a_date is the start date of a weekly period
+    """
+    return 0
+
+
+def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
+    """
+    get the week's index of the month which located
+    a_date is the start date of a weekly period
+    """
+    key_date = get_week_anchor_date(a_date)
+    anchor_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
+    return (a_date - anchor_date).days // 7
+
+
+def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
+    """
+    get the week's index of the year which located
+    a_date is the start date of a weekly period
+    """
+    key_date = get_week_anchor_date(a_date)
+    anchor_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+    return (a_date - anchor_date).days // 7
+
+
+def get_monthly_period_idx_of_located_monthly(a_date: datetime.date) -> int:  # NOQA
+    """
+    a_date is the start date of a monthly period
+    """
+    return 0
+
+
+def get_monthly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
+    """
+    get the month's index of the year which located
+    a_date is the start date of a monthly period
+    """
+    return a_date.month - 1
+
+
+def get_yearly_period_idx_of_located_yearly(a_date: datetime.date) -> int:  # NOQA
+    """
+    a_date is the start date of a monthly period
+    """
+    return 0
