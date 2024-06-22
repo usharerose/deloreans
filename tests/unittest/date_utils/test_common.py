@@ -5,6 +5,16 @@ from delorean.date_utils.common import (
     get_start_date_of_monthly_start_week,
     get_week_anchor_date,
     get_weeks_offset_between_dates,
+    get_daily_period_idx_of_located_daily,
+    get_daily_period_idx_of_located_weekly,
+    get_daily_period_idx_of_located_monthly,
+    get_daily_period_idx_of_located_yearly,
+    get_weekly_period_idx_of_located_weekly,
+    get_weekly_period_idx_of_located_monthly,
+    get_weekly_period_idx_of_located_yearly,
+    get_monthly_period_idx_of_located_monthly,
+    get_monthly_period_idx_of_located_yearly,
+    get_yearly_period_idx_of_located_yearly,
 )
 
 
@@ -71,4 +81,112 @@ class GetStartDateOfMonthlyStartWeekTestCase(TestCase):
         self.assertEqual(
             get_start_date_of_monthly_start_week(2024, 5),
             datetime.date(2024, 4, 29),
+        )
+
+
+class GetPeriodIdxTestCase(TestCase):
+
+    def test_get_daily_period_idx_of_located_daily(self):
+        start_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_daily_period_idx_of_located_daily(start_date),
+            0,
+        )
+
+    def test_get_daily_period_idx_of_located_weekly(self):
+        start_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_daily_period_idx_of_located_weekly(start_date),
+            1,
+        )
+
+    def test_get_daily_period_idx_of_located_monthly(self):
+        start_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_daily_period_idx_of_located_monthly(start_date),
+            17,
+        )
+
+    def test_get_daily_period_idx_of_leap_year_feb(self):
+        start_date = datetime.date(2016, 2, 29)
+        self.assertEqual(
+            get_daily_period_idx_of_located_monthly(start_date),
+            28,
+        )
+
+    def test_get_daily_period_idx_of_located_yearly(self):
+        start_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_daily_period_idx_of_located_yearly(start_date),
+            169,
+        )
+
+    def test_get_daily_period_idx_of_leap_year(self):
+        start_date = datetime.date(2024, 12, 31)
+        self.assertEqual(
+            get_daily_period_idx_of_located_yearly(start_date),
+            365,
+        )
+
+    def test_get_weekly_period_idx_of_located_weekly(self):
+        start_date = datetime.date(2024, 6, 3)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_weekly(start_date),
+            0,
+        )
+
+    def test_get_weekly_period_idx_of_located_monthly(self):
+        start_date = datetime.date(2024, 2, 26)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_monthly(start_date),
+            4,
+        )
+
+    def test_get_weekly_period_idx_which_has_another_month_num(self):
+        start_date = datetime.date(2024, 4, 29)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_monthly(start_date),
+            0,
+        )
+
+    def test_get_weekly_period_idx_of_located_yearly(self):
+        start_date = datetime.date(2024, 6, 10)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_yearly(start_date),
+            23,
+        )
+
+    def test_get_weekly_period_idx_which_has_another_year_num(self):
+        start_date = datetime.date(2018, 12, 31)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_yearly(start_date),
+            0,
+        )
+
+    def test_get_weekly_period_idx_which_has_fifty_three_weeks(self):
+        start_date = datetime.date(2015, 12, 28)
+        self.assertEqual(
+            get_weekly_period_idx_of_located_yearly(start_date),
+            52,
+        )
+
+    def test_get_monthly_period_idx_of_located_monthly(self):
+        start_date = datetime.date(2024, 1, 1)
+        self.assertEqual(
+            get_monthly_period_idx_of_located_monthly(start_date),
+            0,
+        )
+
+    def test_get_monthly_period_idx_of_located_yearly(self):
+        start_date = datetime.date(2023, 12, 1)
+        self.assertEqual(
+            get_monthly_period_idx_of_located_yearly(start_date),
+            11,
+        )
+
+    def test_get_yearly_period_idx_of_located_yearly(self):
+        start_date = datetime.date(2023, 1, 1)
+        self.assertEqual(
+            get_yearly_period_idx_of_located_yearly(start_date),
+            0,
         )
