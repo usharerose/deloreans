@@ -52,6 +52,27 @@ def _strict_zip(*iterables: Iterable) -> Iterable:
 VALID_GRAINS_COMB = dict(_strict_zip(
     [item for name, item in DateGranularity.__members__.items()],
     [
-        {SpanGranularity.DAILY},
+        {
+            SpanGranularity.DAILY,
+            SpanGranularity.PERIODIC,
+            SpanGranularity.WEEKLY,
+            SpanGranularity.MONTHLY,
+            SpanGranularity.YEARLY,
+        },
+        {
+            SpanGranularity.DAILY,
+            SpanGranularity.PERIODIC,
+            SpanGranularity.WEEKLY,
+            SpanGranularity.MONTHLY,
+        },
+        {
+            SpanGranularity.DAILY,
+            SpanGranularity.PERIODIC,
+            SpanGranularity.WEEKLY,
+        },
+        {
+            SpanGranularity.DAILY,
+            SpanGranularity.PERIODIC,
+        },
     ],
 ))
