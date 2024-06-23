@@ -8,24 +8,34 @@ from delorean.date_utils.common import (
     get_weeks_offset_between_dates,
     get_daily_start_date_of_located_daily,
     get_daily_period_idx_of_located_daily,
+    get_prev_daily_start_date_from_daily_located,
     get_daily_start_date_of_located_weekly,
     get_daily_period_idx_of_located_weekly,
+    get_prev_weekly_start_date_from_daily_located,
     get_daily_start_date_of_located_monthly,
     get_daily_period_idx_of_located_monthly,
+    get_prev_monthly_start_date_from_daily_located,
     get_daily_start_date_of_located_yearly,
     get_daily_period_idx_of_located_yearly,
+    get_prev_yearly_start_date_from_daily_located,
     get_weekly_start_date_of_located_weekly,
     get_weekly_period_idx_of_located_weekly,
+    get_prev_weekly_start_date_from_weekly_located,
     get_weekly_start_date_of_located_monthly,
     get_weekly_period_idx_of_located_monthly,
+    get_prev_monthly_start_date_from_weekly_located,
     get_weekly_start_date_of_located_yearly,
     get_weekly_period_idx_of_located_yearly,
+    get_prev_yearly_start_date_from_weekly_located,
     get_monthly_start_date_of_located_monthly,
     get_monthly_period_idx_of_located_monthly,
+    get_prev_monthly_start_date_from_monthly_located,
     get_monthly_start_date_of_located_yearly,
     get_monthly_period_idx_of_located_yearly,
+    get_prev_yearly_start_date_from_monthly_located,
     get_yearly_start_date_of_located_yearly,
     get_yearly_period_idx_of_located_yearly,
+    get_prev_yearly_start_date_from_yearly_located,
 )
 
 
@@ -332,4 +342,98 @@ class GetPeriodIdxTestCase(TestCase):
         self.assertEqual(
             get_yearly_period_idx_of_located_yearly(start_date),
             0,
+        )
+
+
+class GetPrevLocatedPeriodStartDateTestCase(TestCase):
+
+    def test_get_prev_daily_start_date_from_daily_located(self):
+        sample_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_prev_daily_start_date_from_daily_located(sample_date, 13),
+            datetime.date(2024, 6, 5),
+        )
+
+    def test_get_prev_weekly_start_date_from_daily_located(self):
+        sample_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_prev_weekly_start_date_from_daily_located(sample_date, 7),
+            datetime.date(2024, 4, 29),
+        )
+
+    def test_get_prev_monthly_start_date_from_daily_located(self):
+        sample_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_prev_monthly_start_date_from_daily_located(sample_date, 6),
+            datetime.date(2023, 12, 1),
+        )
+
+    def test_get_prev_monthly_start_date_from_daily_located_at_leap_year_feb(self):
+        sample_date = datetime.date(2016, 2, 29)
+        self.assertEqual(
+            get_prev_monthly_start_date_from_daily_located(sample_date, 1),
+            datetime.date(2016, 1, 1),
+        )
+
+    def test_get_prev_yearly_start_date_from_daily_located(self):
+        sample_date = datetime.date(2024, 6, 18)
+        self.assertEqual(
+            get_prev_yearly_start_date_from_daily_located(sample_date, 3),
+            datetime.date(2021, 1, 1),
+        )
+
+    def test_get_prev_weekly_start_date_from_weekly_located(self):
+        sample_date = datetime.date(2024, 6, 3)
+        self.assertEqual(
+            get_prev_weekly_start_date_from_weekly_located(sample_date, 24),
+            datetime.date(2023, 12, 18),
+        )
+
+    def test_get_prev_monthly_start_date_from_weekly_located(self):
+        sample_date = datetime.date(2024, 2, 26)
+        self.assertEqual(
+            get_prev_monthly_start_date_from_weekly_located(sample_date, 4),
+            datetime.date(2023, 10, 2),
+        )
+
+    def test_get_prev_monthly_start_date_from_weekly_located_which_has_another_month_num(self):
+        sample_date = datetime.date(2024, 4, 29)
+        self.assertEqual(
+            get_prev_monthly_start_date_from_weekly_located(sample_date, 2),
+            datetime.date(2024, 3, 4),
+        )
+
+    def test_get_prev_yearly_start_date_from_weekly_located(self):
+        sample_date = datetime.date(2024, 6, 10)
+        self.assertEqual(
+            get_prev_yearly_start_date_from_weekly_located(sample_date, 3),
+            datetime.date(2021, 1, 4),
+        )
+
+    def test_get_prev_yearly_start_date_from_weekly_located_which_has_another_year_num(self):
+        sample_date = datetime.date(2018, 12, 31)
+        self.assertEqual(
+            get_prev_yearly_start_date_from_weekly_located(sample_date, 3),
+            datetime.date(2016, 1, 4),
+        )
+
+    def test_get_prev_monthly_start_date_from_monthly_located(self):
+        sample_date = datetime.date(2024, 1, 1)
+        self.assertEqual(
+            get_prev_monthly_start_date_from_monthly_located(sample_date, 15),
+            datetime.date(2022, 10, 1),
+        )
+
+    def test_get_prev_yearly_start_date_from_monthly_located(self):
+        sample_date = datetime.date(2023, 12, 1)
+        self.assertEqual(
+            get_prev_yearly_start_date_from_monthly_located(sample_date, 5),
+            datetime.date(2018, 1, 1),
+        )
+
+    def test_get_prev_yearly_start_date_from_yearly_located(self):
+        sample_date = datetime.date(2023, 1, 1)
+        self.assertEqual(
+            get_prev_yearly_start_date_from_yearly_located(sample_date, 10),
+            datetime.date(2013, 1, 1),
         )
