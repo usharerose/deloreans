@@ -45,14 +45,12 @@ def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date
     assert isinstance(month, int)
     assert year > 0
     assert 1 <= month <= 12
-    belonging_month_first_date = datetime.date(year, month, 1)
-    first_date_weekday = belonging_month_first_date.weekday()
-    if first_date_weekday <= 3:
-        date_delta = 3 - first_date_weekday
-    else:
-        date_delta = 10 - first_date_weekday
-    first_week_start_date = belonging_month_first_date + timedelta(days=date_delta) - timedelta(days=3)
-    return first_week_start_date
+    month_first_date = datetime.date(year, month, 1)
+    week_anchor_date = get_week_anchor_date(month_first_date)
+
+    if month_first_date <= week_anchor_date:
+        return get_located_week_start_date(month_first_date)
+    return get_located_week_start_date(month_first_date + timedelta(days=7))
 
 
 def get_daily_start_date_of_located_daily(a_date: datetime.date) -> datetime.date:
