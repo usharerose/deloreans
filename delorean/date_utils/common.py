@@ -2,15 +2,21 @@ import datetime
 from datetime import timedelta
 
 
+def get_located_week_start_date(a_date: datetime.date) -> datetime.date:
+    """
+    get the start date of week which input date located
+    """
+    date_index = a_date.weekday()
+    return a_date - timedelta(days=date_index)
+
+
 def get_week_anchor_date(a_date: datetime.date) -> datetime.date:
     """
-    Thursday of week determine the year and month that week belongs to
+    The fourth day of week determine the year and month that week located
     """
     assert isinstance(a_date, datetime.date)
-    weekday = a_date.weekday()
-    date_delta = 3 - weekday
-    key_date = a_date + timedelta(days=date_delta)
-    return key_date
+    start_date = get_located_week_start_date(a_date)
+    return start_date + timedelta(days=3)
 
 
 def get_weeks_offset_between_dates(
