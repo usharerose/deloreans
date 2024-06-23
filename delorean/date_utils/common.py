@@ -49,27 +49,64 @@ def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date
     return first_week_start_date
 
 
-def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:  # NOQA
-    return 0
+def get_daily_start_date_of_located_daily(a_date: datetime.date) -> datetime.date:
+    return a_date
+
+
+def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:
+    located_start_date = get_daily_start_date_of_located_daily(a_date)
+    return (a_date - located_start_date).days
+
+
+def get_daily_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
+    return a_date - timedelta(days=a_date.weekday())
 
 
 def get_daily_period_idx_of_located_weekly(a_date: datetime.date) -> int:
-    return a_date.weekday()
+    located_start_date = get_daily_start_date_of_located_weekly(a_date)
+    return (a_date - located_start_date).days
+
+
+def get_daily_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
+    return datetime.date(a_date.year, a_date.month, 1)
 
 
 def get_daily_period_idx_of_located_monthly(a_date: datetime.date) -> int:
-    return a_date.day - 1
+    located_start_date = get_daily_start_date_of_located_monthly(a_date)
+    return (a_date - located_start_date).days
+
+
+def get_daily_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
+    return datetime.date(a_date.year, 1, 1)
 
 
 def get_daily_period_idx_of_located_yearly(a_date: datetime.date) -> int:
-    return (a_date - datetime.date(a_date.year, 1, 1)).days
+    located_start_date = get_daily_start_date_of_located_yearly(a_date)
+    return (a_date - located_start_date).days
 
 
-def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:  # NOQA
+def get_weekly_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
     """
     a_date is the start date of a weekly period
     """
-    return 0
+    return a_date
+
+
+def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:
+    """
+    a_date is the start date of a weekly period
+    """
+    located_start_date = get_weekly_start_date_of_located_weekly(a_date)
+    return (a_date - located_start_date).days // 7
+
+
+def get_weekly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
+    """
+    a_date is the start date of a monthly period
+    """
+    key_date = get_week_anchor_date(a_date)
+    anchor_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
+    return anchor_date
 
 
 def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
@@ -77,9 +114,17 @@ def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
     get the week's index of the month which located
     a_date is the start date of a weekly period
     """
+    located_start_date = get_weekly_start_date_of_located_monthly(a_date)
+    return (a_date - located_start_date).days // 7
+
+
+def get_weekly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
+    """
+    a_date is the start date of a weekly period
+    """
     key_date = get_week_anchor_date(a_date)
-    anchor_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
-    return (a_date - anchor_date).days // 7
+    anchor_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+    return anchor_date
 
 
 def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
@@ -87,16 +132,30 @@ def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
     get the week's index of the year which located
     a_date is the start date of a weekly period
     """
-    key_date = get_week_anchor_date(a_date)
-    anchor_date = get_start_date_of_monthly_start_week(key_date.year, 1)
-    return (a_date - anchor_date).days // 7
+    located_start_date = get_weekly_start_date_of_located_yearly(a_date)
+    return (a_date - located_start_date).days // 7
+
+
+def get_monthly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
+    """
+    a_date is the start date of a monthly period
+    """
+    return a_date
 
 
 def get_monthly_period_idx_of_located_monthly(a_date: datetime.date) -> int:  # NOQA
     """
     a_date is the start date of a monthly period
     """
-    return 0
+    located_start_date = get_monthly_start_date_of_located_monthly(a_date)
+    return a_date.month - located_start_date.month
+
+
+def get_monthly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
+    """
+    a_date is the start date of a monthly period
+    """
+    return datetime.date(a_date.year, 1, 1)
 
 
 def get_monthly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
@@ -104,11 +163,20 @@ def get_monthly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
     get the month's index of the year which located
     a_date is the start date of a monthly period
     """
-    return a_date.month - 1
+    located_start_date = get_monthly_start_date_of_located_yearly(a_date)
+    return a_date.month - located_start_date.month
+
+
+def get_yearly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
+    """
+    a_date is the start date of a yearly period
+    """
+    return a_date
 
 
 def get_yearly_period_idx_of_located_yearly(a_date: datetime.date) -> int:  # NOQA
     """
-    a_date is the start date of a monthly period
+    a_date is the start date of a yearly period
     """
-    return 0
+    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
+    return a_date.year - located_start_date.year
