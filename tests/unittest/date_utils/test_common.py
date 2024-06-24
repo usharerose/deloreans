@@ -14,7 +14,7 @@ from delorean.date_utils.common import (
     get_daily_period_idx_of_located_weekly,
     get_prev_weekly_start_date_from_daily_located,
     get_daily_period_in_weekly_by_index,
-    get_daily_start_date_of_located_monthly,
+    get_start_daily_of_monthly,
     get_daily_period_idx_of_located_monthly,
     get_prev_monthly_start_date_from_daily_located,
     get_daily_period_in_monthly_by_index,
@@ -155,17 +155,17 @@ class GetLocatedPeriodStartDateTestCase(TestCase):
             datetime.date(2024, 6, 17),
         )
 
-    def test_get_daily_start_date_of_located_monthly(self):
+    def test_get_start_daily_of_monthly(self):
         start_date = datetime.date(2024, 6, 18)
         self.assertEqual(
-            get_daily_start_date_of_located_monthly(start_date),
+            get_start_daily_of_monthly(start_date),
             datetime.date(2024, 6, 1),
         )
 
-    def test_get_daily_start_date_of_located_leap_year_feb(self):
+    def test_get_start_daily_of_leap_year_feb(self):
         start_date = datetime.date(2016, 2, 29)
         self.assertEqual(
-            get_daily_start_date_of_located_monthly(start_date),
+            get_start_daily_of_monthly(start_date),
             datetime.date(2016, 2, 1),
         )
 
