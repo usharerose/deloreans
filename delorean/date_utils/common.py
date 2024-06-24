@@ -247,6 +247,11 @@ def get_compared_start_daily_located_yearly(a_date: datetime.date, offset: int) 
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
+def get_compared_start_weekly_located_weekly(a_date: datetime.date, offset: int) -> datetime.date:
+    located_start_date = get_start_weekly_of_weekly(a_date)
+    return located_start_date + timedelta(weeks=offset)
+
+
 def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
@@ -280,11 +285,6 @@ def get_daily_period_in_yearly_by_index(a_date: datetime.date, index: int) -> da
 
     year_start_date = datetime.date(a_date.year, 1, 1)
     return year_start_date + timedelta(days=index)
-
-
-def get_prev_weekly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    located_start_date = get_start_weekly_of_weekly(a_date)
-    return located_start_date - timedelta(weeks=span_count)
 
 
 def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
