@@ -21,6 +21,12 @@ lint:
 lintd: build clean-container
 	docker-compose up --exit-code-from delorean-lint delorean-lint
 
+type-hint:
+	python -m mypy delorean/
+
+type-hintd: build clean-container
+	docker-compose up --exit-code-from delorean-type-hint delorean-type-hint
+
 clean-pyc:
 	# clean all pyc files
 	find . -name '__pycache__' | xargs rm -rf | cat

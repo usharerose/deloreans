@@ -21,3 +21,7 @@ services:
   delorean-lint:
     image: delorean:${IMAGE_TAG:-latest}
     command: make lint
+
+  delorean-type-hint:
+    image: delorean:${IMAGE_TAG:-latest}
+    command: make type-hint
