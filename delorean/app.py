@@ -92,6 +92,17 @@ class DeLorean:
         return func(located_period_start_date, period_index)
 
     def get(self) -> Tuple[datetime.date, datetime.date]:
+        """
+        1. get the start date of compared date range
+           1.1 get the index of given date range's start period in offset-granularity-unit date period
+           1.2 get the start date-granularity period in away offset-granularity-unit date period
+           1.3 get the date period which is away from the above period as compared date range's start date
+
+        2. get the end date of compared date range
+           2.1 get the length of given date range
+           2.2 get the end date away from compared date range's start date with above length
+               as compared date range's end date
+        """
         start_period_index = self._get_start_period_index()
         base_start_date = self._get_compared_located_period_start_date()
         compared_start_date = self._get_compared_start_date(
