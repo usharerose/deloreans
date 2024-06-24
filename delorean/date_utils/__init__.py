@@ -53,26 +53,26 @@ VALID_GRAINS_COMB = dict(_strict_zip(
     [item for name, item in DateGranularity.__members__.items()],
     [
         {
+            OffsetGranularity.PERIODIC,
             OffsetGranularity.DAILY,
+            OffsetGranularity.WEEKLY,
+            OffsetGranularity.MONTHLY,
+            OffsetGranularity.YEARLY,
+        },
+        {
             OffsetGranularity.PERIODIC,
             OffsetGranularity.WEEKLY,
             OffsetGranularity.MONTHLY,
             OffsetGranularity.YEARLY,
         },
         {
-            OffsetGranularity.DAILY,
             OffsetGranularity.PERIODIC,
-            OffsetGranularity.WEEKLY,
             OffsetGranularity.MONTHLY,
+            OffsetGranularity.YEARLY,
         },
         {
-            OffsetGranularity.DAILY,
             OffsetGranularity.PERIODIC,
-            OffsetGranularity.WEEKLY,
-        },
-        {
-            OffsetGranularity.DAILY,
-            OffsetGranularity.PERIODIC,
+            OffsetGranularity.YEARLY,
         },
     ],
 ))
