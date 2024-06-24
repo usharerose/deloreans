@@ -102,12 +102,13 @@ def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
 #
 # ===============================================================================================
 
-def get_daily_start_date_of_located_daily(a_date: datetime.date) -> datetime.date:
+
+def get_start_daily_of_daily(a_date: datetime.date) -> datetime.date:
     return a_date
 
 
 def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:
-    located_start_date = get_daily_start_date_of_located_daily(a_date)
+    located_start_date = get_start_daily_of_daily(a_date)
     return (a_date - located_start_date).days
 
 
