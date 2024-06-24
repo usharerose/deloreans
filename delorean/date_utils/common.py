@@ -128,6 +128,14 @@ def get_start_weekly_of_monthly(a_date: datetime.date) -> datetime.date:
     return get_start_weekly_of_month(week_anchor_date.year, week_anchor_date.month)
 
 
+def get_start_weekly_of_yearly(a_date: datetime.date) -> datetime.date:
+    """
+    special case that the month is January
+    """
+    week_anchor_date = get_week_anchor_date(a_date)
+    return get_start_weekly_of_month(week_anchor_date.year, 1)
+
+
 def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:
     located_start_date = get_start_daily_of_daily(a_date)
     return (a_date - located_start_date).days
@@ -251,13 +259,8 @@ def get_weekly_period_in_monthly_by_index(a_date: datetime.date, index: int) -> 
     return start_date
 
 
-def get_weekly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
-    week_anchor_date = get_week_anchor_date(a_date)
-    return get_start_weekly_of_month(week_anchor_date.year, 1)
-
-
 def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
-    located_start_date = get_weekly_start_date_of_located_yearly(a_date)
+    located_start_date = get_start_weekly_of_yearly(a_date)
     week_start_date = get_weekly_start_date(a_date)
     return (week_start_date - located_start_date).days // 7
 
