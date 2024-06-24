@@ -92,15 +92,21 @@ class DeLorean:
         return func(located_period_start_date, period_index)
 
     def get(self) -> Tuple[datetime.date, datetime.date]:
-        date_period_idx = self._get_start_period_index()
-        compared_located_period_start_date = self._get_compared_located_period_start_date()
+        start_period_index = self._get_start_period_index()
+        base_start_date = self._get_compared_located_period_start_date()
         compared_start_date = self._get_compared_start_date(
-            compared_located_period_start_date,
-            date_period_idx,
+            base_start_date,
+            start_period_index,
         )
-        date_range_length = self._date_range.date_granularity.get_date_range_length(
+
+        date_granularity = self._date_range.date_granularity
+        given_date_range_length = date_granularity.get_date_range_length(
             self._date_range.start_date,
             self._date_range.end_date,
         )
-        compared_end_date = self._date_range.date_granularity.get_end_date(compared_start_date, date_range_length)
+        compared_end_date = date_granularity.get_end_date(
+            compared_start_date,
+            given_date_range_length,
+        )
+
         return compared_start_date, compared_end_date
