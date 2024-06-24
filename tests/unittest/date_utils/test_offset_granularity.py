@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from delorean.date_utils.date_range import DateRange
 from delorean.date_utils.date_granularity import DateGranularity
-from delorean.date_utils.span_granularity import (
+from delorean.date_utils.offset_granularity import (
     Daily,
     Weekly,
     Monthly,
@@ -12,7 +12,7 @@ from delorean.date_utils.span_granularity import (
 )
 
 
-class SpanGranularityDailyTestCase(TestCase):
+class OffsetGranularityDailyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Daily()
@@ -86,7 +86,7 @@ class SpanGranularityDailyTestCase(TestCase):
             self.granularity.get_first_period_located_start_date(date_range)
 
 
-class SpanGranularityWeeklyTestCase(TestCase):
+class OffsetGranularityWeeklyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Weekly()
@@ -173,7 +173,7 @@ class SpanGranularityWeeklyTestCase(TestCase):
             self.granularity.get_first_period_located_start_date(date_range)
 
 
-class SpanGranularityMonthlyTestCase(TestCase):
+class OffsetGranularityMonthlyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Monthly()
@@ -312,7 +312,7 @@ class SpanGranularityMonthlyTestCase(TestCase):
             self.granularity.get_first_period_located_start_date(date_range)
 
 
-class SpanGranularityYearlyTestCase(TestCase):
+class OffsetGranularityYearlyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Yearly()
@@ -503,7 +503,7 @@ class SpanGranularityYearlyTestCase(TestCase):
         )
 
 
-class SpanGranularityPeriodicTestCase(TestCase):
+class OffsetGranularityPeriodicTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Periodic()

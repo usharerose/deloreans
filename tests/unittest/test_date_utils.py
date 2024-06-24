@@ -4,8 +4,8 @@ from unittest import TestCase
 from delorean.date_utils import (
     DateGranularity,
     DateRange,
-    DateSpan,
-    SpanGranularity,
+    DatePeriodOffset,
+    OffsetGranularity,
 )
 
 
@@ -42,39 +42,32 @@ class DateRangeTestCase(TestCase):
             DateRange(start_date, end_date, date_granularity)  # NOQA
 
 
-class DateSpanTestCase(TestCase):
+class DatePeriodOffsetTestCase(TestCase):
 
-    def test_span_count(self):
-        span_count = 1
-        span_granularity = SpanGranularity.DAILY
-        date_span = DateSpan(span_count, span_granularity)
+    def test_offset(self):
+        sample_offset = 1
+        sample_offset_granularity = OffsetGranularity.DAILY
+        date_period_offset = DatePeriodOffset(sample_offset, sample_offset_granularity)
 
-        self.assertEqual(date_span.span_count, 1)
+        self.assertEqual(date_period_offset.offset, 1)
 
-    def test_span_granularity(self):
-        span_count = 1
-        span_granularity = SpanGranularity.DAILY
-        date_span = DateSpan(span_count, span_granularity)
+    def test_offset_granularity(self):
+        sample_offset = 1
+        sample_offset_granularity = OffsetGranularity.DAILY
+        date_period_offset = DatePeriodOffset(sample_offset, sample_offset_granularity)
 
-        self.assertEqual(date_span.span_granularity, SpanGranularity.DAILY)
+        self.assertEqual(date_period_offset.offset_granularity, OffsetGranularity.DAILY)
 
-    def test_invalid_span_count_type(self):
-        span_count = '1'
-        span_granularity = SpanGranularity.DAILY
-
-        with self.assertRaises(TypeError):
-            DateSpan(span_count, span_granularity)  # NOQA
-
-    def test_invalid_span_count_value(self):
-        span_count = -1
-        span_granularity = SpanGranularity.DAILY
-
-        with self.assertRaises(ValueError):
-            DateSpan(span_count, span_granularity)  # NOQA
-
-    def test_invalid_span_granularity(self):
-        span_count = 1
-        span_granularity = 'daily'
+    def test_invalid_offset_type(self):
+        sample_offset = '1'
+        offset_granularity = OffsetGranularity.DAILY
 
         with self.assertRaises(TypeError):
-            DateSpan(span_count, span_granularity)  # NOQA
+            DatePeriodOffset(sample_offset, offset_granularity)  # NOQA
+
+    def test_invalid_offset_granularity(self):
+        sample_offset = 1
+        sample_offset_granularity = 'daily'
+
+        with self.assertRaises(TypeError):
+            DatePeriodOffset(sample_offset, sample_offset_granularity)  # NOQA

@@ -257,9 +257,9 @@ class Periodic(BaseGranularity):
         return a_date
 
 
-class SpanGranularity(Enum):
+class OffsetGranularity(Enum):
     """
-    supported date span granularity
+    supported date offset granularity
     """
     DAILY = Daily()
     WEEKLY = Weekly()
@@ -268,46 +268,37 @@ class SpanGranularity(Enum):
     PERIODIC = Periodic()
 
 
-class DateSpan:
+class DatePeriodOffset:
 
     def __init__(
         self,
-        span_count: int,
-        span_granularity: SpanGranularity,
+        offset: int,
+        offset_granularity: OffsetGranularity,
     ) -> None:
-        self._span_count = span_count
-        self._span_granularity = span_granularity
-        self._validate_span_count()
-        self._validate_span_granularity_type()
+        self._offset = offset
+        self._offset_granularity = offset_granularity
+        self._validate_offset()
+        self._validate_offset_granularity_type()
 
     @property
-    def span_count(self) -> int:
-        return self._span_count
+    def offset(self) -> int:
+        return self._offset
 
     @property
-    def span_granularity(self) -> SpanGranularity:
-        return self._span_granularity
+    def offset_granularity(self) -> OffsetGranularity:
+        return self._offset_granularity
 
-    def _validate_span_count(self) -> None:
-        """
-        validate input span count on
-        1. data type which should be integer
-        2. value which should be positive
-        """
-        if not isinstance(self._span_count, int):
+    def _validate_offset(self) -> None:
+        if not isinstance(self._offset, int):
             raise TypeError(
-                f'Invalid span count {self._span_count!r}, should be int'
-            )
-        if self._span_count < 0:
-            raise ValueError(
-                f'Invalid span count {self._span_count!r}, should be positive'
+                f'Invalid offset {self._offset!r}, should be int'
             )
 
-    def _validate_span_granularity_type(self) -> None:
+    def _validate_offset_granularity_type(self) -> None:
         """
-        span granularity should be defined enum
+        offset granularity should be defined enum
         """
-        if not isinstance(self._span_granularity, SpanGranularity):
+        if not isinstance(self._offset_granularity, OffsetGranularity):
             raise TypeError(
-                f'Invalid span granularity {self._span_granularity!r}, should be SpanGranularity'
+                f'Invalid offset granularity {self._offset_granularity!r}, should be OffsetGranularity'
             )
