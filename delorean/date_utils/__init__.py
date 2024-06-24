@@ -7,7 +7,7 @@ from typing import Iterable
 
 from delorean.date_utils.date_granularity import DateGranularity
 from delorean.date_utils.date_range import DateRange
-from delorean.date_utils.span_granularity import DateSpan, SpanGranularity  # NOQA
+from delorean.date_utils.offset_granularity import DatePeriodOffset, OffsetGranularity  # NOQA
 
 
 def _strict_zip(*iterables: Iterable) -> Iterable:
@@ -17,7 +17,7 @@ def _strict_zip(*iterables: Iterable) -> Iterable:
 
     which validates iterables lengths' consistency
     In this scenario, it is for making sure that
-    each date granularity has registered their valid span granularity
+    each date granularity has registered their valid offset granularity
     """
     if not iterables:
         yield
@@ -46,33 +46,33 @@ def _strict_zip(*iterables: Iterable) -> Iterable:
             raise ValueError(msg)
 
 
-# Commonly, finer date range can offset with rougher span granularity
+# Commonly, finer date range can offset with rougher offset granularity
 # Here is the collection of valid combinations
-# Please register the valid span granularity when support new date granularity
+# Please register the valid offset granularity when support new date granularity
 VALID_GRAINS_COMB = dict(_strict_zip(
     [item for name, item in DateGranularity.__members__.items()],
     [
         {
-            SpanGranularity.DAILY,
-            SpanGranularity.PERIODIC,
-            SpanGranularity.WEEKLY,
-            SpanGranularity.MONTHLY,
-            SpanGranularity.YEARLY,
+            OffsetGranularity.DAILY,
+            OffsetGranularity.PERIODIC,
+            OffsetGranularity.WEEKLY,
+            OffsetGranularity.MONTHLY,
+            OffsetGranularity.YEARLY,
         },
         {
-            SpanGranularity.DAILY,
-            SpanGranularity.PERIODIC,
-            SpanGranularity.WEEKLY,
-            SpanGranularity.MONTHLY,
+            OffsetGranularity.DAILY,
+            OffsetGranularity.PERIODIC,
+            OffsetGranularity.WEEKLY,
+            OffsetGranularity.MONTHLY,
         },
         {
-            SpanGranularity.DAILY,
-            SpanGranularity.PERIODIC,
-            SpanGranularity.WEEKLY,
+            OffsetGranularity.DAILY,
+            OffsetGranularity.PERIODIC,
+            OffsetGranularity.WEEKLY,
         },
         {
-            SpanGranularity.DAILY,
-            SpanGranularity.PERIODIC,
+            OffsetGranularity.DAILY,
+            OffsetGranularity.PERIODIC,
         },
     ],
 ))

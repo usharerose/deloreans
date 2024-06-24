@@ -4,8 +4,6 @@ from unittest import TestCase
 from delorean.date_utils import (
     DateGranularity,
     DateRange,
-    DateSpan,
-    SpanGranularity,
 )
 
 
@@ -40,41 +38,3 @@ class DateRangeTestCase(TestCase):
         date_granularity = 'daily'
         with self.assertRaises(ValueError):
             DateRange(start_date, end_date, date_granularity)  # NOQA
-
-
-class DateSpanTestCase(TestCase):
-
-    def test_span_count(self):
-        span_count = 1
-        span_granularity = SpanGranularity.DAILY
-        date_span = DateSpan(span_count, span_granularity)
-
-        self.assertEqual(date_span.span_count, 1)
-
-    def test_span_granularity(self):
-        span_count = 1
-        span_granularity = SpanGranularity.DAILY
-        date_span = DateSpan(span_count, span_granularity)
-
-        self.assertEqual(date_span.span_granularity, SpanGranularity.DAILY)
-
-    def test_invalid_span_count_type(self):
-        span_count = '1'
-        span_granularity = SpanGranularity.DAILY
-
-        with self.assertRaises(TypeError):
-            DateSpan(span_count, span_granularity)  # NOQA
-
-    def test_invalid_span_count_value(self):
-        span_count = -1
-        span_granularity = SpanGranularity.DAILY
-
-        with self.assertRaises(ValueError):
-            DateSpan(span_count, span_granularity)  # NOQA
-
-    def test_invalid_span_granularity(self):
-        span_count = 1
-        span_granularity = 'daily'
-
-        with self.assertRaises(TypeError):
-            DateSpan(span_count, span_granularity)  # NOQA
