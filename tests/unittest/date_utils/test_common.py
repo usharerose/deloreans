@@ -488,6 +488,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 6, 14),
         )
 
+    def test_get_daily_with_exceeded_index_in_monthly(self):
+        sample_date = datetime.date(2024, 11, 1)
+        sample_index = 33
+        with self.assertRaises(ValueError):
+            get_daily_with_index_in_monthly(sample_date, sample_index)
+
     def test_get_daily_with_index_in_yearly(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 59
