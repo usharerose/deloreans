@@ -14,9 +14,6 @@ class DateGranularityDailyTestCase(TestCase):
     def setUp(self):
         self.granularity = Daily()
 
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'daily')
-
     def test_validate_date_completion(self):
         start_date = datetime.date(2024, 6, 15)
         end_date = datetime.date(2024, 6, 17)
@@ -60,9 +57,6 @@ class DateGranularityWeeklyTestCase(TestCase):
     def setUp(self):
         self.granularity = Weekly()
 
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'weekly')
-
     def test_validate_full_weeks(self):
         start_date = datetime.date(2024, 5, 27)
         end_date = datetime.date(2024, 6, 23)
@@ -102,9 +96,6 @@ class DateGranularityMonthlyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Monthly()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'monthly')
 
     def test_validate_full_months(self):
         start_date = datetime.date(2024, 1, 1)
@@ -166,9 +157,6 @@ class DateGranularityYearlyTestCase(TestCase):
 
     def setUp(self):
         self.granularity = Yearly()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'yearly')
 
     def test_validate_date_completion(self):
         start_date = datetime.date(2023, 1, 1)

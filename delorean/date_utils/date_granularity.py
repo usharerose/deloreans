@@ -5,8 +5,6 @@ from enum import Enum
 
 class BaseGranularity:
 
-    name: str
-
     def validate_date_completion(
         self,
         start_date: datetime.date,
@@ -52,8 +50,6 @@ class BaseGranularity:
 
 class Daily(BaseGranularity):
 
-    name = 'daily'
-
     def _is_partial_start(self, start_date: datetime.date) -> bool:
         return False
 
@@ -77,8 +73,6 @@ class Daily(BaseGranularity):
 
 class Weekly(BaseGranularity):
 
-    name = 'weekly'
-
     def _is_partial_start(self, start_date: datetime.date) -> bool:
         return not start_date.weekday() == 0
 
@@ -101,8 +95,6 @@ class Weekly(BaseGranularity):
 
 
 class Monthly(BaseGranularity):
-
-    name = 'monthly'
 
     def _is_partial_start(self, start_date: datetime.date) -> bool:
         return not start_date.day == 1
@@ -148,8 +140,6 @@ class Monthly(BaseGranularity):
 
 
 class Yearly(BaseGranularity):
-
-    name = 'yearly'
 
     def _is_partial_start(self, start_date: datetime.date) -> bool:
         return not (start_date.day == 1 and start_date.month == 1)
