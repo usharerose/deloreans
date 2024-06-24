@@ -400,7 +400,7 @@ def get_monthly_with_index_in_yearly(a_date: datetime.date, index: int) -> datet
     return datetime.date(year_start_date.year, year_start_date.month + index, 1)
 
 
-def get_yearly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
+def get_yearly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
     if index != 0:
         raise ValueError
     return datetime.date(a_date.year, 1, 1)
