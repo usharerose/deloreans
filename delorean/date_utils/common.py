@@ -53,6 +53,51 @@ def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date
     return get_located_week_start_date(month_first_date + timedelta(days=7))
 
 
+# ===============================================================================================
+#
+#   series functions around date range's first period
+#
+#   1. get_%(date_range_granularity)s_start_date_of_located_%(offset_granularity)s
+#      first period (which granularity is named as date_range_granularity)
+#      is at a rougher date period (which granularity is named as offset_granularity)
+#
+#      the function would return the first date of that located date period,
+#      the first date depends on date range's granularity
+#      e.g. when offset_granularity is 'monthly' and
+#           * date range is daily, then first date would be the 1st of month
+#           * date range is weekly, then first date would be
+#             the 1st of month's 1st week (probably not 1st of month)
+#      Args:
+#          a_date: datetime.date
+#          the date at above first period (probably not the beginning)
+#      Return:
+#          start_date: datetime.date
+#
+#   2. get_%(date_range_granularity)s_period_idx_of_located_%(offset_granularity)s
+#      the function would return the index of date range's first period at the located period
+#      e.g. when offset_granularity is 'monthly' and
+#           * date range is daily, then the result would be the date index in located month
+#           * date range is weekly, then the result would be the week index in located month
+#      Args:
+#          a_date: datetime.date
+#          the date at above first period (probably not the beginning)
+#      Return:
+#          index: int
+#
+#   3. get_prev_%(offset_granularity)s_start_date_from_%(date_range_granularity)s_located
+#      the function would return the first date of unit date period,
+#      which is away from the unit date period that date range's first period located
+#      Args:
+#          a_date: datetime.date
+#          the date at above first period (probably not the beginning)
+#
+#          span_count: int
+#          offset from located date period to compared located date period
+#      Return:
+#          start_date: datetime.date
+#
+# ===============================================================================================
+
 def get_daily_start_date_of_located_daily(a_date: datetime.date) -> datetime.date:
     return a_date
 
@@ -91,8 +136,8 @@ def get_daily_period_idx_of_located_monthly(a_date: datetime.date) -> int:
 
 
 def get_prev_monthly_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_daily_start_date_of_located_monthly(a_date)
-    located_year, located_month = cur_start_date.year, cur_start_date.month
+    located_start_date = get_daily_start_date_of_located_monthly(a_date)
+    located_year, located_month = located_start_date.year, located_start_date.month
 
     total_months = (located_year * 12 + located_month) - span_count
     another_year = total_months // 12
@@ -113,133 +158,92 @@ def get_daily_period_idx_of_located_yearly(a_date: datetime.date) -> int:
 
 
 def get_prev_yearly_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_daily_start_date_of_located_yearly(a_date)
-    return datetime.date(cur_start_date.year - span_count, 1, 1)
+    located_start_date = get_daily_start_date_of_located_yearly(a_date)
+    return datetime.date(located_start_date.year - span_count, 1, 1)
 
 
 def get_weekly_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a weekly period
-    """
-    return a_date
+    return get_located_week_start_date(a_date)
 
 
-def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:
-    """
-    a_date is the start date of a weekly period
-    """
-    located_start_date = get_weekly_start_date_of_located_weekly(a_date)
-    return (a_date - located_start_date).days // 7
+def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:  # NOQA
+    return 0
 
 
 def get_prev_weekly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_weekly_start_date_of_located_weekly(a_date)
-    return cur_start_date - timedelta(weeks=span_count)
+    located_start_date = get_weekly_start_date_of_located_weekly(a_date)
+    return located_start_date - timedelta(weeks=span_count)
 
 
 def get_weekly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a monthly period
-    """
-    key_date = get_week_anchor_date(a_date)
-    anchor_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
-    return anchor_date
+    week_anchor_date = get_week_anchor_date(a_date)
+    return get_start_date_of_monthly_start_week(week_anchor_date.year, week_anchor_date.month)
 
 
 def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
-    """
-    get the week's index of the month which located
-    a_date is the start date of a weekly period
-    """
     located_start_date = get_weekly_start_date_of_located_monthly(a_date)
-    return (a_date - located_start_date).days // 7
+    week_start_date = get_located_week_start_date(a_date)
+    return (week_start_date - located_start_date).days // 7
 
 
 def get_prev_monthly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    anchor_date = get_week_anchor_date(a_date)
-    prev_month_first_day = get_prev_monthly_start_date_from_daily_located(anchor_date, span_count)
-    return get_start_date_of_monthly_start_week(prev_month_first_day.year, prev_month_first_day.month)
+    week_anchor_date = get_week_anchor_date(a_date)
+    prev_month_start_date = get_prev_monthly_start_date_from_daily_located(week_anchor_date, span_count)
+    return get_start_date_of_monthly_start_week(prev_month_start_date.year, prev_month_start_date.month)
 
 
 def get_weekly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a weekly period
-    """
-    key_date = get_week_anchor_date(a_date)
-    anchor_date = get_start_date_of_monthly_start_week(key_date.year, 1)
-    return anchor_date
+    week_anchor_date = get_week_anchor_date(a_date)
+    return get_start_date_of_monthly_start_week(week_anchor_date.year, 1)
 
 
 def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
-    """
-    get the week's index of the year which located
-    a_date is the start date of a weekly period
-    """
     located_start_date = get_weekly_start_date_of_located_yearly(a_date)
-    return (a_date - located_start_date).days // 7
+    week_start_date = get_located_week_start_date(a_date)
+    return (week_start_date - located_start_date).days // 7
 
 
 def get_prev_yearly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    anchor_date = get_week_anchor_date(a_date)
-    prev_year_first_day = get_prev_yearly_start_date_from_daily_located(anchor_date, span_count)
-    return get_start_date_of_monthly_start_week(prev_year_first_day.year, 1)
+    week_anchor_date = get_week_anchor_date(a_date)
+    prev_year_start_date = get_prev_yearly_start_date_from_daily_located(week_anchor_date, span_count)
+    return get_start_date_of_monthly_start_week(prev_year_start_date.year, 1)
 
 
 def get_monthly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a monthly period
-    """
-    return a_date
+    return datetime.date(a_date.year, a_date.month, 1)
 
 
 def get_monthly_period_idx_of_located_monthly(a_date: datetime.date) -> int:  # NOQA
-    """
-    a_date is the start date of a monthly period
-    """
-    located_start_date = get_monthly_start_date_of_located_monthly(a_date)
-    return a_date.month - located_start_date.month
+    return 0
 
 
 def get_prev_monthly_start_date_from_monthly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_monthly_start_date_of_located_monthly(a_date)
-    return get_prev_monthly_start_date_from_daily_located(cur_start_date, span_count)
+    located_start_date = get_monthly_start_date_of_located_monthly(a_date)
+    return get_prev_monthly_start_date_from_daily_located(located_start_date, span_count)
 
 
 def get_monthly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a monthly period
-    """
     return datetime.date(a_date.year, 1, 1)
 
 
 def get_monthly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
-    """
-    get the month's index of the year which located
-    a_date is the start date of a monthly period
-    """
     located_start_date = get_monthly_start_date_of_located_yearly(a_date)
     return a_date.month - located_start_date.month
 
 
 def get_prev_yearly_start_date_from_monthly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_monthly_start_date_of_located_monthly(a_date)
-    return datetime.date(cur_start_date.year - span_count, 1, 1)
+    located_start_date = get_monthly_start_date_of_located_yearly(a_date)
+    return datetime.date(located_start_date.year - span_count, 1, 1)
 
 
 def get_yearly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
-    """
-    a_date is the start date of a yearly period
-    """
-    return a_date
+    return datetime.date(a_date.year, 1, 1)
 
 
 def get_yearly_period_idx_of_located_yearly(a_date: datetime.date) -> int:  # NOQA
-    """
-    a_date is the start date of a yearly period
-    """
-    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
-    return a_date.year - located_start_date.year
+    return 0
 
 
 def get_prev_yearly_start_date_from_yearly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    return datetime.date(a_date.year - span_count, 1, 1)
+    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
+    return datetime.date(located_start_date.year - span_count, 1, 1)
