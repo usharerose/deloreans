@@ -2,7 +2,7 @@ import datetime
 from unittest import TestCase
 
 from delorean.date_utils.common import (
-    get_located_week_start_date,
+    get_weekly_start_date,
     get_start_date_of_monthly_start_week,
     get_week_anchor_date,
     get_weeks_offset_between_dates,
@@ -49,26 +49,26 @@ from delorean.date_utils.common import (
 )
 
 
-class GetLocatedWeekStartDateTestCase(TestCase):
+class GetWeeklyStartDateTestCase(TestCase):
 
-    def test_get_located_week_start_date(self):
+    def test_get_weekly_start_date(self):
         sample_date = datetime.date(2024, 6, 10)
         self.assertEqual(
-            get_located_week_start_date(sample_date),
+            get_weekly_start_date(sample_date),
             datetime.date(2024, 6, 10),
         )
 
     def test_get_located_at_another_month(self):
         sample_date = datetime.date(2024, 6, 2)
         self.assertEqual(
-            get_located_week_start_date(sample_date),
+            get_weekly_start_date(sample_date),
             datetime.date(2024, 5, 27),
         )
 
     def test_get_located_at_another_year(self):
         sample_date = datetime.date(2025, 1, 1)
         self.assertEqual(
-            get_located_week_start_date(sample_date),
+            get_weekly_start_date(sample_date),
             datetime.date(2024, 12, 30),
         )
 

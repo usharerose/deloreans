@@ -2,9 +2,9 @@ import datetime
 from datetime import timedelta
 
 
-def get_located_week_start_date(a_date: datetime.date) -> datetime.date:
+def get_weekly_start_date(a_date: datetime.date) -> datetime.date:
     """
-    get the start date of week which input date located
+    get the start date of week which given date located
     """
     date_index = a_date.weekday()
     return a_date - timedelta(days=date_index)
@@ -15,7 +15,7 @@ def get_week_anchor_date(a_date: datetime.date) -> datetime.date:
     The fourth day of week determine the year and month that week located
     """
     assert isinstance(a_date, datetime.date)
-    start_date = get_located_week_start_date(a_date)
+    start_date = get_weekly_start_date(a_date)
     return start_date + timedelta(days=3)
 
 
@@ -49,8 +49,8 @@ def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date
     week_anchor_date = get_week_anchor_date(month_first_date)
 
     if month_first_date <= week_anchor_date:
-        return get_located_week_start_date(month_first_date)
-    return get_located_week_start_date(month_first_date + timedelta(days=7))
+        return get_weekly_start_date(month_first_date)
+    return get_weekly_start_date(month_first_date + timedelta(days=7))
 
 
 # ===============================================================================================
@@ -119,7 +119,7 @@ def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> dat
 
 
 def get_daily_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
-    return get_located_week_start_date(a_date)
+    return get_weekly_start_date(a_date)
 
 
 def get_daily_period_idx_of_located_weekly(a_date: datetime.date) -> int:
@@ -135,7 +135,7 @@ def get_prev_weekly_start_date_from_daily_located(a_date: datetime.date, span_co
 def get_daily_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:
     if not 0 <= index < 7:
         raise ValueError
-    week_start_date = get_located_week_start_date(a_date)
+    week_start_date = get_weekly_start_date(a_date)
     return week_start_date + timedelta(days=index)
 
 
@@ -198,7 +198,7 @@ def get_daily_period_in_yearly_by_index(a_date: datetime.date, index: int) -> da
 
 
 def get_weekly_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
-    return get_located_week_start_date(a_date)
+    return get_weekly_start_date(a_date)
 
 
 def get_weekly_period_idx_of_located_weekly(a_date: datetime.date) -> int:  # NOQA
@@ -213,7 +213,7 @@ def get_prev_weekly_start_date_from_weekly_located(a_date: datetime.date, span_c
 def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
-    return get_located_week_start_date(a_date)
+    return get_weekly_start_date(a_date)
 
 
 def get_weekly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
@@ -223,7 +223,7 @@ def get_weekly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.
 
 def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
     located_start_date = get_weekly_start_date_of_located_monthly(a_date)
-    week_start_date = get_located_week_start_date(a_date)
+    week_start_date = get_weekly_start_date(a_date)
     return (week_start_date - located_start_date).days // 7
 
 
@@ -253,7 +253,7 @@ def get_weekly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.d
 
 def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
     located_start_date = get_weekly_start_date_of_located_yearly(a_date)
-    week_start_date = get_located_week_start_date(a_date)
+    week_start_date = get_weekly_start_date(a_date)
     return (week_start_date - located_start_date).days // 7
 
 
