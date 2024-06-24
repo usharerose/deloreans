@@ -31,7 +31,7 @@ from delorean.date_utils.common import (
     get_prev_monthly_start_date_from_weekly_located,
     get_weekly_period_in_monthly_by_index,
     get_start_weekly_of_yearly,
-    get_weekly_period_idx_of_located_yearly,
+    get_weekly_index_of_yearly,
     get_prev_yearly_start_date_from_weekly_located,
     get_weekly_period_in_yearly_by_index,
     get_start_monthly_of_monthly,
@@ -312,24 +312,24 @@ class GetPeriodIdxTestCase(TestCase):
             0,
         )
 
-    def test_get_weekly_period_idx_of_located_yearly(self):
+    def test_get_weekly_index_of_yearly(self):
         start_date = datetime.date(2024, 6, 10)
         self.assertEqual(
-            get_weekly_period_idx_of_located_yearly(start_date),
+            get_weekly_index_of_yearly(start_date),
             23,
         )
 
-    def test_get_weekly_period_idx_which_has_another_year_num(self):
+    def test_get_weekly_index_of_yearly_which_has_another_year_num(self):
         start_date = datetime.date(2018, 12, 31)
         self.assertEqual(
-            get_weekly_period_idx_of_located_yearly(start_date),
+            get_weekly_index_of_yearly(start_date),
             0,
         )
 
-    def test_get_weekly_period_idx_which_has_fifty_three_weeks(self):
+    def test_get_weekly_index_of_yearly_which_has_fifty_three_weeks(self):
         start_date = datetime.date(2015, 12, 28)
         self.assertEqual(
-            get_weekly_period_idx_of_located_yearly(start_date),
+            get_weekly_index_of_yearly(start_date),
             52,
         )
 
