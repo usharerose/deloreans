@@ -11,7 +11,7 @@ from delorean.date_utils.common import (
     get_prev_daily_start_date_from_daily_located,
     get_daily_period_in_daily_by_index,
     get_start_daily_of_weekly,
-    get_daily_period_idx_of_located_weekly,
+    get_daily_index_of_weekly,
     get_prev_weekly_start_date_from_daily_located,
     get_daily_period_in_weekly_by_index,
     get_start_daily_of_monthly,
@@ -256,10 +256,10 @@ class GetPeriodIdxTestCase(TestCase):
             0,
         )
 
-    def test_get_daily_period_idx_of_located_weekly(self):
+    def test_get_daily_index_of_weekly(self):
         start_date = datetime.date(2024, 6, 18)
         self.assertEqual(
-            get_daily_period_idx_of_located_weekly(start_date),
+            get_daily_index_of_weekly(start_date),
             1,
         )
 
