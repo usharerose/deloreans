@@ -10,19 +10,19 @@ ssh:
 	docker-compose exec delorean-run /bin/sh
 
 test:
-	python -m pytest -sv --cov-report term-missing --cov-report html:coverage_report --cov-report xml:coverage_report/cov.xml --junitxml=coverage_report/pytest.xml --cov=delorean/ --disable-warnings -p no:cacheprovider tests/*
+	poetry run python -m pytest -sv --cov-report term-missing --cov-report html:coverage_report --cov-report xml:coverage_report/cov.xml --junitxml=coverage_report/pytest.xml --cov=delorean/ --disable-warnings -p no:cacheprovider tests/*
 
 testd: build clean-container
 	docker-compose up --exit-code-from delorean-test delorean-test
 
 lint:
-	flake8 delorean/ tests/
+	poetry run python -m flake8 delorean/ tests/
 
 lintd: build clean-container
 	docker-compose up --exit-code-from delorean-lint delorean-lint
 
 type-hint:
-	python -m mypy delorean/
+	poetry run python -m mypy delorean/
 
 type-hintd: build clean-container
 	docker-compose up --exit-code-from delorean-type-hint delorean-type-hint
