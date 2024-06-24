@@ -17,7 +17,7 @@ from delorean.date_utils.common import (
     get_start_daily_of_monthly,
     get_daily_index_of_monthly,
     get_compared_start_daily_located_monthly,
-    get_daily_period_in_monthly_by_index,
+    get_daily_with_index_in_monthly,
     get_start_daily_of_yearly,
     get_daily_index_of_yearly,
     get_compared_start_daily_located_yearly,
@@ -480,11 +480,11 @@ class GetPeriodInUnitPeriodByIndexTestCase(TestCase):
             datetime.date(2024, 6, 22),
         )
 
-    def test_get_daily_period_in_monthly_by_index(self):
+    def test_get_daily_with_index_in_monthly(self):
         sample_date = datetime.date(2024, 6, 1)
         sample_index = 13
         self.assertEqual(
-            get_daily_period_in_monthly_by_index(sample_date, sample_index),
+            get_daily_with_index_in_monthly(sample_date, sample_index),
             datetime.date(2024, 6, 14),
         )
 

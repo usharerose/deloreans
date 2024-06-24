@@ -329,9 +329,13 @@ def get_daily_with_index_in_weekly(a_date: datetime.date, index: int) -> datetim
     return week_start_date + timedelta(days=index)
 
 
-def get_daily_period_in_monthly_by_index(a_date: datetime.date, index: int) -> datetime.date:
-    total_months = (a_date.year * 12 + a_date.month) + 1
-    next_month_start_date = datetime.date(total_months // 12, total_months % 12, 1)
+def get_daily_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:
+    next_month_total_months = (a_date.year * 12 + a_date.month) + 1
+    next_month_start_date = datetime.date(
+        next_month_total_months // 12,
+        next_month_total_months % 12,
+        1,
+    )
     capacity = (next_month_start_date - timedelta(days=1)).day
     if not 0 <= index < capacity:
         raise ValueError
