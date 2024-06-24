@@ -61,23 +61,7 @@ def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
 #
 #   series functions around date range's first period
 #
-#   1. get_%(date_range_granularity)s_start_date_of_located_%(offset_granularity)s
-#      first period (which granularity is named as date_range_granularity)
-#      is at a rougher date period (which granularity is named as offset_granularity)
-#
-#      the function would return the first date of that located date period,
-#      the first date depends on date range's granularity
-#      e.g. when offset_granularity is 'monthly' and
-#           * date range is daily, then first date would be the 1st of month
-#           * date range is weekly, then first date would be
-#             the 1st of month's 1st week (probably not 1st of month)
-#      Args:
-#          a_date: datetime.date
-#          the date at above first period (probably not the beginning)
-#      Return:
-#          start_date: datetime.date
-#
-#   2. get_%(date_range_granularity)s_period_idx_of_located_%(offset_granularity)s
+#   1. get_%(date_range_granularity)s_period_idx_of_located_%(offset_granularity)s
 #      the function would return the index of date range's first period at the located period
 #      e.g. when offset_granularity is 'monthly' and
 #           * date range is daily, then the result would be the date index in located month
@@ -88,7 +72,7 @@ def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
 #      Return:
 #          index: int
 #
-#   3. get_prev_%(offset_granularity)s_start_date_from_%(date_range_granularity)s_located
+#   2. get_prev_%(offset_granularity)s_start_date_from_%(date_range_granularity)s_located
 #      the function would return the first date of unit date period,
 #      which is away from the unit date period that date range's first period located
 #      Args:
@@ -101,6 +85,34 @@ def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
 #          start_date: datetime.date
 #
 # ===============================================================================================
+
+
+# ==========================================================================================================
+#
+#   Series of functions which provide start period of a unit date period
+#
+#   The pattern of function name is like:
+#   get_start_%(date_period_granularity)s_of_%(located_unit_period_granularity)s
+#
+#   Args:
+#       a_date (datetime.date): the date located in a single date period,
+#                               representing this period
+#                               e.g. if a_date was '2024-06-20'
+#                                    when granularity is 'daily': represent '2024-06-20'
+#                                    when 'weekly': No.25 week of 2024according to ISO week date
+#                                    when 'monthly': June 2024
+#                                    when 'yearly': 2024
+#
+#   Return:
+#       start_date (datetime.date): the start date which representing its start period of location
+#                                   e.g. if the located unit period is June 2024
+#                                        * date granularity is 'daily':
+#                                          return '2024-06-01' which is the first day
+#                                        * date granularity is 'weekly':
+#                                          start week is No.23 week of 2024, its start day is '2024-06-03'
+#                                          then return '2024-06-03'
+#
+# ==========================================================================================================
 
 
 def get_start_daily_of_daily(a_date: datetime.date) -> datetime.date:
