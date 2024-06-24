@@ -229,6 +229,19 @@ def get_compared_start_daily_located_weekly(a_date: datetime.date, offset: int) 
     return get_start_daily_of_weekly(a_date) + timedelta(weeks=offset)
 
 
+def get_compared_start_daily_located_monthly(a_date: datetime.date, offset: int) -> datetime.date:
+    located_start_date = get_start_daily_of_monthly(a_date)
+    located_year, located_month = located_start_date.year, located_start_date.month
+
+    total_months = (located_year * 12 + located_month) + offset
+    compared_year = total_months // 12
+    compared_month = total_months % 12
+    if compared_month == 0:
+        compared_year -= 1
+        compared_month = 12
+    return datetime.date(compared_year, compared_month, 1)
+
+
 def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
@@ -240,19 +253,6 @@ def get_daily_period_in_weekly_by_index(a_date: datetime.date, index: int) -> da
         raise ValueError
     week_start_date = get_weekly_start_date(a_date)
     return week_start_date + timedelta(days=index)
-
-
-def get_prev_monthly_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    located_start_date = get_start_daily_of_monthly(a_date)
-    located_year, located_month = located_start_date.year, located_start_date.month
-
-    total_months = (located_year * 12 + located_month) - span_count
-    another_year = total_months // 12
-    another_month = total_months % 12
-    if another_month == 0:
-        another_year -= 1
-        another_month = 12
-    return datetime.date(another_year, another_month, 1)
 
 
 def get_daily_period_in_monthly_by_index(a_date: datetime.date, index: int) -> datetime.date:
@@ -295,7 +295,7 @@ def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> d
 
 def get_prev_monthly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
     week_anchor_date = get_week_anchor_date(a_date)
-    prev_month_start_date = get_prev_monthly_start_date_from_daily_located(week_anchor_date, span_count)
+    prev_month_start_date = get_compared_start_daily_located_monthly(week_anchor_date, span_count)
     return get_start_weekly_of_month(prev_month_start_date.year, prev_month_start_date.month)
 
 
@@ -333,7 +333,7 @@ def get_weekly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> d
 
 def get_prev_monthly_start_date_from_monthly_located(a_date: datetime.date, span_count: int) -> datetime.date:
     located_start_date = get_start_monthly_of_monthly(a_date)
-    return get_prev_monthly_start_date_from_daily_located(located_start_date, span_count)
+    return get_compared_start_daily_located_monthly(located_start_date, span_count)
 
 
 def get_monthly_period_in_monthly_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
