@@ -335,9 +335,14 @@ def get_daily_with_index_in_weekly(a_date: datetime.date, index: int) -> datetim
 
 def get_daily_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:
     next_month_total_months = (a_date.year * 12 + a_date.month) + 1
+    exceeded_year = next_month_total_months // 12
+    exceeded_month = next_month_total_months % 12
+    if exceeded_month == 0:
+        exceeded_year -= 1
+        exceeded_month = 12
     next_month_start_date = datetime.date(
-        next_month_total_months // 12,
-        next_month_total_months % 12,
+        exceeded_year,
+        exceeded_month,
         1,
     )
     capacity = (next_month_start_date - timedelta(days=1)).day
