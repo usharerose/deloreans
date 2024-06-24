@@ -19,7 +19,7 @@ from delorean.date_utils.common import (
     get_prev_monthly_start_date_from_daily_located,
     get_daily_period_in_monthly_by_index,
     get_start_daily_of_yearly,
-    get_daily_period_idx_of_located_yearly,
+    get_daily_index_of_yearly,
     get_prev_yearly_start_date_from_daily_located,
     get_daily_period_in_yearly_by_index,
     get_start_weekly_of_weekly,
@@ -277,17 +277,17 @@ class GetPeriodIdxTestCase(TestCase):
             28,
         )
 
-    def test_get_daily_period_idx_of_located_yearly(self):
+    def test_get_daily_index_of_yearly(self):
         start_date = datetime.date(2024, 6, 18)
         self.assertEqual(
-            get_daily_period_idx_of_located_yearly(start_date),
+            get_daily_index_of_yearly(start_date),
             169,
         )
 
-    def test_get_daily_period_idx_of_leap_year(self):
+    def test_get_daily_index_of_leap_year(self):
         start_date = datetime.date(2024, 12, 31)
         self.assertEqual(
-            get_daily_period_idx_of_located_yearly(start_date),
+            get_daily_index_of_yearly(start_date),
             365,
         )
 
