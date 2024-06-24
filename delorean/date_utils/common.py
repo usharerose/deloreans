@@ -344,7 +344,7 @@ def get_daily_with_index_in_monthly(a_date: datetime.date, index: int) -> dateti
     return month_start_date + timedelta(days=index)
 
 
-def get_daily_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
+def get_daily_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
     year_start_date = datetime.date(a_date.year, 1, 1)
     year_end_date = datetime.date(a_date.year, 12, 31)
     capacity = (year_end_date - year_start_date).days + 1
