@@ -9,3 +9,6 @@
 # Poetry configuration
 poetry.toml
 .venv
+
+# test coverage report
+coverage_report

@@ -10,7 +10,7 @@ ssh:
 	docker-compose exec delorean-run /bin/sh
 
 test:
-	python -m pytest -sv --cov-report term-missing --disable-warnings -p no:cacheprovider tests/*
+	python -m pytest -sv --cov-report term-missing --cov-report html:coverage_report --cov-report xml:coverage_report/cov.xml --junitxml=coverage_report/pytest.xml --cov=delorean/ --disable-warnings -p no:cacheprovider tests/*
 
 testd: build clean-container
 	docker-compose up --exit-code-from delorean-test delorean-test

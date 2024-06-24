@@ -16,6 +16,8 @@ services:
 
   delorean-test:
     image: delorean:${IMAGE_TAG:-latest}
+    volumes:
+      - ./coverage_report:/app/delorean/coverage_report
     command: make test
 
   delorean-lint:
