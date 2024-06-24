@@ -355,7 +355,7 @@ def get_daily_with_index_in_yearly(a_date: datetime.date, index: int) -> datetim
     return year_start_date + timedelta(days=index)
 
 
-def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_weekly_with_index_in_weekly(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
     return get_weekly_start_date(a_date)
