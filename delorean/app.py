@@ -49,10 +49,15 @@ class DeLorean:
             )
 
     def _get_start_period_index(self) -> int:
+        if self._date_period_offset.offset_granularity == OffsetGranularity.PERIODIC:
+            offset_grain_name = self._date_grain_name
+        else:
+            offset_grain_name = self._offset_grain_name
+
         try:
             func = getattr(
                 common_date_utils,
-                f'get_{self._date_grain_name}_index_of_{self._offset_grain_name}',
+                f'get_{self._date_grain_name}_index_of_{offset_grain_name}',
             )
         except AttributeError:
             raise NotImplementedError(
@@ -62,27 +67,43 @@ class DeLorean:
         return func(self._date_range.start_date)
 
     def _get_compared_located_period_start_date(self) -> datetime.date:
+        if self._date_period_offset.offset_granularity == OffsetGranularity.PERIODIC:
+            offset_grain_name = self._date_grain_name
+            given_date_range_length = self._date_range.date_granularity.get_date_range_length(
+                self._date_range.start_date,
+                self._date_range.end_date,
+            )
+            offset = int(self._date_period_offset.offset * given_date_range_length)
+        else:
+            offset_grain_name = self._offset_grain_name
+            offset = self._date_period_offset.offset
+
         try:
             func = getattr(
                 common_date_utils,
-                f'get_compared_start_{self._date_grain_name}_located_{self._offset_grain_name}',
+                f'get_compared_start_{self._date_grain_name}_located_{offset_grain_name}',
             )
         except AttributeError:
             raise NotImplementedError(
                 f'start {self._date_grain_name} period in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(self._date_range.start_date, self._date_period_offset.offset)
+        return func(self._date_range.start_date, offset)
 
     def _get_compared_start_date(
         self,
         located_period_start_date: datetime.date,
         period_index: int,
     ) -> datetime.date:
+        if self._date_period_offset.offset_granularity == OffsetGranularity.PERIODIC:
+            offset_grain_name = self._date_grain_name
+        else:
+            offset_grain_name = self._offset_grain_name
+
         try:
             func = getattr(
                 common_date_utils,
-                f'get_{self._date_grain_name}_with_index_in_{self._offset_grain_name}',
+                f'get_{self._date_grain_name}_with_index_in_{offset_grain_name}',
             )
         except AttributeError:
             raise NotImplementedError(
