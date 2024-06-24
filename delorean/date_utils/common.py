@@ -387,7 +387,7 @@ def get_weekly_with_index_in_yearly(a_date: datetime.date, index: int) -> dateti
     return start_date
 
 
-def get_monthly_period_in_monthly_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_monthly_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
     return datetime.date(a_date.year, a_date.month, 1)
