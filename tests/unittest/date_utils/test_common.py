@@ -35,7 +35,7 @@ from delorean.date_utils.common import (
     get_prev_yearly_start_date_from_weekly_located,
     get_weekly_period_in_yearly_by_index,
     get_start_monthly_of_monthly,
-    get_monthly_period_idx_of_located_monthly,
+    get_monthly_index_of_monthly,
     get_prev_monthly_start_date_from_monthly_located,
     get_monthly_period_in_monthly_by_index,
     get_start_monthly_of_yearly,
@@ -333,10 +333,10 @@ class GetPeriodIdxTestCase(TestCase):
             52,
         )
 
-    def test_get_monthly_period_idx_of_located_monthly(self):
+    def test_get_monthly_index_of_monthly(self):
         start_date = datetime.date(2024, 1, 1)
         self.assertEqual(
-            get_monthly_period_idx_of_located_monthly(start_date),
+            get_monthly_index_of_monthly(start_date),
             0,
         )
 
