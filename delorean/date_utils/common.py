@@ -200,6 +200,10 @@ def get_monthly_index_of_yearly(a_date: datetime.date) -> int:
     return a_date.month - located_start_date.month
 
 
+def get_yearly_index_of_yearly(a_date: datetime.date) -> int:  # NOQA
+    return 0
+
+
 def get_prev_daily_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
     cur_start_date = a_date
     return cur_start_date - timedelta(days=span_count)
@@ -337,10 +341,6 @@ def get_monthly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> 
 
 def get_yearly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
     return datetime.date(a_date.year, 1, 1)
-
-
-def get_yearly_period_idx_of_located_yearly(a_date: datetime.date) -> int:  # NOQA
-    return 0
 
 
 def get_prev_yearly_start_date_from_yearly_located(a_date: datetime.date, span_count: int) -> datetime.date:
