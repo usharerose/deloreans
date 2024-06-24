@@ -107,6 +107,10 @@ def get_start_daily_of_daily(a_date: datetime.date) -> datetime.date:
     return a_date
 
 
+def get_start_daily_of_weekly(a_date: datetime.date) -> datetime.date:
+    return get_weekly_start_date(a_date)
+
+
 def get_daily_period_idx_of_located_daily(a_date: datetime.date) -> int:
     located_start_date = get_start_daily_of_daily(a_date)
     return (a_date - located_start_date).days
@@ -123,17 +127,13 @@ def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> dat
     return a_date
 
 
-def get_daily_start_date_of_located_weekly(a_date: datetime.date) -> datetime.date:
-    return get_weekly_start_date(a_date)
-
-
 def get_daily_period_idx_of_located_weekly(a_date: datetime.date) -> int:
-    located_start_date = get_daily_start_date_of_located_weekly(a_date)
+    located_start_date = get_start_daily_of_weekly(a_date)
     return (a_date - located_start_date).days
 
 
 def get_prev_weekly_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_daily_start_date_of_located_weekly(a_date)
+    cur_start_date = get_start_daily_of_weekly(a_date)
     return cur_start_date - timedelta(weeks=span_count)
 
 
