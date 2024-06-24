@@ -33,7 +33,7 @@ from delorean.date_utils.common import (
     get_start_weekly_of_yearly,
     get_weekly_index_of_yearly,
     get_compared_start_weekly_located_yearly,
-    get_weekly_period_in_yearly_by_index,
+    get_weekly_with_index_in_yearly,
     get_start_monthly_of_monthly,
     get_monthly_index_of_monthly,
     get_compared_start_monthly_located_monthly,
@@ -512,11 +512,11 @@ class GetPeriodInUnitPeriodByIndexTestCase(TestCase):
             datetime.date(2024, 2, 19),
         )
 
-    def test_get_weekly_period_in_yearly_by_index(self):
+    def test_get_weekly_with_index_in_yearly(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 49
         self.assertEqual(
-            get_weekly_period_in_yearly_by_index(sample_date, sample_index),
+            get_weekly_with_index_in_yearly(sample_date, sample_index),
             datetime.date(2024, 12, 9),
         )
 

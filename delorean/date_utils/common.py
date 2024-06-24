@@ -374,10 +374,10 @@ def get_weekly_with_index_in_monthly(a_date: datetime.date, index: int) -> datet
     return start_date
 
 
-def get_weekly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
+def get_weekly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
     anchor_date = get_week_anchor_date(a_date)
-    week_start_date = get_start_weekly_of_month(anchor_date.year, 1)
-    start_date = week_start_date + timedelta(weeks=index)
+    year_start_week_date = get_start_weekly_of_month(anchor_date.year, 1)
+    start_date = year_start_week_date + timedelta(weeks=index)
 
     # each month has different amount of weeks
     # if index is out of month's capacity, raise exception
