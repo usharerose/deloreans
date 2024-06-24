@@ -277,6 +277,11 @@ def get_compared_start_monthly_located_yearly(a_date: datetime.date, offset: int
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
+def get_compared_start_yearly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
+    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
+    return datetime.date(located_start_date.year + offset, 1, 1)
+
+
 def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
@@ -359,11 +364,6 @@ def get_monthly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> 
 
 def get_yearly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
     return datetime.date(a_date.year, 1, 1)
-
-
-def get_prev_yearly_start_date_from_yearly_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
-    return datetime.date(located_start_date.year - span_count, 1, 1)
 
 
 def get_yearly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:

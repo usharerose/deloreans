@@ -44,7 +44,7 @@ from delorean.date_utils.common import (
     get_monthly_period_in_yearly_by_index,
     get_yearly_start_date_of_located_yearly,
     get_yearly_index_of_yearly,
-    get_prev_yearly_start_date_from_yearly_located,
+    get_compared_start_yearly_located_yearly,
     get_yearly_period_in_yearly_by_index,
 )
 
@@ -453,10 +453,11 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
             datetime.date(2018, 1, 1),
         )
 
-    def test_get_prev_yearly_start_date_from_yearly_located(self):
+    def test_get_compared_start_yearly_located_yearly(self):
         sample_date = datetime.date(2023, 1, 1)
+        sample_offset = -10
         self.assertEqual(
-            get_prev_yearly_start_date_from_yearly_located(sample_date, 10),
+            get_compared_start_yearly_located_yearly(sample_date, sample_offset),
             datetime.date(2013, 1, 1),
         )
 
