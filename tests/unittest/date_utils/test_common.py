@@ -28,7 +28,7 @@ from delorean.date_utils.common import (
     get_weekly_period_in_weekly_by_index,
     get_start_weekly_of_monthly,
     get_weekly_index_of_monthly,
-    get_prev_monthly_start_date_from_weekly_located,
+    get_compared_start_weekly_located_monthly,
     get_weekly_period_in_monthly_by_index,
     get_start_weekly_of_yearly,
     get_weekly_index_of_yearly,
@@ -405,17 +405,19 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
             datetime.date(2023, 12, 18),
         )
 
-    def test_get_prev_monthly_start_date_from_weekly_located(self):
+    def test_get_compared_start_weekly_located_monthly(self):
         sample_date = datetime.date(2024, 2, 26)
+        sample_offset = -4
         self.assertEqual(
-            get_prev_monthly_start_date_from_weekly_located(sample_date, 4),
+            get_compared_start_weekly_located_monthly(sample_date, sample_offset),
             datetime.date(2023, 10, 2),
         )
 
-    def test_get_prev_monthly_start_date_from_weekly_located_which_has_another_month_num(self):
+    def test_get_compared_start_weekly_located_monthly_which_has_another_month_num(self):
         sample_date = datetime.date(2024, 4, 29)
+        sample_offset = -2
         self.assertEqual(
-            get_prev_monthly_start_date_from_weekly_located(sample_date, 2),
+            get_compared_start_weekly_located_monthly(sample_date, sample_offset),
             datetime.date(2024, 3, 4),
         )
 
