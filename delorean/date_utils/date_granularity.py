@@ -31,6 +31,24 @@ class BaseGranularity:
     ) -> int:
         raise NotImplementedError
 
+    def get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        if self._is_partial_start(start_date):
+            raise ValueError
+        if date_range_size < 1:
+            raise ValueError
+        return self._get_end_date(start_date, date_range_size)
+
+    def _get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        raise NotImplementedError
+
 
 class Daily(BaseGranularity):
 
@@ -49,6 +67,13 @@ class Daily(BaseGranularity):
     ) -> int:
         return (end_date - start_date).days + 1
 
+    def _get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        return start_date + timedelta(days=date_range_size - 1)
+
 
 class Weekly(BaseGranularity):
 
@@ -66,6 +91,13 @@ class Weekly(BaseGranularity):
         end_date: datetime.date,
     ) -> int:
         return int(((end_date - start_date).days + 1) / 7)
+
+    def _get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        return (start_date + timedelta(weeks=date_range_size)) + timedelta(days=-1)
 
 
 class Monthly(BaseGranularity):
@@ -96,6 +128,24 @@ class Monthly(BaseGranularity):
         result = (12 - start_date.month + 1) + year_diff * 12 + end_date.month
         return result
 
+    def _get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        total_months = (12 * start_date.year + start_date.month) + date_range_size
+        exceeded_year = total_months // 12
+        exceeded_month = total_months % 12
+        if exceeded_month == 0:
+            exceeded_year -= 1
+            exceeded_month = 12
+        exceeded_start_date = datetime.date(
+            exceeded_year,
+            exceeded_month,
+            1,
+        )
+        return exceeded_start_date + timedelta(days=-1)
+
 
 class Yearly(BaseGranularity):
 
@@ -113,6 +163,14 @@ class Yearly(BaseGranularity):
         end_date: datetime.date,
     ) -> int:
         return end_date.year - start_date.year + 1
+
+    def _get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_size: int,
+    ) -> datetime.date:
+        exceed_start_date = datetime.date(start_date.year + date_range_size, 1, 1)
+        return exceed_start_date + timedelta(days=-1)
 
 
 class DateGranularity(Enum):
