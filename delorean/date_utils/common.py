@@ -19,21 +19,22 @@ def get_week_anchor_date(a_date: datetime.date) -> datetime.date:
     return start_date + timedelta(days=3)
 
 
-def get_weeks_offset_between_dates(
-    prev_date: datetime.date,
-    cur_date: datetime.date,
+def get_weeks_offset(
+    base_date: datetime.date,
+    compared_date: datetime.date,
 ) -> int:
     """
-    Count of week offset from
-    the week that prev_date belonging
-    to the week that cur_date belonging to
+    Weeks offset between the weeks which given dates located
+
+    e.g. according to ISO week data:
+         base_date is 2024-04-30, which is at 2024 no.18 week
+         compared_date is 2024-06-01, which is at 2024 no.22 week
+
+         then the offset of week is 22 - 18 = 4
     """
-    assert isinstance(prev_date, datetime.date)
-    assert isinstance(cur_date, datetime.date)
-    assert cur_date >= prev_date
-    cur_week_key_date = get_week_anchor_date(cur_date)
-    prev_week_key_date = get_week_anchor_date(prev_date)
-    return ((cur_week_key_date - prev_week_key_date).days + 1) // 7
+    base_week_anchor_date = get_week_anchor_date(base_date)
+    compared_week_anchor_date = get_week_anchor_date(compared_date)
+    return ((compared_week_anchor_date - base_week_anchor_date).days + 1) // 7
 
 
 def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date:

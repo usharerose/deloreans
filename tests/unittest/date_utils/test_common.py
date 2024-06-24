@@ -5,7 +5,7 @@ from delorean.date_utils.common import (
     get_weekly_start_date,
     get_start_date_of_monthly_start_week,
     get_week_anchor_date,
-    get_weeks_offset_between_dates,
+    get_weeks_offset,
     get_daily_start_date_of_located_daily,
     get_daily_period_idx_of_located_daily,
     get_prev_daily_start_date_from_daily_located,
@@ -97,13 +97,13 @@ class GetWeekAnchorDateTestCase(TestCase):
         )
 
 
-class GetWeeksOffsetBetweenDatesTestCase(TestCase):
+class GetWeeksOffsetTestCase(TestCase):
 
-    def test_get_weeks_offset_between_dates(self):
+    def test_get_weeks_offset(self):
         prev_date = datetime.date(2024, 6, 10)
         cur_date = datetime.date(2024, 6, 21)
         self.assertEqual(
-            get_weeks_offset_between_dates(prev_date, cur_date),
+            get_weeks_offset(prev_date, cur_date),
             25 - 24,
         )
 
@@ -111,7 +111,7 @@ class GetWeeksOffsetBetweenDatesTestCase(TestCase):
         prev_date = datetime.date(2024, 2, 29)
         cur_date = datetime.date(2024, 6, 21)
         self.assertEqual(
-            get_weeks_offset_between_dates(prev_date, cur_date),
+            get_weeks_offset(prev_date, cur_date),
             25 - 9,
         )
 
@@ -119,7 +119,7 @@ class GetWeeksOffsetBetweenDatesTestCase(TestCase):
         prev_date = datetime.date(2019, 12, 3)
         cur_date = datetime.date(2021, 3, 21)
         self.assertEqual(
-            get_weeks_offset_between_dates(prev_date, cur_date),
+            get_weeks_offset(prev_date, cur_date),
             11 + 53 + (52 - 49),
         )
 

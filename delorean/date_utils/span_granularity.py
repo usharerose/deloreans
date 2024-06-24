@@ -5,7 +5,7 @@ from enum import Enum
 from delorean.date_utils.common import (
     get_start_date_of_monthly_start_week,
     get_week_anchor_date,
-    get_weeks_offset_between_dates,
+    get_weeks_offset,
 )
 from delorean.date_utils.date_range import DateRange
 
@@ -116,7 +116,7 @@ class Monthly(BaseGranularity):
     ) -> int:
         key_date = get_week_anchor_date(a_date)
         first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
-        return get_weeks_offset_between_dates(first_week_start_date, a_date)
+        return get_weeks_offset(first_week_start_date, a_date)
 
     def _get_monthly_period_index(  # NOQA
         self,
@@ -161,7 +161,7 @@ class Yearly(BaseGranularity):
     ) -> int:
         key_date = get_week_anchor_date(a_date)
         first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, 1)
-        return get_weeks_offset_between_dates(first_week_start_date, a_date)
+        return get_weeks_offset(first_week_start_date, a_date)
 
     def _get_monthly_period_index(  # NOQA
         self,
