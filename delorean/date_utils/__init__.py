@@ -6,7 +6,7 @@ This module provides components on date-related parameters management
 from typing import Iterable
 
 from delorean.date_utils.date_granularity import DateGranularity
-from delorean.date_utils.date_range import DateRange
+from delorean.date_utils.date_range import DateRange  # NOQA
 from delorean.date_utils.offset_granularity import DatePeriodOffset, OffsetGranularity  # NOQA
 
 
