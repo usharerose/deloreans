@@ -393,7 +393,7 @@ def get_monthly_with_index_in_monthly(a_date: datetime.date, index: int) -> date
     return datetime.date(a_date.year, a_date.month, 1)
 
 
-def get_monthly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
+def get_monthly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
     year_start_date = datetime.date(a_date.year, 1, 1)
     if not 0 <= index < 12:
         raise ValueError
