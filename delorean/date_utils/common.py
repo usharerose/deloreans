@@ -321,7 +321,8 @@ def get_daily_with_index_in_daily(a_date: datetime.date, index: int) -> datetime
     return a_date
 
 
-def get_daily_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:
+def get_daily_with_index_in_weekly(a_date: datetime.date, index: int) -> datetime.date:
+    # since one week only has 7 days
     if not 0 <= index < 7:
         raise ValueError
     week_start_date = get_weekly_start_date(a_date)

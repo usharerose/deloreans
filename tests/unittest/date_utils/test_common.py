@@ -13,7 +13,7 @@ from delorean.date_utils.common import (
     get_start_daily_of_weekly,
     get_daily_index_of_weekly,
     get_compared_start_daily_located_weekly,
-    get_daily_period_in_weekly_by_index,
+    get_daily_with_index_in_weekly,
     get_start_daily_of_monthly,
     get_daily_index_of_monthly,
     get_compared_start_daily_located_monthly,
@@ -472,11 +472,11 @@ class GetPeriodInUnitPeriodByIndexTestCase(TestCase):
             datetime.date(2024, 6, 18),
         )
 
-    def test_get_daily_period_in_weekly_by_index(self):
+    def test_get_daily_with_index_in_weekly(self):
         sample_date = datetime.date(2024, 6, 17)
         sample_index = 5
         self.assertEqual(
-            get_daily_period_in_weekly_by_index(sample_date, sample_index),
+            get_daily_with_index_in_weekly(sample_date, sample_index),
             datetime.date(2024, 6, 22),
         )
 
