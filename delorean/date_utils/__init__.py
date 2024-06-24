@@ -3,7 +3,7 @@ delorean.date_utils
 
 This module provides components on date-related parameters management
 """
-from typing import Iterable
+from typing import Any, Iterable, List
 
 from delorean.date_utils.date_granularity import DateGranularity
 from delorean.date_utils.date_range import DateRange  # NOQA
@@ -22,7 +22,7 @@ def _strict_zip(*iterables: Iterable) -> Iterable:
     if not iterables:
         yield
     iterators = tuple(iter(iterable) for iterable in iterables)
-    items = []
+    items: List[Any] = []
     try:
         while True:
             items = []
