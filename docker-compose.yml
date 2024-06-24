@@ -16,4 +16,14 @@ services:
 
   delorean-test:
     image: delorean:${IMAGE_TAG:-latest}
+    volumes:
+      - ./coverage_report:/app/delorean/coverage_report
     command: make test
+
+  delorean-lint:
+    image: delorean:${IMAGE_TAG:-latest}
+    command: make lint
+
+  delorean-type-hint:
+    image: delorean:${IMAGE_TAG:-latest}
+    command: make type-hint
