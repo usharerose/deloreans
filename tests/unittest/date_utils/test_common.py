@@ -42,7 +42,7 @@ from delorean.date_utils.common import (
     get_monthly_index_of_yearly,
     get_compared_start_monthly_located_yearly,
     get_monthly_period_in_yearly_by_index,
-    get_yearly_start_date_of_located_yearly,
+    get_start_yearly_of_yearly,
     get_yearly_index_of_yearly,
     get_compared_start_yearly_located_yearly,
     get_yearly_period_in_yearly_by_index,
@@ -239,10 +239,10 @@ class GetLocatedPeriodStartDateTestCase(TestCase):
             datetime.date(2023, 1, 1),
         )
 
-    def test_get_yearly_start_date_of_located_yearly(self):
+    def test_get_start_yearly_of_yearly(self):
         start_date = datetime.date(2023, 1, 1)
         self.assertEqual(
-            get_yearly_start_date_of_located_yearly(start_date),
+            get_start_yearly_of_yearly(start_date),
             datetime.date(2023, 1, 1),
         )
 

@@ -145,6 +145,10 @@ def get_start_monthly_of_yearly(a_date: datetime.date) -> datetime.date:
     return datetime.date(a_date.year, 1, 1)
 
 
+def get_start_yearly_of_yearly(a_date: datetime.date) -> datetime.date:
+    return datetime.date(a_date.year, 1, 1)
+
+
 # =================================================================================================
 #
 #   Series of functions which provide period's index of a unit date period
@@ -278,7 +282,7 @@ def get_compared_start_monthly_located_yearly(a_date: datetime.date, offset: int
 
 
 def get_compared_start_yearly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
-    located_start_date = get_yearly_start_date_of_located_yearly(a_date)
+    located_start_date = get_start_yearly_of_yearly(a_date)
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
@@ -360,10 +364,6 @@ def get_monthly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> 
     if not 0 <= index < 12:
         raise ValueError
     return datetime.date(year_start_date.year, year_start_date.month + index, 1)
-
-
-def get_yearly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
-    return datetime.date(a_date.year, 1, 1)
 
 
 def get_yearly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
