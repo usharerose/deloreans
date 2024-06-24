@@ -225,6 +225,35 @@ def get_yearly_index_of_yearly(a_date: datetime.date) -> int:  # NOQA
     return 0
 
 
+# =================================================================================================
+#
+#   Series of functions which provide unit date period which compared start period located
+#
+#   The pattern of function name is like:
+#   get_compared_start_%(date_period_granularity)s_located_%(located_unit_period_granularity)s
+#
+#   Args:
+#       a_date (datetime.date): the date located in a single date period,
+#                               representing this period
+#                               e.g. if a_date was '2024-06-20'
+#                                    when granularity is 'daily': represent '2024-06-20'
+#                                    when 'weekly': No.25 week of 2024 according to ISO week date
+#                                    when 'monthly': June 2024
+#                                    when 'yearly': 2024
+#       offset (int): offset on unit date period, move to the future when positive
+#
+#   Return:
+#       start_date (datetime.date): the start date which representing its start period of compared location
+#                                   e.g. if the compared located unit period is June 2024
+#                                        * date granularity is 'daily':
+#                                          return '2024-06-01' which is the first day
+#                                        * date granularity is 'weekly':
+#                                          start week is No.23 week of 2024, its start day is '2024-06-03'
+#                                          then return '2024-06-03'
+#
+# =================================================================================================
+
+
 def get_compared_start_daily_located_daily(a_date: datetime.date, offset: int) -> datetime.date:
     return a_date + timedelta(days=offset)
 
