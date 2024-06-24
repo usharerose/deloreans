@@ -179,6 +179,12 @@ def get_weekly_index_of_weekly(a_date: datetime.date) -> int:  # NOQA
     return 0
 
 
+def get_weekly_index_of_monthly(a_date: datetime.date) -> int:
+    located_start_date = get_start_weekly_of_monthly(a_date)
+    week_start_date = get_weekly_start_date(a_date)
+    return (week_start_date - located_start_date).days // 7
+
+
 def get_prev_daily_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
     cur_start_date = a_date
     return cur_start_date - timedelta(days=span_count)
@@ -251,12 +257,6 @@ def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> d
     if index != 0:
         raise ValueError
     return get_weekly_start_date(a_date)
-
-
-def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
-    located_start_date = get_start_weekly_of_monthly(a_date)
-    week_start_date = get_weekly_start_date(a_date)
-    return (week_start_date - located_start_date).days // 7
 
 
 def get_prev_monthly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
