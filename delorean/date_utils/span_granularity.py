@@ -3,7 +3,7 @@ from datetime import timedelta
 from enum import Enum
 
 from delorean.date_utils.common import (
-    get_start_date_of_monthly_start_week,
+    get_start_weekly_of_month,
     get_week_anchor_date,
     get_weeks_offset,
 )
@@ -115,7 +115,7 @@ class Monthly(BaseGranularity):
         a_date: datetime.date,  # NOQA
     ) -> int:
         key_date = get_week_anchor_date(a_date)
-        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
+        first_week_start_date = get_start_weekly_of_month(key_date.year, key_date.month)
         return get_weeks_offset(first_week_start_date, a_date)
 
     def _get_monthly_period_index(  # NOQA
@@ -135,7 +135,7 @@ class Monthly(BaseGranularity):
         a_date: datetime.date,
     ) -> datetime.date:
         key_date = get_week_anchor_date(a_date)
-        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, key_date.month)
+        first_week_start_date = get_start_weekly_of_month(key_date.year, key_date.month)
         return first_week_start_date
 
     def _get_monthly_located_start_date(  # NOQA
@@ -160,7 +160,7 @@ class Yearly(BaseGranularity):
         a_date: datetime.date,  # NOQA
     ) -> int:
         key_date = get_week_anchor_date(a_date)
-        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+        first_week_start_date = get_start_weekly_of_month(key_date.year, 1)
         return get_weeks_offset(first_week_start_date, a_date)
 
     def _get_monthly_period_index(  # NOQA
@@ -186,7 +186,7 @@ class Yearly(BaseGranularity):
         a_date: datetime.date,
     ) -> datetime.date:
         key_date = get_week_anchor_date(a_date)
-        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+        first_week_start_date = get_start_weekly_of_month(key_date.year, 1)
         return first_week_start_date
 
     def _get_monthly_located_start_date(  # NOQA
@@ -241,7 +241,7 @@ class Periodic(BaseGranularity):
         a_date: datetime.date,
     ) -> datetime.date:
         key_date = get_week_anchor_date(a_date)
-        first_week_start_date = get_start_date_of_monthly_start_week(key_date.year, 1)
+        first_week_start_date = get_start_weekly_of_month(key_date.year, 1)
         return a_date
 
     def _get_monthly_located_start_date(  # NOQA

@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from delorean.date_utils.common import (
     get_weekly_start_date,
-    get_start_date_of_monthly_start_week,
+    get_start_weekly_of_month,
     get_week_anchor_date,
     get_weeks_offset,
     get_daily_start_date_of_located_daily,
@@ -124,17 +124,17 @@ class GetWeeksOffsetTestCase(TestCase):
         )
 
 
-class GetStartDateOfMonthlyStartWeekTestCase(TestCase):
+class GetStartWeeklyOfMonthTestCase(TestCase):
 
-    def test_get_start_date_of_monthly_start_week(self):
+    def test_get_start_weekly_of_month(self):
         self.assertEqual(
-            get_start_date_of_monthly_start_week(2024, 6),
+            get_start_weekly_of_month(2024, 6),
             datetime.date(2024, 6, 3),
         )
 
     def test_start_date_at_another_month(self):
         self.assertEqual(
-            get_start_date_of_monthly_start_week(2024, 5),
+            get_start_weekly_of_month(2024, 5),
             datetime.date(2024, 4, 29),
         )
 

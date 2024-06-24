@@ -37,21 +37,24 @@ def get_weeks_offset(
     return ((compared_week_anchor_date - base_week_anchor_date).days + 1) // 7
 
 
-def get_start_date_of_monthly_start_week(year: int, month: int) -> datetime.date:
+def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
     """
-    get the start date of week
-    which is the first week of given month
+    get the start week of a month,
+    which is represented by week's start date
     """
     assert isinstance(year, int)
     assert isinstance(month, int)
     assert year > 0
     assert 1 <= month <= 12
-    month_first_date = datetime.date(year, month, 1)
-    week_anchor_date = get_week_anchor_date(month_first_date)
+    daily_start_date = datetime.date(year, month, 1)
+    week_anchor_date = get_week_anchor_date(daily_start_date)
 
-    if month_first_date <= week_anchor_date:
-        return get_weekly_start_date(month_first_date)
-    return get_weekly_start_date(month_first_date + timedelta(days=7))
+    # the week represented by anchor date is in previous month
+    # so that the first week should be the next one
+    if daily_start_date > week_anchor_date:
+        return get_weekly_start_date(daily_start_date + timedelta(days=7))
+
+    return get_weekly_start_date(daily_start_date)
 
 
 # ===============================================================================================
@@ -219,7 +222,7 @@ def get_weekly_period_in_weekly_by_index(a_date: datetime.date, index: int) -> d
 
 def get_weekly_start_date_of_located_monthly(a_date: datetime.date) -> datetime.date:
     week_anchor_date = get_week_anchor_date(a_date)
-    return get_start_date_of_monthly_start_week(week_anchor_date.year, week_anchor_date.month)
+    return get_start_weekly_of_month(week_anchor_date.year, week_anchor_date.month)
 
 
 def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
@@ -231,12 +234,12 @@ def get_weekly_period_idx_of_located_monthly(a_date: datetime.date) -> int:
 def get_prev_monthly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
     week_anchor_date = get_week_anchor_date(a_date)
     prev_month_start_date = get_prev_monthly_start_date_from_daily_located(week_anchor_date, span_count)
-    return get_start_date_of_monthly_start_week(prev_month_start_date.year, prev_month_start_date.month)
+    return get_start_weekly_of_month(prev_month_start_date.year, prev_month_start_date.month)
 
 
 def get_weekly_period_in_monthly_by_index(a_date: datetime.date, index: int) -> datetime.date:
     anchor_date = get_week_anchor_date(a_date)
-    week_start_date = get_start_date_of_monthly_start_week(anchor_date.year, anchor_date.month)
+    week_start_date = get_start_weekly_of_month(anchor_date.year, anchor_date.month)
     start_date = week_start_date + timedelta(weeks=index)
 
     # each month has different amount of weeks
@@ -249,7 +252,7 @@ def get_weekly_period_in_monthly_by_index(a_date: datetime.date, index: int) -> 
 
 def get_weekly_start_date_of_located_yearly(a_date: datetime.date) -> datetime.date:
     week_anchor_date = get_week_anchor_date(a_date)
-    return get_start_date_of_monthly_start_week(week_anchor_date.year, 1)
+    return get_start_weekly_of_month(week_anchor_date.year, 1)
 
 
 def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
@@ -261,12 +264,12 @@ def get_weekly_period_idx_of_located_yearly(a_date: datetime.date) -> int:
 def get_prev_yearly_start_date_from_weekly_located(a_date: datetime.date, span_count: int) -> datetime.date:
     week_anchor_date = get_week_anchor_date(a_date)
     prev_year_start_date = get_prev_yearly_start_date_from_daily_located(week_anchor_date, span_count)
-    return get_start_date_of_monthly_start_week(prev_year_start_date.year, 1)
+    return get_start_weekly_of_month(prev_year_start_date.year, 1)
 
 
 def get_weekly_period_in_yearly_by_index(a_date: datetime.date, index: int) -> datetime.date:
     anchor_date = get_week_anchor_date(a_date)
-    week_start_date = get_start_date_of_monthly_start_week(anchor_date.year, 1)
+    week_start_date = get_start_weekly_of_month(anchor_date.year, 1)
     start_date = week_start_date + timedelta(weeks=index)
 
     # each month has different amount of weeks
