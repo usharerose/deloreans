@@ -9,7 +9,7 @@ from delorean.date_utils.common import (
     get_start_daily_of_daily,
     get_daily_index_of_daily,
     get_compared_start_daily_located_daily,
-    get_daily_period_in_daily_by_index,
+    get_daily_with_index_in_daily,
     get_start_daily_of_weekly,
     get_daily_index_of_weekly,
     get_compared_start_daily_located_weekly,
@@ -464,11 +464,11 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
 
 class GetPeriodInUnitPeriodByIndexTestCase(TestCase):
 
-    def test_get_daily_period_in_daily_by_index(self):
+    def test_get_daily_with_index_in_daily(self):
         sample_date = datetime.date(2024, 6, 18)
         sample_index = 0
         self.assertEqual(
-            get_daily_period_in_daily_by_index(sample_date, sample_index),
+            get_daily_with_index_in_daily(sample_date, sample_index),
             datetime.date(2024, 6, 18),
         )
 

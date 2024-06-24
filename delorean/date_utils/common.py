@@ -315,7 +315,7 @@ def get_compared_start_yearly_located_yearly(a_date: datetime.date, offset: int)
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
-def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_daily_with_index_in_daily(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
     return a_date
