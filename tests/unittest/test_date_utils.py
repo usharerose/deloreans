@@ -7,20 +7,6 @@ from delorean.date_utils import (
     DateSpan,
     SpanGranularity,
 )
-from delorean.date_utils.date_granularity import Daily
-
-
-class DateGranularityTestCase(TestCase):
-
-    def test_enum_items(self):
-        self.assertIsInstance(DateGranularity.DAILY.value, Daily)
-
-    def test_validate_daily_completion(self):
-        start_date = datetime.date(2024, 6, 10)
-        end_date = datetime.date(2024, 6, 16)
-        self.assertIsNone(
-            DateGranularity.DAILY.validate_date_completion(start_date, end_date)
-        )
 
 
 class DateRangeTestCase(TestCase):

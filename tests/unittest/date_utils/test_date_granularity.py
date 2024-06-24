@@ -1,56 +1,48 @@
 import datetime
 from unittest import TestCase
 
-from delorean.date_utils.date_granularity import (
-    Daily,
-    Weekly,
-    Monthly,
-    Yearly,
-)
+from delorean.date_utils.date_granularity import DateGranularity, Daily
 
 
 class DateGranularityDailyTestCase(TestCase):
 
     def setUp(self):
-        self.granularity = Daily()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'daily')
+        self.granularity = DateGranularity.DAILY
 
     def test_validate_date_completion(self):
         start_date = datetime.date(2024, 6, 15)
         end_date = datetime.date(2024, 6, 17)
-        self.assertTrue(self.granularity.validate_date_completion(start_date, end_date))
+        self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
-    def test_get_date_range_size(self):
+    def test_get_date_range_length(self):
         start_date = datetime.date(2024, 6, 15)
         end_date = datetime.date(2024, 6, 17)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
+            self.granularity.get_date_range_length(start_date, end_date),
             3,
         )
 
-    def test_get_date_range_size_cross_year(self):
+    def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 12, 23)
         end_date = datetime.date(2023, 3, 12)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
-            80,
+            self.granularity.get_date_range_length(start_date, end_date),
+            9 + 31 + 28 + 12,
         )
 
-    def test_get_date_range_size_with_leap_year(self):
+    def test_get_date_range_length_with_leap_year(self):
         start_date = datetime.date(2023, 12, 23)
         end_date = datetime.date(2025, 1, 12)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
-            387,
+            self.granularity.get_date_range_length(start_date, end_date),
+            9 + 366 + 12,
         )
 
     def test_get_end_date(self):
         start_date = datetime.date(2024, 6, 24)
-        date_range_size = 13
+        date_range_length = 13
         self.assertEqual(
-            self.granularity.get_end_date(start_date, date_range_size),
+            self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 7, 6),
         )
 
@@ -58,26 +50,24 @@ class DateGranularityDailyTestCase(TestCase):
 class DateGranularityWeeklyTestCase(TestCase):
 
     def setUp(self):
-        self.granularity = Weekly()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'weekly')
+        self.granularity = DateGranularity.WEEKLY
 
     def test_validate_full_weeks(self):
         start_date = datetime.date(2024, 5, 27)
         end_date = datetime.date(2024, 6, 23)
-        self.assertTrue(self.granularity.validate_date_completion(start_date, end_date))
+        self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
     def test_validate_partial_weeks(self):
         start_date = datetime.date(2024, 5, 30)
         end_date = datetime.date(2024, 6, 23)
-        self.assertFalse(self.granularity.validate_date_completion(start_date, end_date))
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
 
-    def test_get_date_range_size(self):
+    def test_get_date_range_length(self):
         start_date = datetime.date(2024, 5, 27)
         end_date = datetime.date(2024, 6, 23)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
+            self.granularity.get_date_range_length(start_date, end_date),
             4,
         )
 
@@ -85,15 +75,15 @@ class DateGranularityWeeklyTestCase(TestCase):
         start_date = datetime.date(2023, 12, 25)
         end_date = datetime.date(2024, 3, 31)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
+            self.granularity.get_date_range_length(start_date, end_date),
             14,
         )
 
     def test_get_end_date(self):
         start_date = datetime.date(2024, 6, 24)
-        date_range_size = 6
+        date_range_length = 6
         self.assertEqual(
-            self.granularity.get_end_date(start_date, date_range_size),
+            self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 8, 4),
         )
 
@@ -101,63 +91,61 @@ class DateGranularityWeeklyTestCase(TestCase):
 class DateGranularityMonthlyTestCase(TestCase):
 
     def setUp(self):
-        self.granularity = Monthly()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'monthly')
+        self.granularity = DateGranularity.MONTHLY
 
     def test_validate_full_months(self):
         start_date = datetime.date(2024, 1, 1)
         end_date = datetime.date(2024, 6, 30)
-        self.assertTrue(self.granularity.validate_date_completion(start_date, end_date))
+        self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
     def test_validate_full_months_cross_year(self):
         start_date = datetime.date(2023, 2, 1)
         end_date = datetime.date(2024, 2, 29)
-        self.assertTrue(self.granularity.validate_date_completion(start_date, end_date))
+        self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
     def test_validate_partial_months_in_leap_year(self):
         start_date = datetime.date(2023, 12, 1)
         end_date = datetime.date(2024, 2, 28)
-        self.assertFalse(self.granularity.validate_date_completion(start_date, end_date))
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
 
-    def test_get_date_range_size(self):
+    def test_get_date_range_length(self):
         start_date = datetime.date(2024, 3, 1)
         end_date = datetime.date(2024, 6, 30)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
+            self.granularity.get_date_range_length(start_date, end_date),
             4,
         )
 
-    def test_get_date_range_size_cross_year(self):
+    def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 11, 1)
         end_date = datetime.date(2023, 3, 31)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
-            5,
+            self.granularity.get_date_range_length(start_date, end_date),
+            2 + 3,
         )
 
-    def test_get_date_range_size_cross_multiple_years(self):
+    def test_get_date_range_length_cross_multiple_years(self):
         start_date = datetime.date(2022, 11, 1)
         end_date = datetime.date(2024, 5, 31)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
-            19,
+            self.granularity.get_date_range_length(start_date, end_date),
+            2 + 12 + 5,
         )
 
     def test_get_end_date(self):
         start_date = datetime.date(2024, 6, 1)
-        date_range_size = 2
+        date_range_length = 2
         self.assertEqual(
-            self.granularity.get_end_date(start_date, date_range_size),
+            self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 7, 31),
         )
 
     def test_get_end_date_in_leap_year_feb(self):
         start_date = datetime.date(2023, 11, 1)
-        date_range_size = 4
+        date_range_length = 4
         self.assertEqual(
-            self.granularity.get_end_date(start_date, date_range_size),
+            self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 2, 29),
         )
 
@@ -165,33 +153,31 @@ class DateGranularityMonthlyTestCase(TestCase):
 class DateGranularityYearlyTestCase(TestCase):
 
     def setUp(self):
-        self.granularity = Yearly()
-
-    def test_name(self):
-        self.assertEqual(self.granularity.name, 'yearly')
+        self.granularity = DateGranularity.YEARLY
 
     def test_validate_date_completion(self):
         start_date = datetime.date(2023, 1, 1)
         end_date = datetime.date(2024, 12, 31)
-        self.assertTrue(self.granularity.validate_date_completion(start_date, end_date))
+        self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
     def test_validate_partial_years(self):
         start_date = datetime.date(2023, 2, 1)
         end_date = datetime.date(2024, 2, 29)
-        self.assertFalse(self.granularity.validate_date_completion(start_date, end_date))
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
 
-    def test_get_date_range_size(self):
+    def test_get_date_range_length(self):
         start_date = datetime.date(2022, 1, 1)
         end_date = datetime.date(2024, 12, 31)
         self.assertEqual(
-            self.granularity.get_date_range_size(start_date, end_date),
+            self.granularity.get_date_range_length(start_date, end_date),
             3,
         )
 
     def test_get_end_date(self):
         start_date = datetime.date(2022, 1, 1)
-        date_range_size = 3
+        date_range_length = 3
         self.assertEqual(
-            self.granularity.get_end_date(start_date, date_range_size),
+            self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 12, 31),
         )
