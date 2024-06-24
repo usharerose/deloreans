@@ -12,7 +12,7 @@ from delorean.date_utils.common import (
     get_daily_period_in_daily_by_index,
     get_start_daily_of_weekly,
     get_daily_index_of_weekly,
-    get_prev_weekly_start_date_from_daily_located,
+    get_compared_start_daily_located_weekly,
     get_daily_period_in_weekly_by_index,
     get_start_daily_of_monthly,
     get_daily_index_of_monthly,
@@ -365,10 +365,11 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
             datetime.date(2024, 6, 5),
         )
 
-    def test_get_prev_weekly_start_date_from_daily_located(self):
+    def test_get_compared_start_daily_located_weekly(self):
         sample_date = datetime.date(2024, 6, 18)
+        sample_offset = -7
         self.assertEqual(
-            get_prev_weekly_start_date_from_daily_located(sample_date, 7),
+            get_compared_start_daily_located_weekly(sample_date, sample_offset),
             datetime.date(2024, 4, 29),
         )
 

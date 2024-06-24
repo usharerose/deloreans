@@ -225,15 +225,14 @@ def get_compared_start_daily_located_daily(a_date: datetime.date, offset: int) -
     return a_date + timedelta(days=offset)
 
 
+def get_compared_start_daily_located_weekly(a_date: datetime.date, offset: int) -> datetime.date:
+    return get_start_daily_of_weekly(a_date) + timedelta(weeks=offset)
+
+
 def get_daily_period_in_daily_by_index(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
     if index != 0:
         raise ValueError
     return a_date
-
-
-def get_prev_weekly_start_date_from_daily_located(a_date: datetime.date, span_count: int) -> datetime.date:
-    cur_start_date = get_start_daily_of_weekly(a_date)
-    return cur_start_date - timedelta(weeks=span_count)
 
 
 def get_daily_period_in_weekly_by_index(a_date: datetime.date, index: int) -> datetime.date:
