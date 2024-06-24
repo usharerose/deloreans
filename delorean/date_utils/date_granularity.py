@@ -2,175 +2,218 @@ import datetime
 from datetime import timedelta
 from enum import Enum
 
+from delorean.date_utils.common import (
+    get_weekly_start_date,
+    get_start_monthly_of_monthly,
+    get_compared_start_monthly_located_monthly,
+    get_start_yearly_of_yearly,
+    get_compared_start_yearly_located_yearly,
+)
+
 
 class BaseGranularity:
 
+    @classmethod
     def validate_date_completion(
-        self,
+        cls,
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> bool:
-        is_partial_start = self._is_partial_start(start_date)
-        is_partial_end = self._is_partial_end(end_date)
-        if any([is_partial_start, is_partial_end]):
-            return False
-        return True
+        if start_date > end_date:
+            raise ValueError
 
-    def _is_partial_start(self, start_date: datetime.date) -> bool:
+        is_start_date = cls._is_start_date(start_date)
+        is_end_date = cls._is_end_date(end_date)
+        if all([is_start_date, is_end_date]):
+            return True
+        return False
+
+    @staticmethod
+    def _is_start_date(a_date: datetime.date) -> bool:
+        """
+        Whether the given date is the start date of granularity-unit date period or not
+        """
         raise NotImplementedError
 
-    def _is_partial_end(self, end_date: datetime.date) -> bool:
+    @staticmethod
+    def _is_end_date(a_date: datetime.date) -> bool:
+        """
+        Whether the given date is the end date of granularity-unit date period or not
+        """
         raise NotImplementedError
 
-    def get_date_range_size(
-        self,
+    @classmethod
+    def get_date_range_length(
+        cls,
+        start_date: datetime.date,
+        end_date: datetime.date,
+    ) -> int:
+        """
+        Provide the count of date periods with given granularity
+        e.g. 1 day, 2 weeks, 3 months, 4 years
+        """
+        if start_date > end_date:
+            raise ValueError
+        cls.validate_date_completion(start_date, end_date)
+        return cls._get_date_range_length(start_date, end_date)
+
+    @staticmethod
+    def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> int:
         raise NotImplementedError
 
+    @classmethod
     def get_end_date(
-        self,
+        cls,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
-        if self._is_partial_start(start_date):
+        if not cls._is_start_date(start_date):
             raise ValueError
-        if date_range_size < 1:
+        if date_range_length < 1:
             raise ValueError
-        return self._get_end_date(start_date, date_range_size)
 
+        return cls._get_end_date(start_date, date_range_length)
+
+    @staticmethod
     def _get_end_date(
-        self,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
         raise NotImplementedError
 
 
 class Daily(BaseGranularity):
 
-    def _is_partial_start(self, start_date: datetime.date) -> bool:
-        return False
+    @staticmethod
+    def _is_start_date(a_date: datetime.date) -> bool:  # NOQA
+        return True
 
-    def _is_partial_end(self, end_date: datetime.date) -> bool:
-        return False
+    @staticmethod
+    def _is_end_date(a_date: datetime.date) -> bool:  # NOQA
+        return True
 
-    def get_date_range_size(
-        self,
+    @staticmethod
+    def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> int:
         return (end_date - start_date).days + 1
 
+    @staticmethod
     def _get_end_date(
-        self,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
-        return start_date + timedelta(days=date_range_size - 1)
+        return start_date + timedelta(days=date_range_length - 1)
 
 
 class Weekly(BaseGranularity):
 
-    def _is_partial_start(self, start_date: datetime.date) -> bool:
-        return not start_date.weekday() == 0
+    @staticmethod
+    def _is_start_date(a_date: datetime.date) -> bool:
+        week_start_date = get_weekly_start_date(a_date)
+        return a_date == week_start_date
 
-    def _is_partial_end(self, end_date: datetime.date) -> bool:
-        return not end_date.weekday() == 6
+    @staticmethod
+    def _is_end_date(a_date: datetime.date) -> bool:
+        next_week_start_date = get_weekly_start_date(a_date + timedelta(days=7))
+        week_end_date = next_week_start_date + timedelta(days=-1)
+        return a_date == week_end_date
 
-    def get_date_range_size(
-        self,
+    @staticmethod
+    def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> int:
         return int(((end_date - start_date).days + 1) / 7)
 
+    @staticmethod
     def _get_end_date(
-        self,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
-        return (start_date + timedelta(weeks=date_range_size)) + timedelta(days=-1)
+        exceeded_week_start_date = start_date + timedelta(weeks=date_range_length)
+        return exceeded_week_start_date + timedelta(days=-1)
 
 
 class Monthly(BaseGranularity):
 
-    def _is_partial_start(self, start_date: datetime.date) -> bool:
-        return not start_date.day == 1
+    @staticmethod
+    def _is_start_date(a_date: datetime.date) -> bool:
+        month_start_date = get_start_monthly_of_monthly(a_date)
+        return a_date == month_start_date
 
-    def _is_partial_end(self, end_date: datetime.date) -> bool:
-        year = end_date.year + (end_date.month + 1) // 12
-        month = (end_date.month + 1) % 12
-        next_month_first_day = datetime.date(year, month, 1)
-        last_day = (next_month_first_day + timedelta(days=-1)).day
-        return not end_date.day == last_day
+    @staticmethod
+    def _is_end_date(a_date: datetime.date) -> bool:
+        exceeded_month_start_date = get_compared_start_monthly_located_monthly(a_date, 1)
+        month_end_date = exceeded_month_start_date + timedelta(days=-1)
+        return a_date == month_end_date
 
-    def get_date_range_size(
-        self,
+    @staticmethod
+    def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> int:
-        start_year = start_date.year
-        end_year = end_date.year
-        if start_year == end_year:
-            return end_date.month - start_date.month + 1
+        start_total_months = 12 * start_date.year + start_date.month
+        end_total_months = 12 * end_date.year + end_date.month
+        return end_total_months - start_total_months + 1
 
-        year_diff = end_year - start_year - 1
-        result = (12 - start_date.month + 1) + year_diff * 12 + end_date.month
-        return result
-
+    @staticmethod
     def _get_end_date(
-        self,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
-        total_months = (12 * start_date.year + start_date.month) + date_range_size
-        exceeded_year = total_months // 12
-        exceeded_month = total_months % 12
-        if exceeded_month == 0:
-            exceeded_year -= 1
-            exceeded_month = 12
-        exceeded_start_date = datetime.date(
-            exceeded_year,
-            exceeded_month,
-            1,
+        exceeded_month_start_date = get_compared_start_monthly_located_monthly(
+            start_date,
+            date_range_length,
         )
-        return exceeded_start_date + timedelta(days=-1)
+        month_end_date = exceeded_month_start_date + timedelta(days=-1)
+        return month_end_date
 
 
 class Yearly(BaseGranularity):
 
-    def _is_partial_start(self, start_date: datetime.date) -> bool:
-        return not (start_date.day == 1 and start_date.month == 1)
+    @staticmethod
+    def _is_start_date(a_date: datetime.date) -> bool:
+        year_start_date = get_start_yearly_of_yearly(a_date)
+        return a_date == year_start_date
 
-    def _is_partial_end(self, end_date: datetime.date) -> bool:
-        return not (end_date.day == 31 and end_date.month == 12)
+    @staticmethod
+    def _is_end_date(a_date: datetime.date) -> bool:
+        exceeded_start_date = get_compared_start_yearly_located_yearly(a_date, 1)
+        year_end_date = exceeded_start_date + timedelta(days=-1)
+        return a_date == year_end_date
 
-    def get_date_range_size(
-        self,
+    @staticmethod
+    def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
     ) -> int:
         return end_date.year - start_date.year + 1
 
+    @staticmethod
     def _get_end_date(
-        self,
         start_date: datetime.date,
-        date_range_size: int,
+        date_range_length: int,
     ) -> datetime.date:
-        exceed_start_date = datetime.date(start_date.year + date_range_size, 1, 1)
-        return exceed_start_date + timedelta(days=-1)
+        exceeded_start_date = get_compared_start_yearly_located_yearly(
+            start_date,
+            date_range_length,
+        )
+        return exceeded_start_date + timedelta(days=-1)
 
 
 class DateGranularity(Enum):
     """
     supported date granularity
     """
-    DAILY = Daily()
-    WEEKLY = Weekly()
-    MONTHLY = Monthly()
-    YEARLY = Yearly()
+    DAILY = Daily
+    WEEKLY = Weekly
+    MONTHLY = Monthly
+    YEARLY = Yearly
 
     def validate_date_completion(
         self,
@@ -186,4 +229,18 @@ class DateGranularity(Enum):
         """
         is_completion = self.value.validate_date_completion(start_date, end_date)
         if not is_completion:
-            raise
+            raise ValueError
+
+    def get_date_range_length(
+        self,
+        start_date: datetime.date,
+        end_date: datetime.date,
+    ) -> int:
+        return self.value.get_date_range_length(start_date, end_date)
+
+    def get_end_date(
+        self,
+        start_date: datetime.date,
+        date_range_length: int,
+    ) -> datetime.date:
+        return self.value.get_end_date(start_date, date_range_length)

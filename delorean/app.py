@@ -98,9 +98,9 @@ class DeLorean:
             compared_located_period_start_date,
             date_period_idx,
         )
-        date_range_size = self._date_range.date_granularity.value.get_date_range_size(
+        date_range_length = self._date_range.date_granularity.get_date_range_length(
             self._date_range.start_date,
             self._date_range.end_date,
         )
-        compared_end_date = self._date_range.date_granularity.value.get_end_date(compared_start_date, date_range_size)
+        compared_end_date = self._date_range.date_granularity.get_end_date(compared_start_date, date_range_length)
         return compared_start_date, compared_end_date
