@@ -15,6 +15,12 @@ test:
 testd: build clean-container
 	docker-compose up --exit-code-from delorean-test delorean-test
 
+lint:
+	flake8 delorean/ tests/
+
+lintd: build clean-container
+	docker-compose up --exit-code-from delorean-lint delorean-lint
+
 clean-pyc:
 	# clean all pyc files
 	find . -name '__pycache__' | xargs rm -rf | cat

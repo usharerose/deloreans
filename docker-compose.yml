@@ -17,3 +17,7 @@ services:
   delorean-test:
     image: delorean:${IMAGE_TAG:-latest}
     command: make test
+
+  delorean-lint:
+    image: delorean:${IMAGE_TAG:-latest}
+    command: make lint
