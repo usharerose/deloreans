@@ -57,25 +57,6 @@ def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
     return get_weekly_start_date(daily_start_date)
 
 
-# ===============================================================================================
-#
-#   series functions around date range's first period
-#
-#   1. get_prev_%(offset_granularity)s_start_date_from_%(date_range_granularity)s_located
-#      the function would return the first date of unit date period,
-#      which is away from the unit date period that date range's first period located
-#      Args:
-#          a_date: datetime.date
-#          the date at above first period (probably not the beginning)
-#
-#          span_count: int
-#          offset from located date period to compared located date period
-#      Return:
-#          start_date: datetime.date
-#
-# ===============================================================================================
-
-
 # ==========================================================================================================
 #
 #   Series of functions which provide start period of a unit date period
@@ -313,6 +294,29 @@ def get_compared_start_monthly_located_yearly(a_date: datetime.date, offset: int
 def get_compared_start_yearly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
     located_start_date = get_start_yearly_of_yearly(a_date)
     return datetime.date(located_start_date.year + offset, 1, 1)
+
+
+# =================================================================================================
+#
+#   Series of functions which provide date period with index in located unit date period
+#
+#   The pattern of function name is like:
+#   get_%(date_period_granularity)s_with_index_in_%(located_unit_period_granularity)s
+#
+#   Args:
+#       a_date (datetime.date): the date of a single date period
+#                               which representing it's located unit date period
+#                               e.g. if a_date was '2024-06-20' and located unit period granularity is 'monthly'
+#                                    when granularity is 'daily': represent '2024-06-20' which locates at June 2024
+#                                    when 'weekly': No.25 week of 2024 according to ISO week date
+#                                                   which locates at June 2024
+#                                    when 'monthly': June 2024
+#       index (int): the index of target single period at located unit date period
+#
+#   Return:
+#       start_date (datetime.date): the start date which representing the target single period
+#
+# =================================================================================================
 
 
 def get_daily_with_index_in_daily(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
