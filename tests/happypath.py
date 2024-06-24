@@ -93,3 +93,37 @@ class HappyPathTestCase(TestCase):
         expected_end_date = datetime.date(2023, 2, 28)
         self.assertEqual(actual_start_date, expected_start_date)
         self.assertEqual(actual_end_date, expected_end_date)
+
+    def test_monthly_link_relative_comparison(self):
+        """
+        February 2024 vs January 2024
+        """
+        sample_kwargs = {
+            'start_date': datetime.date(2024, 2, 1),
+            'end_date': datetime.date(2024, 2, 29),
+            'date_granularity': DateGranularity.MONTHLY,
+            'offset': -1,
+            'offset_granularity': OffsetGranularity.PERIODIC,
+        }
+        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        expected_start_date = datetime.date(2024, 1, 1)
+        expected_end_date = datetime.date(2024, 1, 31)
+        self.assertEqual(actual_start_date, expected_start_date)
+        self.assertEqual(actual_end_date, expected_end_date)
+
+    def test_quarterly_link_relative_comparison(self):
+        """
+        Q2 2024 vs Q1 2024
+        """
+        sample_kwargs = {
+            'start_date': datetime.date(2024, 4, 1),
+            'end_date': datetime.date(2024, 6, 30),
+            'date_granularity': DateGranularity.MONTHLY,
+            'offset': -1,
+            'offset_granularity': OffsetGranularity.PERIODIC,
+        }
+        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        expected_start_date = datetime.date(2024, 1, 1)
+        expected_end_date = datetime.date(2024, 3, 31)
+        self.assertEqual(actual_start_date, expected_start_date)
+        self.assertEqual(actual_end_date, expected_end_date)
