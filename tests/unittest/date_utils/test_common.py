@@ -1,7 +1,7 @@
 import datetime
 from unittest import TestCase
 
-from delorean.date_utils.common import (
+from deloreans.date_utils.common import (
     get_weekly_start_date,
     get_start_weekly_of_month,
     get_week_anchor_date,

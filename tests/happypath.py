@@ -1,8 +1,8 @@
 import datetime
 from unittest import TestCase
 
-import delorean
-from delorean import DateGranularity, OffsetGranularity
+import deloreans
+from deloreans import DateGranularity, OffsetGranularity
 
 
 class HappyPathTestCase(TestCase):
@@ -18,7 +18,7 @@ class HappyPathTestCase(TestCase):
             'offset': -1,
             'offset_granularity': OffsetGranularity.MONTHLY,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 5, 1)
         expected_end_date = datetime.date(2024, 5, 15)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -37,7 +37,7 @@ class HappyPathTestCase(TestCase):
             'offset': -3,
             'offset_granularity': OffsetGranularity.MONTHLY,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 1, 1)
         expected_end_date = datetime.date(2024, 2, 25)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -54,7 +54,7 @@ class HappyPathTestCase(TestCase):
             'offset': -6,
             'offset_granularity': OffsetGranularity.MONTHLY,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 1, 1)
         expected_end_date = datetime.date(2024, 6, 30)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -71,7 +71,7 @@ class HappyPathTestCase(TestCase):
             'offset': -6,
             'offset_granularity': OffsetGranularity.MONTHLY,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 1, 1)
         expected_end_date = datetime.date(2024, 3, 31)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -88,7 +88,7 @@ class HappyPathTestCase(TestCase):
             'offset': -1,
             'offset_granularity': OffsetGranularity.YEARLY,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2023, 2, 1)
         expected_end_date = datetime.date(2023, 2, 28)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -105,7 +105,7 @@ class HappyPathTestCase(TestCase):
             'offset': -1,
             'offset_granularity': OffsetGranularity.PERIODIC,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 1, 1)
         expected_end_date = datetime.date(2024, 1, 31)
         self.assertEqual(actual_start_date, expected_start_date)
@@ -122,7 +122,7 @@ class HappyPathTestCase(TestCase):
             'offset': -1,
             'offset_granularity': OffsetGranularity.PERIODIC,
         }
-        actual_start_date, actual_end_date = delorean.get(**sample_kwargs)
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
         expected_start_date = datetime.date(2024, 1, 1)
         expected_end_date = datetime.date(2024, 3, 31)
         self.assertEqual(actual_start_date, expected_start_date)

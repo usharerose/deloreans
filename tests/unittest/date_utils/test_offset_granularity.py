@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from delorean.date_utils.offset_granularity import DatePeriodOffset, OffsetGranularity
+from deloreans.date_utils.offset_granularity import DatePeriodOffset, OffsetGranularity
 
 
 class DatePeriodOffsetTestCase(TestCase):

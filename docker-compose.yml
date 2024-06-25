@@ -2,28 +2,28 @@ version: '3.7'
 
 services:
 
-  delorean-build:
+  deloreans-build:
     build:
       context: .
       target: dev
-    image: delorean:${IMAGE_TAG:-latest}
+    image: deloreans:${IMAGE_TAG:-latest}
 
-  delorean-run:
-    image: delorean:${IMAGE_TAG:-latest}
+  deloreans-run:
+    image: deloreans:${IMAGE_TAG:-latest}
     volumes:
-      - ./:/app/delorean/
+      - ./:/app/deloreans/
     command: ["tail", "-f", "/dev/null"]
 
-  delorean-test:
-    image: delorean:${IMAGE_TAG:-latest}
+  deloreans-test:
+    image: deloreans:${IMAGE_TAG:-latest}
     volumes:
-      - ./coverage_report:/app/delorean/coverage_report
+      - ./coverage_report:/app/deloreans/coverage_report
     command: make test
 
-  delorean-lint:
-    image: delorean:${IMAGE_TAG:-latest}
+  deloreans-lint:
+    image: deloreans:${IMAGE_TAG:-latest}
     command: make lint
 
-  delorean-type-hint:
-    image: delorean:${IMAGE_TAG:-latest}
+  deloreans-type-hint:
+    image: deloreans:${IMAGE_TAG:-latest}
     command: make type-hint
