@@ -1,22 +1,27 @@
-# DeLorean
+# DeLoreans
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/usharerose/2c9c2c824a9b4150718e84579abbe456/raw/352cd0092514c30c50538e14c1891ba51007465f/badge.json)
 
-**DeLorean** is a simple library, providing compared date range according to your scenario
+**DeLoreans** is a simple library, providing compared date range according to your scenario
 
 ```python
->>> import datetime
->>> import delorean
->>> kwargs = {
-...     'start_date': datetime.date(2024, 6, 10)
-...     'end_date': datetime.date(2024, 6, 10)
-...     'date_granularity': delorean.DateGranularity.DAILY,
-...     'offset': -1,
-...     'offset_granularity': delorean.OffsetGranularity.DAILY,
-... }
->>> compared_start_date, compared_end_date = delorean.get(**kwargs)
->>> compared_start_date
+>> > import datetime
+>> > import deloreans
+>> > kwargs = {
+    ...
+'start_date': datetime.date(2024, 6, 10)
+...
+'end_date': datetime.date(2024, 6, 10)
+...
+'date_granularity': deloreans.DateGranularity.DAILY,
+...
+'offset': -1,
+...
+'offset_granularity': deloreans.OffsetGranularity.DAILY,
+...}
+>> > compared_start_date, compared_end_date = deloreans.get(**kwargs)
+>> > compared_start_date
 datetime.date(2024, 6, 9)
->>> compared_end_date
+>> > compared_end_date
 datetime.date(2024, 6, 9)
 ```
 

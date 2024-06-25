@@ -1,13 +1,13 @@
 """
-delorean.api
+deloreans.api
 
-This module implements the DeLorean API
+This module implements the DeLoreans API
 """
 import datetime
 from typing import Tuple
 
-from delorean.app import DeLorean
-from delorean.date_utils import DateGranularity, OffsetGranularity
+from deloreans.app import DeLoreans
+from deloreans.date_utils import DateGranularity, OffsetGranularity
 
 
 def get(
@@ -17,7 +17,7 @@ def get(
     offset: int,
     offset_granularity: OffsetGranularity,
 ) -> Tuple[datetime.date, datetime.date]:
-    component = DeLorean(
+    component = DeLoreans(
         start_date,
         end_date,
         date_granularity,

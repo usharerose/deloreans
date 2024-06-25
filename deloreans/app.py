@@ -1,22 +1,22 @@
 """
-delorean.app
+deloreans.app
 
-This module provides a component 'DeLorean' on core logic
+This module provides a component 'DeLoreans' on core logic
 """
 import datetime
 from typing import Tuple
 
-from delorean.date_utils import (
+from deloreans.date_utils import (
     DateGranularity,
     DateRange,
     DatePeriodOffset,
     OffsetGranularity,
     VALID_GRAINS_COMB,
 )
-import delorean.date_utils.common as common_date_utils
+import deloreans.date_utils.common as common_date_utils
 
 
-class DeLorean:
+class DeLoreans:
 
     def __init__(
         self,
