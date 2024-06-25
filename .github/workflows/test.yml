@@ -1,9 +1,6 @@
 name: Tests
 
 on:
-  push:
-    branches: [main, 'release*']
-    tags: ['*']
   pull_request:
     paths-ignore:
       - '**/*.md'
