@@ -6,6 +6,7 @@ on:
       - '**/*.md'
       - docker-compose.yml
       - Dockerfile
+      - LICENSE
       - .dockerignore
       - .gitignore
 
