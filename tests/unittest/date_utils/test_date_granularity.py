@@ -1,7 +1,7 @@
 import datetime
 from unittest import TestCase
 
-from delorean.date_utils.date_granularity import DateGranularity
+from deloreans.date_utils.date_granularity import DateGranularity
 
 
 class DateGranularityDailyTestCase(TestCase):

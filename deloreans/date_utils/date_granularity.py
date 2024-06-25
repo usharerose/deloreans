@@ -2,7 +2,7 @@ import datetime
 from datetime import timedelta
 from enum import Enum
 
-from delorean.date_utils.common import (
+from deloreans.date_utils.common import (
     get_weekly_start_date,
     get_start_monthly_of_monthly,
     get_compared_start_monthly_located_monthly,
