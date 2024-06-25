@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "delorean"
+name = "DeLorean"
 version = "0.1.0"
 description = "Provide compared date range according to your scenario"
 authors = ["usharerose <ushareroses@gmail.com>"]
