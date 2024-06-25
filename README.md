@@ -1,4 +1,5 @@
 # DeLorean
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/usharerose/2c9c2c824a9b4150718e84579abbe456/raw/badge.json)
 
 **DeLorean** is a simple library, providing compared date range according to your scenario
 
