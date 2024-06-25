@@ -2,14 +2,14 @@
 import datetime
 from unittest import TestCase
 
-from delorean.app import DeLorean
-from delorean.date_utils import (
+from deloreans.app import DeLoreans
+from deloreans.date_utils import (
     DateGranularity,
     OffsetGranularity,
 )
 
 
-class DeLoreanTestCase(TestCase):
+class DeLoreansTestCase(TestCase):
 
     def test_initialization(self) -> None:
         start_date = datetime.date(2024, 6, 10)
@@ -17,7 +17,7 @@ class DeLoreanTestCase(TestCase):
         date_granularity = DateGranularity.DAILY
         offset = 3
         offset_granularity = OffsetGranularity.DAILY
-        self.assertIsNotNone(DeLorean(
+        self.assertIsNotNone(DeLoreans(
             start_date,
             end_date,
             date_granularity,
@@ -31,7 +31,7 @@ class DeLoreanTestCase(TestCase):
         date_granularity = DateGranularity.DAILY
         offset = 3
         offset_granularity = OffsetGranularity.DAILY
-        executor = DeLorean(
+        executor = DeLoreans(
             start_date,
             end_date,
             date_granularity,

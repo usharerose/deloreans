@@ -9,7 +9,7 @@ RUN apk update && \
     rm -rf /var/cache/apk/*
 
 # Set workdir
-WORKDIR /app/delorean/
+WORKDIR /app/deloreans/
 
 COPY . .
 
@@ -27,7 +27,7 @@ ENV PYTHONUNBUFFERED=1 \
 # prepend poetry and venv to path
 ENV PATH="$POETRY_HOME/bin:$PATH"
 # Add PYTHONPATH
-ENV PYTHONPATH /app/delorean/
+ENV PYTHONPATH /app/deloreans/
 
 # install dependencies
 RUN python -m pip install --no-cache --upgrade pip && \
@@ -39,11 +39,11 @@ FROM python:3.7-alpine3.18 AS dev
 
 COPY --from=builder /etc/ /etc/
 COPY --from=builder /usr/ /usr/
-COPY --from=builder /app/delorean/ /app/delorean/
+COPY --from=builder /app/deloreans/ /app/deloreans/
 COPY --from=builder /sbin/ /sbin/
 
 # Set workdir
-WORKDIR /app/delorean/
+WORKDIR /app/deloreans/
 
 # Tini is now available at /sbin/tini
 ENTRYPOINT ["/sbin/tini", "--"]

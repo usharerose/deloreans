@@ -1,6 +1,6 @@
 import datetime
 
-from delorean.date_utils.date_granularity import DateGranularity
+from deloreans.date_utils.date_granularity import DateGranularity
 
 
 class DateRange:
