@@ -487,6 +487,19 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
             datetime.date(2024, 4, 29),
         )
 
+    def test_get_compared_start_daily_located_weekly_with_saturday_start(self):
+        sample_date = datetime.date(2024, 6, 18)
+        sample_offset = -7
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_compared_start_daily_located_weekly(
+                sample_date,
+                sample_offset,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 4, 27),
+        )
+
     def test_get_compared_start_daily_located_monthly(self):
         sample_date = datetime.date(2024, 6, 18)
         sample_offset = -6
@@ -519,12 +532,38 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
             datetime.date(2023, 12, 18),
         )
 
+    def test_get_compared_start_weekly_located_weekly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 3)
+        sample_offset = -24
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_compared_start_weekly_located_weekly(
+                sample_date,
+                sample_offset,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2023, 12, 17),
+        )
+
     def test_get_compared_start_weekly_located_monthly(self):
         sample_date = datetime.date(2024, 2, 26)
         sample_offset = -4
         self.assertEqual(
             get_compared_start_weekly_located_monthly(sample_date, sample_offset),
             datetime.date(2023, 10, 2),
+        )
+
+    def test_get_compared_start_weekly_located_monthly_with_saturday_start(self):
+        sample_date = datetime.date(2024, 2, 26)
+        sample_offset = -4
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_compared_start_weekly_located_monthly(
+                sample_date,
+                sample_offset,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2023, 9, 30),
         )
 
     def test_get_compared_start_weekly_located_monthly_which_has_another_month_num(self):
@@ -541,6 +580,19 @@ class GetComparedStartPeriodLocatedPeriodTestCase(TestCase):
         self.assertEqual(
             get_compared_start_weekly_located_yearly(sample_date, sample_offset),
             datetime.date(2021, 1, 4),
+        )
+
+    def test_get_compared_start_weekly_located_yearly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 10)
+        sample_offset = -3
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_compared_start_weekly_located_yearly(
+                sample_date,
+                sample_offset,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2021, 1, 3),
         )
 
     def test_get_compared_start_weekly_located_yearly_which_has_another_year_num(self):

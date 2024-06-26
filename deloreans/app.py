@@ -97,7 +97,11 @@ class DeLoreans:
                 f'start {self._date_grain_name} period in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(self._date_range.start_date, offset)
+        return func(
+            self._date_range.start_date,
+            offset,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def _get_compared_start_date(
         self,

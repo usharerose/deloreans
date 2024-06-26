@@ -311,15 +311,31 @@ def get_yearly_index_of_yearly(
 # =================================================================================================
 
 
-def get_compared_start_daily_located_daily(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_daily_located_daily(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     return a_date + timedelta(days=offset)
 
 
-def get_compared_start_daily_located_weekly(a_date: datetime.date, offset: int) -> datetime.date:
-    return get_start_daily_of_weekly(a_date) + timedelta(weeks=offset)
+def get_compared_start_daily_located_weekly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    return get_start_daily_of_weekly(
+        a_date,
+        firstweekday=firstweekday,
+    ) + timedelta(weeks=offset)
 
 
-def get_compared_start_daily_located_monthly(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_daily_located_monthly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     located_start_date = get_start_daily_of_monthly(a_date)
     located_year, located_month = located_start_date.year, located_start_date.month
 
@@ -332,34 +348,80 @@ def get_compared_start_daily_located_monthly(a_date: datetime.date, offset: int)
     return datetime.date(compared_year, compared_month, 1)
 
 
-def get_compared_start_daily_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_daily_located_yearly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     located_start_date = get_start_daily_of_yearly(a_date)
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
-def get_compared_start_weekly_located_weekly(a_date: datetime.date, offset: int) -> datetime.date:
-    located_start_date = get_start_weekly_of_weekly(a_date)
+def get_compared_start_weekly_located_weekly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    located_start_date = get_start_weekly_of_weekly(
+        a_date,
+        firstweekday=firstweekday,
+    )
     return located_start_date + timedelta(weeks=offset)
 
 
-def get_compared_start_weekly_located_monthly(a_date: datetime.date, offset: int) -> datetime.date:
-    week_anchor_date = get_week_anchor_date(a_date)
-    compared_month_start_date = get_compared_start_daily_located_monthly(week_anchor_date, offset)
-    return get_start_weekly_of_month(compared_month_start_date.year, compared_month_start_date.month)
+def get_compared_start_weekly_located_monthly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    week_anchor_date = get_week_anchor_date(a_date, firstweekday)
+    compared_month_start_date = get_compared_start_daily_located_monthly(
+        week_anchor_date,
+        offset,
+        firstweekday=firstweekday,
+    )
+    return get_start_weekly_of_month(
+        compared_month_start_date.year,
+        compared_month_start_date.month,
+        firstweekday,
+    )
 
 
-def get_compared_start_weekly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
-    week_anchor_date = get_week_anchor_date(a_date)
-    compared_year_start_date = get_compared_start_daily_located_yearly(week_anchor_date, offset)
-    return get_start_weekly_of_month(compared_year_start_date.year, 1)
+def get_compared_start_weekly_located_yearly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    week_anchor_date = get_week_anchor_date(a_date, firstweekday)
+    compared_year_start_date = get_compared_start_daily_located_yearly(
+        week_anchor_date,
+        offset,
+        firstweekday=firstweekday,
+    )
+    return get_start_weekly_of_month(
+        compared_year_start_date.year,
+        1,
+        firstweekday,
+    )
 
 
-def get_compared_start_monthly_located_monthly(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_monthly_located_monthly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     located_start_date = get_start_monthly_of_monthly(a_date)
     return get_compared_start_daily_located_monthly(located_start_date, offset)
 
 
-def get_compared_start_monthly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_monthly_located_yearly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     """
     special case that the month is January
     """
@@ -367,7 +429,11 @@ def get_compared_start_monthly_located_yearly(a_date: datetime.date, offset: int
     return datetime.date(located_start_date.year + offset, 1, 1)
 
 
-def get_compared_start_yearly_located_yearly(a_date: datetime.date, offset: int) -> datetime.date:
+def get_compared_start_yearly_located_yearly(
+    a_date: datetime.date,
+    offset: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     located_start_date = get_start_yearly_of_yearly(a_date)
     return datetime.date(located_start_date.year + offset, 1, 1)
 
