@@ -54,6 +54,7 @@ class BaseGranularity:
         cls,
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
         """
         Provide the count of date periods with given granularity
@@ -61,7 +62,8 @@ class BaseGranularity:
         """
         if start_date > end_date:
             raise ValueError
-        cls.validate_date_completion(start_date, end_date)
+        if not cls.validate_date_completion(start_date, end_date, firstweekday):
+            raise ValueError
         return cls._get_date_range_length(start_date, end_date)
 
     @staticmethod
@@ -267,8 +269,13 @@ class DateGranularity(Enum):
         self,
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
-        return self.value.get_date_range_length(start_date, end_date)
+        return self.value.get_date_range_length(
+            start_date,
+            end_date,
+            firstweekday,
+        )
 
     def get_end_date(
         self,

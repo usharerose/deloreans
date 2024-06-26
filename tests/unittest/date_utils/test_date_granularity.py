@@ -91,6 +91,29 @@ class DateGranularityWeeklyTestCase(TestCase):
             4,
         )
 
+    def test_get_partial_date_range_length(self):
+        sample_start_date = datetime.date(2024, 5, 25)
+        sample_end_date = datetime.date(2024, 6, 21)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(
+                sample_start_date,
+                sample_end_date,
+            )
+
+    def test_get_date_range_length_with_saturday_start(self):
+        sample_start_date = datetime.date(2024, 5, 25)
+        sample_end_date = datetime.date(2024, 6, 21)
+        sample_firstweekday = 5
+
+        self.assertEqual(
+            self.granularity.get_date_range_length(
+                sample_start_date,
+                sample_end_date,
+                sample_firstweekday,
+            ),
+            4,
+        )
+
     def test_get_date_range_size_cross_year(self):
         start_date = datetime.date(2023, 12, 25)
         end_date = datetime.date(2024, 3, 31)
