@@ -94,11 +94,13 @@ class DateGranularityWeeklyTestCase(TestCase):
     def test_get_partial_date_range_length(self):
         sample_start_date = datetime.date(2024, 5, 25)
         sample_end_date = datetime.date(2024, 6, 21)
-        with self.assertRaises(ValueError):
+        self.assertEqual(
             self.granularity.get_date_range_length(
                 sample_start_date,
                 sample_end_date,
-            )
+            ),
+            25 - 21 + 1,  # Week 21 ~ Week 25, 2024
+        )
 
     def test_get_date_range_length_with_saturday_start(self):
         sample_start_date = datetime.date(2024, 5, 25)

@@ -4,6 +4,7 @@ from enum import Enum
 
 from deloreans.date_utils.common import (
     get_weekly_start_date,
+    get_weeks_offset,
     get_start_monthly_of_monthly,
     get_compared_start_monthly_located_monthly,
     get_start_yearly_of_yearly,
@@ -62,14 +63,13 @@ class BaseGranularity:
         """
         if start_date > end_date:
             raise ValueError
-        if not cls.validate_date_completion(start_date, end_date, firstweekday):
-            raise ValueError
-        return cls._get_date_range_length(start_date, end_date)
+        return cls._get_date_range_length(start_date, end_date, firstweekday)
 
     @staticmethod
     def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
         raise NotImplementedError
 
@@ -118,6 +118,7 @@ class Daily(BaseGranularity):
     def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
         return (end_date - start_date).days + 1
 
@@ -155,8 +156,9 @@ class Weekly(BaseGranularity):
     def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
-        return int(((end_date - start_date).days + 1) / 7)
+        return get_weeks_offset(start_date, end_date, firstweekday) + 1
 
     @staticmethod
     def _get_end_date(
@@ -190,6 +192,7 @@ class Monthly(BaseGranularity):
     def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
         start_total_months = 12 * start_date.year + start_date.month
         end_total_months = 12 * end_date.year + end_date.month
@@ -231,6 +234,7 @@ class Yearly(BaseGranularity):
     def _get_date_range_length(
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> int:
         return end_date.year - start_date.year + 1
 
