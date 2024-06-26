@@ -78,8 +78,12 @@ class BaseGranularity:
         cls,
         start_date: datetime.date,
         date_range_length: int,
+        firstweekday: int = 0,
     ) -> datetime.date:
-        if not cls._is_start_date(start_date):
+        if not cls._is_start_date(
+            start_date,
+            firstweekday,
+        ):
             raise ValueError
         if date_range_length < 1:
             raise ValueError
@@ -281,5 +285,10 @@ class DateGranularity(Enum):
         self,
         start_date: datetime.date,
         date_range_length: int,
+        firstweekday: int = 0,
     ) -> datetime.date:
-        return self.value.get_end_date(start_date, date_range_length)
+        return self.value.get_end_date(
+            start_date,
+            date_range_length,
+            firstweekday,
+        )
