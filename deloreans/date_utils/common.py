@@ -27,6 +27,7 @@ def get_week_anchor_date(
 def get_weeks_offset(
     base_date: datetime.date,
     compared_date: datetime.date,
+    firstweekday: int = 0,
 ) -> int:
     """
     Weeks offset between the weeks which given dates located
@@ -36,9 +37,11 @@ def get_weeks_offset(
          compared_date is 2024-06-01, which is at 2024 no.22 week
 
          then the offset of week is 22 - 18 = 4
+
+    involve custom first weekday, the week which date located could be different
     """
-    base_week_anchor_date = get_week_anchor_date(base_date)
-    compared_week_anchor_date = get_week_anchor_date(compared_date)
+    base_week_anchor_date = get_week_anchor_date(base_date, firstweekday)
+    compared_week_anchor_date = get_week_anchor_date(compared_date, firstweekday)
     return ((compared_week_anchor_date - base_week_anchor_date).days + 1) // 7
 
 

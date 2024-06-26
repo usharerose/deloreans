@@ -147,6 +147,19 @@ class GetWeeksOffsetTestCase(TestCase):
             11 + 53 + (52 - 49),
         )
 
+    def test_offset_cross_years_with_sunday_start(self):
+        sample_base_date = datetime.date(2019, 12, 3)
+        sample_compared_date = datetime.date(2021, 3, 21)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_weeks_offset(
+                sample_base_date,
+                sample_compared_date,
+                sample_firstweekday,
+            ),
+            12 + 53 + (52 - 49),  # 2021-03-21 would locate at Week 12, 2021 when week starts with Sunday
+        )
+
 
 class GetStartWeeklyOfMonthTestCase(TestCase):
 
