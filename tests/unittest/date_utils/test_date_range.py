@@ -38,3 +38,47 @@ class DateRangeTestCase(TestCase):
         date_granularity = 'daily'
         with self.assertRaises(ValueError):
             DateRange(start_date, end_date, date_granularity)  # NOQA
+
+    def test_firstweekday(self):
+        start_date = datetime.date(2024, 6, 10)
+        end_date = datetime.date(2024, 6, 10)
+        date_granularity = DateGranularity.DAILY
+        firstweekday = 6
+        date_range = DateRange(
+            start_date,
+            end_date,
+            date_granularity,
+            firstweekday,
+        )
+
+        self.assertEqual(start_date, date_range.start_date)
+        self.assertEqual(end_date, date_range.end_date)
+        self.assertEqual(firstweekday, date_range.firstweekday)
+
+    def test_invalid_firstweekday_type(self):
+        start_date = datetime.date(2024, 6, 10)
+        end_date = datetime.date(2024, 6, 10)
+        date_granularity = DateGranularity.DAILY
+        firstweekday = '6'
+
+        with self.assertRaises(TypeError):
+            DateRange(
+                start_date,
+                end_date,
+                date_granularity,
+                firstweekday,  # NOQA
+            )
+
+    def test_invalid_firstweekday_value(self):
+        start_date = datetime.date(2024, 6, 10)
+        end_date = datetime.date(2024, 6, 10)
+        date_granularity = DateGranularity.DAILY
+        firstweekday = 9
+
+        with self.assertRaises(ValueError):
+            DateRange(
+                start_date,
+                end_date,
+                date_granularity,
+                firstweekday,
+            )
