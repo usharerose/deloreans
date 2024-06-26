@@ -18,25 +18,32 @@ class BaseGranularity:
         cls,
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> bool:
         if start_date > end_date:
             raise ValueError
 
-        is_start_date = cls._is_start_date(start_date)
-        is_end_date = cls._is_end_date(end_date)
+        is_start_date = cls._is_start_date(start_date, firstweekday)
+        is_end_date = cls._is_end_date(end_date, firstweekday)
         if all([is_start_date, is_end_date]):
             return True
         return False
 
     @staticmethod
-    def _is_start_date(a_date: datetime.date) -> bool:
+    def _is_start_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         """
         Whether the given date is the start date of granularity-unit date period or not
         """
         raise NotImplementedError
 
     @staticmethod
-    def _is_end_date(a_date: datetime.date) -> bool:
+    def _is_end_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         """
         Whether the given date is the end date of granularity-unit date period or not
         """
@@ -88,11 +95,17 @@ class BaseGranularity:
 class Daily(BaseGranularity):
 
     @staticmethod
-    def _is_start_date(a_date: datetime.date) -> bool:  # NOQA
+    def _is_start_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         return True
 
     @staticmethod
-    def _is_end_date(a_date: datetime.date) -> bool:  # NOQA
+    def _is_end_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         return True
 
     @staticmethod
@@ -113,12 +126,18 @@ class Daily(BaseGranularity):
 class Weekly(BaseGranularity):
 
     @staticmethod
-    def _is_start_date(a_date: datetime.date) -> bool:
+    def _is_start_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         week_start_date = get_weekly_start_date(a_date)
         return a_date == week_start_date
 
     @staticmethod
-    def _is_end_date(a_date: datetime.date) -> bool:
+    def _is_end_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         next_week_start_date = get_weekly_start_date(a_date + timedelta(days=7))
         week_end_date = next_week_start_date + timedelta(days=-1)
         return a_date == week_end_date
@@ -142,12 +161,18 @@ class Weekly(BaseGranularity):
 class Monthly(BaseGranularity):
 
     @staticmethod
-    def _is_start_date(a_date: datetime.date) -> bool:
+    def _is_start_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         month_start_date = get_start_monthly_of_monthly(a_date)
         return a_date == month_start_date
 
     @staticmethod
-    def _is_end_date(a_date: datetime.date) -> bool:
+    def _is_end_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         exceeded_month_start_date = get_compared_start_monthly_located_monthly(a_date, 1)
         month_end_date = exceeded_month_start_date + timedelta(days=-1)
         return a_date == month_end_date
@@ -177,12 +202,18 @@ class Monthly(BaseGranularity):
 class Yearly(BaseGranularity):
 
     @staticmethod
-    def _is_start_date(a_date: datetime.date) -> bool:
+    def _is_start_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         year_start_date = get_start_yearly_of_yearly(a_date)
         return a_date == year_start_date
 
     @staticmethod
-    def _is_end_date(a_date: datetime.date) -> bool:
+    def _is_end_date(
+        a_date: datetime.date,
+        firstweekday: int = 0,
+    ) -> bool:
         exceeded_start_date = get_compared_start_yearly_located_yearly(a_date, 1)
         year_end_date = exceeded_start_date + timedelta(days=-1)
         return a_date == year_end_date
@@ -219,15 +250,13 @@ class DateGranularity(Enum):
         self,
         start_date: datetime.date,
         end_date: datetime.date,
+        firstweekday: int = 0,
     ) -> None:
-        """
-        validate date range completion according to the granularity
-
-        Args:
-            start_date (datetime.date): start of date range
-            end_date (datetime.date): end of date range
-        """
-        is_completion = self.value.validate_date_completion(start_date, end_date)
+        is_completion = self.value.validate_date_completion(
+            start_date,
+            end_date,
+            firstweekday,
+        )
         if not is_completion:
             raise ValueError
 
