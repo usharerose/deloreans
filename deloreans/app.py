@@ -70,7 +70,10 @@ class DeLoreans:
                 f'{self._date_grain_name} period\'s index in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(self._date_range.start_date)
+        return func(
+            self._date_range.start_date,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def _get_compared_located_period_start_date(self) -> datetime.date:
         if self._date_period_offset.offset_granularity == OffsetGranularity.PERIODIC:

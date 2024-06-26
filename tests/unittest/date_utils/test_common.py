@@ -203,6 +203,17 @@ class GetLocatedPeriodStartDateTestCase(TestCase):
             datetime.date(2024, 6, 17),
         )
 
+    def test_get_start_daily_of_weekly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 18)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_start_daily_of_weekly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 6, 16),
+        )
+
     def test_get_start_daily_of_monthly(self):
         start_date = datetime.date(2024, 6, 18)
         self.assertEqual(
@@ -238,11 +249,33 @@ class GetLocatedPeriodStartDateTestCase(TestCase):
             datetime.date(2024, 6, 3),
         )
 
+    def test_get_start_weekly_of_weekly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 3)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_start_weekly_of_weekly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 6, 2),
+        )
+
     def test_get_start_weekly_of_monthly(self):
         start_date = datetime.date(2024, 2, 26)
         self.assertEqual(
             get_start_weekly_of_monthly(start_date),
             datetime.date(2024, 1, 29),
+        )
+
+    def test_get_start_weekly_of_monthly_with_saturday_start(self):
+        sample_date = datetime.date(2024, 2, 26)
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_start_weekly_of_monthly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 2, 3),
         )
 
     def test_get_start_weekly_of_monthly_which_has_another_month_num(self):
@@ -257,6 +290,17 @@ class GetLocatedPeriodStartDateTestCase(TestCase):
         self.assertEqual(
             get_start_weekly_of_yearly(start_date),
             datetime.date(2024, 1, 1),
+        )
+
+    def test_get_start_weekly_of_yearly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 10)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_start_weekly_of_yearly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2023, 12, 31),
         )
 
     def test_get_start_weekly_of_yearly_which_has_another_year_num(self):
@@ -353,6 +397,17 @@ class GetPeriodIdxTestCase(TestCase):
             4,
         )
 
+    def test_get_weekly_index_of_monthly_with_saturday_start(self):
+        sample_date = datetime.date(2024, 2, 26)
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_weekly_index_of_monthly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
+            3,
+        )
+
     def test_get_weekly_index_of_monthly_which_has_another_month_num(self):
         start_date = datetime.date(2024, 4, 29)
         self.assertEqual(
@@ -361,9 +416,20 @@ class GetPeriodIdxTestCase(TestCase):
         )
 
     def test_get_weekly_index_of_yearly(self):
-        start_date = datetime.date(2024, 6, 10)
+        sample_date = datetime.date(2024, 6, 9)
         self.assertEqual(
-            get_weekly_index_of_yearly(start_date),
+            get_weekly_index_of_yearly(sample_date),
+            22,
+        )
+
+    def test_get_weekly_index_of_yearly_with_sunday_start(self):
+        sample_date = datetime.date(2024, 6, 9)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_weekly_index_of_yearly(
+                sample_date,
+                firstweekday=sample_firstweekday,
+            ),
             23,
         )
 

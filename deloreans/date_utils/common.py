@@ -1,5 +1,6 @@
 import datetime
 from datetime import timedelta
+from typing import Any
 
 
 def get_weekly_start_date(
@@ -101,8 +102,12 @@ def get_start_daily_of_daily(a_date: datetime.date) -> datetime.date:
     return a_date
 
 
-def get_start_daily_of_weekly(a_date: datetime.date) -> datetime.date:
-    return get_weekly_start_date(a_date)
+def get_start_daily_of_weekly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    return get_weekly_start_date(a_date, firstweekday)
 
 
 def get_start_daily_of_monthly(a_date: datetime.date) -> datetime.date:
@@ -113,21 +118,41 @@ def get_start_daily_of_yearly(a_date: datetime.date) -> datetime.date:
     return datetime.date(a_date.year, 1, 1)
 
 
-def get_start_weekly_of_weekly(a_date: datetime.date) -> datetime.date:
-    return get_weekly_start_date(a_date)
+def get_start_weekly_of_weekly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    return get_weekly_start_date(a_date, firstweekday)
 
 
-def get_start_weekly_of_monthly(a_date: datetime.date) -> datetime.date:
-    week_anchor_date = get_week_anchor_date(a_date)
-    return get_start_weekly_of_month(week_anchor_date.year, week_anchor_date.month)
+def get_start_weekly_of_monthly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    week_anchor_date = get_week_anchor_date(a_date, firstweekday)
+    return get_start_weekly_of_month(
+        week_anchor_date.year,
+        week_anchor_date.month,
+        firstweekday,
+    )
 
 
-def get_start_weekly_of_yearly(a_date: datetime.date) -> datetime.date:
+def get_start_weekly_of_yearly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> datetime.date:
     """
     special case that the month is January
     """
-    week_anchor_date = get_week_anchor_date(a_date)
-    return get_start_weekly_of_month(week_anchor_date.year, 1)
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    week_anchor_date = get_week_anchor_date(a_date, firstweekday)
+    return get_start_weekly_of_month(
+        week_anchor_date.year,
+        1,
+        firstweekday,
+    )
 
 
 def get_start_monthly_of_monthly(a_date: datetime.date) -> datetime.date:
@@ -170,51 +195,90 @@ def get_start_yearly_of_yearly(a_date: datetime.date) -> datetime.date:
 # =================================================================================================
 
 
-def get_daily_index_of_daily(a_date: datetime.date) -> int:  # NOQA
+def get_daily_index_of_daily(
+    a_date: datetime.date,  # NOQA
+    **kwargs: Any,  # NOQA
+) -> int:
     return 0
 
 
-def get_daily_index_of_weekly(a_date: datetime.date) -> int:
-    start_date = get_start_daily_of_weekly(a_date)
+def get_daily_index_of_weekly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> int:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    start_date = get_start_daily_of_weekly(a_date, firstweekday=firstweekday)
     return (a_date - start_date).days
 
 
-def get_daily_index_of_monthly(a_date: datetime.date) -> int:
+def get_daily_index_of_monthly(
+    a_date: datetime.date,
+    **kwargs: Any,  # NOQA
+) -> int:
     start_date = get_start_daily_of_monthly(a_date)
     return (a_date - start_date).days
 
 
-def get_daily_index_of_yearly(a_date: datetime.date) -> int:
+def get_daily_index_of_yearly(
+    a_date: datetime.date,
+    **kwargs: Any,  # NOQA
+) -> int:
     start_date = get_start_daily_of_yearly(a_date)
     return (a_date - start_date).days
 
 
-def get_weekly_index_of_weekly(a_date: datetime.date) -> int:  # NOQA
+def get_weekly_index_of_weekly(
+    a_date: datetime.date,  # NOQA
+    **kwargs: Any,  # NOQA
+) -> int:
     return 0
 
 
-def get_weekly_index_of_monthly(a_date: datetime.date) -> int:
-    located_start_date = get_start_weekly_of_monthly(a_date)
-    week_start_date = get_weekly_start_date(a_date)
+def get_weekly_index_of_monthly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> int:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    located_start_date = get_start_weekly_of_monthly(
+        a_date,
+        firstweekday=firstweekday,
+    )
+    week_start_date = get_weekly_start_date(a_date, firstweekday)
     return (week_start_date - located_start_date).days // 7
 
 
-def get_weekly_index_of_yearly(a_date: datetime.date) -> int:
-    located_start_date = get_start_weekly_of_yearly(a_date)
-    week_start_date = get_weekly_start_date(a_date)
+def get_weekly_index_of_yearly(
+    a_date: datetime.date,
+    **kwargs: Any,
+) -> int:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    located_start_date = get_start_weekly_of_yearly(
+        a_date,
+        firstweekday=firstweekday,
+    )
+    week_start_date = get_weekly_start_date(a_date, firstweekday)
     return (week_start_date - located_start_date).days // 7
 
 
-def get_monthly_index_of_monthly(a_date: datetime.date) -> int:  # NOQA
+def get_monthly_index_of_monthly(
+    a_date: datetime.date,  # NOQA
+    **kwargs: Any,  # NOQA
+) -> int:
     return 0
 
 
-def get_monthly_index_of_yearly(a_date: datetime.date) -> int:
+def get_monthly_index_of_yearly(
+    a_date: datetime.date,
+    **kwargs: Any,  # NOQA
+) -> int:
     located_start_date = get_start_monthly_of_yearly(a_date)
     return a_date.month - located_start_date.month
 
 
-def get_yearly_index_of_yearly(a_date: datetime.date) -> int:  # NOQA
+def get_yearly_index_of_yearly(
+    a_date: datetime.date,  # NOQA
+    **kwargs: Any,  # NOQA
+) -> int:
     return 0
 
 
