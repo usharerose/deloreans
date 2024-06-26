@@ -45,24 +45,28 @@ def get_weeks_offset(
     return ((compared_week_anchor_date - base_week_anchor_date).days + 1) // 7
 
 
-def get_start_weekly_of_month(year: int, month: int) -> datetime.date:
+def get_start_weekly_of_month(
+    year: int,
+    month: int,
+    firstweekday: int = 0,
+) -> datetime.date:
     """
     get the start week of a month,
     which is represented by week's start date
     """
-    assert isinstance(year, int)
-    assert isinstance(month, int)
-    assert year > 0
-    assert 1 <= month <= 12
+    _firstweekday = firstweekday % 7
     daily_start_date = datetime.date(year, month, 1)
-    week_anchor_date = get_week_anchor_date(daily_start_date)
+    week_anchor_date = get_week_anchor_date(
+        daily_start_date,
+        _firstweekday,
+    )
 
     # the week represented by anchor date is in previous month
     # so that the first week should be the next one
     if daily_start_date > week_anchor_date:
-        return get_weekly_start_date(daily_start_date + timedelta(days=7))
+        daily_start_date = daily_start_date + timedelta(days=7)
 
-    return get_weekly_start_date(daily_start_date)
+    return get_weekly_start_date(daily_start_date, _firstweekday)
 
 
 # ==========================================================================================================

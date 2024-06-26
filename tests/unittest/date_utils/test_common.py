@@ -169,6 +169,17 @@ class GetStartWeeklyOfMonthTestCase(TestCase):
             datetime.date(2024, 6, 3),
         )
 
+    def test_get_start_weekly_of_month_with_sunday_start(self):
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_start_weekly_of_month(
+                2024,
+                6,
+                sample_firstweekday,
+            ),
+            datetime.date(2024, 6, 2),
+        )
+
     def test_start_date_at_another_month(self):
         self.assertEqual(
             get_start_weekly_of_month(2024, 5),
