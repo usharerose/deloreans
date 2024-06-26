@@ -25,8 +25,14 @@ class DeLoreans:
         date_granularity: DateGranularity,
         offset: int,
         offset_granularity: OffsetGranularity,
+        firstweekday: int = 0,
     ) -> None:
-        self._date_range = DateRange(start_date, end_date, date_granularity)
+        self._date_range = DateRange(
+            start_date,
+            end_date,
+            date_granularity,
+            firstweekday,
+        )
         self._date_period_offset = DatePeriodOffset(offset, offset_granularity)
         self._validate_grain_comb()
         self._date_grain_name = date_granularity.name.lower()
