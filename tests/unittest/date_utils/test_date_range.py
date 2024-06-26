@@ -55,6 +55,33 @@ class DateRangeTestCase(TestCase):
         self.assertEqual(end_date, date_range.end_date)
         self.assertEqual(firstweekday, date_range.firstweekday)
 
+    def test_weekly_completion(self):
+        start_date = datetime.date(2024, 2, 11)
+        end_date = datetime.date(2024, 2, 24)
+        date_granularity = DateGranularity.WEEKLY
+        with self.assertRaises(ValueError):
+            DateRange(
+                start_date,
+                end_date,
+                date_granularity,
+            )
+
+    def test_weekly_completion_with_sunday_start(self):
+        start_date = datetime.date(2024, 2, 11)
+        end_date = datetime.date(2024, 2, 24)
+        date_granularity = DateGranularity.WEEKLY
+        firstweekday = 6
+        date_range = DateRange(
+            start_date,
+            end_date,
+            date_granularity,
+            firstweekday,
+        )
+
+        self.assertEqual(start_date, date_range.start_date)
+        self.assertEqual(end_date, date_range.end_date)
+        self.assertEqual(firstweekday, date_range.firstweekday)
+
     def test_invalid_firstweekday_type(self):
         start_date = datetime.date(2024, 6, 10)
         end_date = datetime.date(2024, 6, 10)

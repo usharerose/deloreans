@@ -23,6 +23,7 @@ class DateRange:
         self._date_granularity.validate_date_completion(
             self._start_date,
             self._end_date,
+            self._firstweekday,
         )
 
     @property

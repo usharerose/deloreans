@@ -130,7 +130,7 @@ class Weekly(BaseGranularity):
         a_date: datetime.date,
         firstweekday: int = 0,
     ) -> bool:
-        week_start_date = get_weekly_start_date(a_date)
+        week_start_date = get_weekly_start_date(a_date, firstweekday)
         return a_date == week_start_date
 
     @staticmethod
@@ -138,7 +138,10 @@ class Weekly(BaseGranularity):
         a_date: datetime.date,
         firstweekday: int = 0,
     ) -> bool:
-        next_week_start_date = get_weekly_start_date(a_date + timedelta(days=7))
+        next_week_start_date = get_weekly_start_date(
+            a_date + timedelta(days=7),
+            firstweekday,
+        )
         week_end_date = next_week_start_date + timedelta(days=-1)
         return a_date == week_end_date
 
