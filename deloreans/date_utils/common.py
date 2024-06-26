@@ -2,11 +2,14 @@ import datetime
 from datetime import timedelta
 
 
-def get_weekly_start_date(a_date: datetime.date) -> datetime.date:
+def get_weekly_start_date(
+    a_date: datetime.date,
+    firstweekday: int = 0,
+) -> datetime.date:
     """
     get the start date of week which given date located
     """
-    date_index = a_date.weekday()
+    date_index = (a_date.weekday() - firstweekday) % 7
     return a_date - timedelta(days=date_index)
 
 

@@ -72,6 +72,22 @@ class GetWeeklyStartDateTestCase(TestCase):
             datetime.date(2024, 12, 30),
         )
 
+    def test_start_from_sunday(self):
+        sample_date = datetime.date(2024, 6, 28)
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_weekly_start_date(sample_date, sample_firstweekday),
+            datetime.date(2024, 6, 23),
+        )
+
+    def test_start_from_saturday(self):
+        sample_date = datetime.date(2024, 1, 3)
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_weekly_start_date(sample_date, sample_firstweekday),
+            datetime.date(2023, 12, 30),
+        )
+
 
 class GetWeekAnchorDateTestCase(TestCase):
 
