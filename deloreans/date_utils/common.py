@@ -13,12 +13,14 @@ def get_weekly_start_date(
     return a_date - timedelta(days=date_index)
 
 
-def get_week_anchor_date(a_date: datetime.date) -> datetime.date:
+def get_week_anchor_date(
+    a_date: datetime.date,
+    firstweekday: int = 0,
+) -> datetime.date:
     """
     The fourth day of week determine the year and month that week located
     """
-    assert isinstance(a_date, datetime.date)
-    start_date = get_weekly_start_date(a_date)
+    start_date = get_weekly_start_date(a_date, firstweekday)
     return start_date + timedelta(days=3)
 
 

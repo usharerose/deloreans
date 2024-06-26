@@ -112,6 +112,14 @@ class GetWeekAnchorDateTestCase(TestCase):
             datetime.date(2020, 2, 27),
         )
 
+    def test_anchor_date_when_start_saturday(self):
+        sample_date = datetime.date(2024, 6, 10)
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_week_anchor_date(sample_date, sample_firstweekday),
+            datetime.date(2024, 6, 11),
+        )
+
 
 class GetWeeksOffsetTestCase(TestCase):
 
