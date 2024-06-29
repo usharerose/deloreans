@@ -43,6 +43,27 @@ class HappyPathTestCase(TestCase):
         self.assertEqual(actual_start_date, expected_start_date)
         self.assertEqual(actual_end_date, expected_end_date)
 
+    def test_week_date_year_over_year_with_sunday_as_first_weekday(self):
+        """
+        compared week date period which is at previous month
+        and week starts from Sunday to Saturday
+
+        e.g. first 8 weeks at 2024 compared with previous year
+        """
+        sample_kwargs = {
+            'start_date': datetime.date(2023, 12, 31),
+            'end_date': datetime.date(2024, 2, 24),
+            'date_granularity': DateGranularity.WEEKLY,
+            'offset': -1,
+            'offset_granularity': OffsetGranularity.YEARLY,
+            'firstweekday': 6,
+        }
+        actual_start_date, actual_end_date = deloreans.get(**sample_kwargs)
+        expected_start_date = datetime.date(2023, 1, 1)
+        expected_end_date = datetime.date(2023, 2, 25)
+        self.assertEqual(actual_start_date, expected_start_date)
+        self.assertEqual(actual_end_date, expected_end_date)
+
     def test_half_year_vs_half_year(self):
         """
         2nd half year vs 1st half year
