@@ -123,7 +123,11 @@ class DeLoreans:
                 f'{self._date_grain_name} period with index in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(located_period_start_date, period_index)
+        return func(
+            located_period_start_date,
+            period_index,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def get(self) -> Tuple[datetime.date, datetime.date]:
         """
@@ -148,10 +152,12 @@ class DeLoreans:
         given_date_range_length = date_granularity.get_date_range_length(
             self._date_range.start_date,
             self._date_range.end_date,
+            self._date_range.firstweekday,
         )
         compared_end_date = date_granularity.get_end_date(
             compared_start_date,
             given_date_range_length,
+            self._date_range.firstweekday
         )
 
         return compared_start_date, compared_end_date
