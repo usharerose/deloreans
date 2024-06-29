@@ -646,6 +646,19 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 6, 22),
         )
 
+    def test_get_daily_with_index_in_weekly_start_from_saturday(self):
+        sample_date = datetime.date(2024, 6, 17)
+        sample_index = 5
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_daily_with_index_in_weekly(
+                sample_date,
+                sample_index,
+                firstweekday=sample_firstweekday
+            ),
+            datetime.date(2024, 6, 20),
+        )
+
     def test_get_daily_with_index_in_monthly(self):
         sample_date = datetime.date(2024, 6, 1)
         sample_index = 13
@@ -676,6 +689,19 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 6, 3),
         )
 
+    def test_get_weekly_with_index_in_weekly_which_start_from_sunday(self):
+        sample_date = datetime.date(2024, 6, 3)
+        sample_index = 0
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_weekly_with_index_in_weekly(
+                sample_date,
+                sample_index,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 6, 2),
+        )
+
     def test_get_weekly_with_index_in_monthly(self):
         sample_date = datetime.date(2024, 1, 29)
         sample_index = 3
@@ -684,12 +710,40 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 2, 19),
         )
 
+    def test_get_weekly_with_index_in_monthly_with_sunday_start(self):
+        # When week start weekday is Sunday
+        # 2024-01-29 would be the first day of week which belongs to Jan 2024
+        sample_date = datetime.date(2024, 1, 29)
+        sample_index = 3
+        sample_firstweekday = 6
+        self.assertEqual(
+            get_weekly_with_index_in_monthly(
+                sample_date,
+                sample_index,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 1, 21),
+        )
+
     def test_get_weekly_with_index_in_yearly(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 49
         self.assertEqual(
             get_weekly_with_index_in_yearly(sample_date, sample_index),
             datetime.date(2024, 12, 9),
+        )
+
+    def test_get_weekly_with_index_in_yearly_with_saturday_start(self):
+        sample_date = datetime.date(2024, 1, 1)
+        sample_index = 49
+        sample_firstweekday = 5
+        self.assertEqual(
+            get_weekly_with_index_in_yearly(
+                sample_date,
+                sample_index,
+                firstweekday=sample_firstweekday,
+            ),
+            datetime.date(2024, 12, 7),
         )
 
     def test_get_monthly_with_index_in_monthly(self):

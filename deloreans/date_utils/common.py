@@ -461,21 +461,34 @@ def get_compared_start_yearly_located_yearly(
 # =================================================================================================
 
 
-def get_daily_with_index_in_daily(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_daily_with_index_in_daily(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     if index != 0:
         raise ValueError
     return a_date
 
 
-def get_daily_with_index_in_weekly(a_date: datetime.date, index: int) -> datetime.date:
+def get_daily_with_index_in_weekly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     # since one week only has 7 days
     if not 0 <= index < 7:
         raise ValueError
-    week_start_date = get_weekly_start_date(a_date)
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    week_start_date = get_weekly_start_date(a_date, firstweekday=firstweekday)
     return week_start_date + timedelta(days=index)
 
 
-def get_daily_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:
+def get_daily_with_index_in_monthly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     next_month_total_months = (a_date.year * 12 + a_date.month) + 1
     exceeded_year = next_month_total_months // 12
     exceeded_month = next_month_total_months % 12
@@ -495,7 +508,11 @@ def get_daily_with_index_in_monthly(a_date: datetime.date, index: int) -> dateti
     return month_start_date + timedelta(days=index)
 
 
-def get_daily_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
+def get_daily_with_index_in_yearly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     year_start_date = datetime.date(a_date.year, 1, 1)
     year_end_date = datetime.date(a_date.year, 12, 31)
     capacity = (year_end_date - year_start_date).days + 1
@@ -506,52 +523,99 @@ def get_daily_with_index_in_yearly(a_date: datetime.date, index: int) -> datetim
     return year_start_date + timedelta(days=index)
 
 
-def get_weekly_with_index_in_weekly(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_weekly_with_index_in_weekly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,
+) -> datetime.date:
     if index != 0:
         raise ValueError
-    return get_weekly_start_date(a_date)
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    return get_weekly_start_date(a_date, firstweekday=firstweekday)
 
 
-def get_weekly_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:
-    anchor_date = get_week_anchor_date(a_date)
-    month_start_week_date = get_start_weekly_of_month(anchor_date.year, anchor_date.month)
+def get_weekly_with_index_in_monthly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    anchor_date = get_week_anchor_date(
+        a_date,
+        firstweekday=firstweekday,
+    )
+    month_start_week_date = get_start_weekly_of_month(
+        anchor_date.year,
+        anchor_date.month,
+        firstweekday=firstweekday,
+    )
     start_date = month_start_week_date + timedelta(weeks=index)
 
     # each month has different amount of weeks
     # if index is out of month's capacity, raise exception
-    week_anchor_date = get_week_anchor_date(start_date)
-    if any([week_anchor_date.year != anchor_date.year, week_anchor_date.month != anchor_date.month]):
+    week_anchor_date = get_week_anchor_date(
+        start_date,
+        firstweekday=firstweekday,
+    )
+    if any([
+        week_anchor_date.year != anchor_date.year,
+        week_anchor_date.month != anchor_date.month,
+    ]):
         raise ValueError
     return start_date
 
 
-def get_weekly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
-    anchor_date = get_week_anchor_date(a_date)
-    year_start_week_date = get_start_weekly_of_month(anchor_date.year, 1)
+def get_weekly_with_index_in_yearly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,
+) -> datetime.date:
+    firstweekday: int = kwargs.get('firstweekday', 0)
+    anchor_date = get_week_anchor_date(
+        a_date,
+        firstweekday=firstweekday,
+    )
+    year_start_week_date = get_start_weekly_of_month(
+        anchor_date.year,
+        1,
+        firstweekday,
+    )
     start_date = year_start_week_date + timedelta(weeks=index)
 
     # each month has different amount of weeks
     # if index is out of month's capacity, raise exception
-    week_anchor_date = get_week_anchor_date(start_date)
+    week_anchor_date = get_week_anchor_date(start_date, firstweekday)
     if week_anchor_date.year != anchor_date.year:
         raise ValueError
     return start_date
 
 
-def get_monthly_with_index_in_monthly(a_date: datetime.date, index: int) -> datetime.date:  # NOQA
+def get_monthly_with_index_in_monthly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     if index != 0:
         raise ValueError
     return datetime.date(a_date.year, a_date.month, 1)
 
 
-def get_monthly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
+def get_monthly_with_index_in_yearly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     year_start_date = datetime.date(a_date.year, 1, 1)
     if not 0 <= index < 12:
         raise ValueError
     return datetime.date(year_start_date.year, year_start_date.month + index, 1)
 
 
-def get_yearly_with_index_in_yearly(a_date: datetime.date, index: int) -> datetime.date:
+def get_yearly_with_index_in_yearly(
+    a_date: datetime.date,
+    index: int,
+    **kwargs: Any,  # NOQA
+) -> datetime.date:
     if index != 0:
         raise ValueError
     return datetime.date(a_date.year, 1, 1)
