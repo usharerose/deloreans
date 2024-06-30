@@ -5,26 +5,26 @@
 **DeLoreans** is a simple library, providing compared date range according to your scenario
 
 ```python
->> > import datetime
->> > import deloreans
->> > kwargs = {
-    ...
-'start_date': datetime.date(2024, 6, 10)
-...
-'end_date': datetime.date(2024, 6, 10)
-...
-'date_granularity': deloreans.DateGranularity.DAILY,
-...
-'offset': -1,
-...
-'offset_granularity': deloreans.OffsetGranularity.DAILY,
-...}
->> > compared_start_date, compared_end_date = deloreans.get(**kwargs)
->> > compared_start_date
-datetime.date(2024, 6, 9)
->> > compared_end_date
-datetime.date(2024, 6, 9)
+>>> import datetime
+>>> import deloreans
+>>>
+>>> kwargs = dict()
+>>> kwargs["start_date"] = datetime.date(2024, 6, 1)
+>>> kwargs["end_date"] = datetime.date(2024, 6, 30)
+>>> kwargs["date_granularity"] = deloreans.DateGranularity.MONTHLY
+>>> kwargs["offset"] = -1
+>>> kwargs["offset_granularity"] = deloreans.OffsetGranularity.YEARLY
+>>>
+>>> compared_start_date, compared_end_date = deloreans.get(**kwargs)
+>>> compared_start_date
+datetime.date(2023, 6, 1)
+>>> compared_end_date
+datetime.date(2023, 6, 30)
 ```
+
+DeLoreans abstracts the process of date range offset to the above parameters. You can construct the input parameters representing various scenarios for another date range.
+
+Above example stands for the scenario that year-over-year comparison on June 2024, which the compared date range is June 2023.
 
 ## Development Environment
 ### Docker (Recommended)
