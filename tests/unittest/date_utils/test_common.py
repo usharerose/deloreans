@@ -638,6 +638,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 6, 18),
         )
 
+    def test_get_daily_with_invalid_index_in_daily(self):
+        sample_date = datetime.date(2024, 6, 18)
+        sample_index = 10
+        with self.assertRaises(ValueError):
+            get_daily_with_index_in_daily(sample_date, sample_index)
+
     def test_get_daily_with_index_in_weekly(self):
         sample_date = datetime.date(2024, 6, 17)
         sample_index = 5
@@ -645,6 +651,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             get_daily_with_index_in_weekly(sample_date, sample_index),
             datetime.date(2024, 6, 22),
         )
+
+    def test_get_daily_with_invalid_index_in_weekly(self):
+        sample_date = datetime.date(2024, 6, 17)
+        sample_index = 7
+        with self.assertRaises(ValueError):
+            get_daily_with_index_in_weekly(sample_date, sample_index)
 
     def test_get_daily_with_index_in_weekly_start_from_saturday(self):
         sample_date = datetime.date(2024, 6, 17)
@@ -681,6 +693,20 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 2, 29),
         )
 
+    def test_get_daily_with_exceeded_index_in_yearly(self):
+        sample_date = datetime.date(2023, 1, 1)
+        sample_index = 365
+        with self.assertRaises(ValueError):
+            get_daily_with_index_in_yearly(sample_date, sample_index)
+
+    def test_get_daily_with_index_in_leap_year(self):
+        sample_date = datetime.date(2024, 1, 1)
+        sample_index = 365
+        self.assertEqual(
+            get_daily_with_index_in_yearly(sample_date, sample_index),
+            datetime.date(2024, 12, 31),
+        )
+
     def test_get_weekly_with_index_in_weekly(self):
         sample_date = datetime.date(2024, 6, 3)
         sample_index = 0
@@ -688,6 +714,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             get_weekly_with_index_in_weekly(sample_date, sample_index),
             datetime.date(2024, 6, 3),
         )
+
+    def test_get_weekly_with_invalid_index_in_weekly(self):
+        sample_date = datetime.date(2024, 6, 3)
+        sample_index = 1
+        with self.assertRaises(ValueError):
+            get_weekly_with_index_in_weekly(sample_date, sample_index)
 
     def test_get_weekly_with_index_in_weekly_which_start_from_sunday(self):
         sample_date = datetime.date(2024, 6, 3)
@@ -709,6 +741,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             get_weekly_with_index_in_monthly(sample_date, sample_index),
             datetime.date(2024, 2, 19),
         )
+
+    def test_get_weekly_with_exceed_index_in_monthly(self):
+        sample_date = datetime.date(2024, 1, 29)
+        sample_index = 5
+        with self.assertRaises(ValueError):
+            get_weekly_with_index_in_monthly(sample_date, sample_index)
 
     def test_get_weekly_with_index_in_monthly_with_sunday_start(self):
         # When week start weekday is Sunday
@@ -733,6 +771,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 12, 9),
         )
 
+    def test_get_weekly_with_exceed_index_in_yearly(self):
+        sample_date = datetime.date(2024, 1, 1)
+        sample_index = 52
+        with self.assertRaises(ValueError):
+            get_weekly_with_index_in_yearly(sample_date, sample_index)
+
     def test_get_weekly_with_index_in_yearly_with_saturday_start(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 49
@@ -754,6 +798,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2024, 6, 1),
         )
 
+    def test_get_monthly_with_invalid_index_in_monthly(self):
+        sample_date = datetime.date(2024, 6, 1)
+        sample_index = 1
+        with self.assertRaises(ValueError):
+            get_monthly_with_index_in_monthly(sample_date, sample_index)
+
     def test_get_monthly_with_index_in_yearly(self):
         sample_date = datetime.date(2023, 1, 1)
         sample_index = 9
@@ -762,6 +812,12 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             datetime.date(2023, 10, 1),
         )
 
+    def test_get_monthly_with_exceed_index_in_yearly(self):
+        sample_date = datetime.date(2023, 1, 1)
+        sample_index = 12
+        with self.assertRaises(ValueError):
+            get_monthly_with_index_in_yearly(sample_date, sample_index)
+
     def test_get_yearly_with_index_in_yearly(self):
         sample_date = datetime.date(2023, 1, 1)
         sample_index = 0
@@ -769,3 +825,9 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
             get_yearly_with_index_in_yearly(sample_date, sample_index),
             datetime.date(2023, 1, 1),
         )
+
+    def test_get_monthly_with_invalid_index_in_yearly(self):
+        sample_date = datetime.date(2024, 1, 1)
+        sample_index = 1
+        with self.assertRaises(ValueError):
+            get_yearly_with_index_in_yearly(sample_date, sample_index)
