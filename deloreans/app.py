@@ -25,8 +25,14 @@ class DeLoreans:
         date_granularity: DateGranularity,
         offset: int,
         offset_granularity: OffsetGranularity,
+        firstweekday: int = 0,
     ) -> None:
-        self._date_range = DateRange(start_date, end_date, date_granularity)
+        self._date_range = DateRange(
+            start_date,
+            end_date,
+            date_granularity,
+            firstweekday,
+        )
         self._date_period_offset = DatePeriodOffset(offset, offset_granularity)
         self._validate_grain_comb()
         self._date_grain_name = date_granularity.name.lower()
@@ -64,7 +70,10 @@ class DeLoreans:
                 f'{self._date_grain_name} period\'s index in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(self._date_range.start_date)
+        return func(
+            self._date_range.start_date,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def _get_compared_located_period_start_date(self) -> datetime.date:
         if self._date_period_offset.offset_granularity == OffsetGranularity.PERIODIC:
@@ -88,7 +97,11 @@ class DeLoreans:
                 f'start {self._date_grain_name} period in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(self._date_range.start_date, offset)
+        return func(
+            self._date_range.start_date,
+            offset,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def _get_compared_start_date(
         self,
@@ -110,7 +123,11 @@ class DeLoreans:
                 f'{self._date_grain_name} period with index in {self._offset_grain_name} period '
                 f'has not been implemented'
             )
-        return func(located_period_start_date, period_index)
+        return func(
+            located_period_start_date,
+            period_index,
+            firstweekday=self._date_range.firstweekday,
+        )
 
     def get(self) -> Tuple[datetime.date, datetime.date]:
         """
@@ -135,10 +152,12 @@ class DeLoreans:
         given_date_range_length = date_granularity.get_date_range_length(
             self._date_range.start_date,
             self._date_range.end_date,
+            self._date_range.firstweekday,
         )
         compared_end_date = date_granularity.get_end_date(
             compared_start_date,
             given_date_range_length,
+            self._date_range.firstweekday
         )
 
         return compared_start_date, compared_end_date

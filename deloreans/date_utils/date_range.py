@@ -10,16 +10,20 @@ class DateRange:
         start_date: datetime.date,
         end_date: datetime.date,
         date_granularity: DateGranularity,
+        firstweekday: int = 0,
     ):
         self._start_date = start_date
         self._end_date = end_date
         self._date_granularity = date_granularity
+        self._firstweekday = firstweekday
+        self._validate_firstweekday()
         self._validate_date_type()
         self._validate_date_relativity()
         self._validate_date_granularity_type()
         self._date_granularity.validate_date_completion(
             self._start_date,
             self._end_date,
+            self._firstweekday,
         )
 
     @property
@@ -33,6 +37,10 @@ class DateRange:
     @property
     def date_granularity(self) -> DateGranularity:
         return self._date_granularity
+
+    @property
+    def firstweekday(self) -> int:
+        return self._firstweekday
 
     def _validate_date_type(self) -> None:
         """
@@ -62,3 +70,9 @@ class DateRange:
             raise ValueError(
                 f'Invalid date granularity {self._date_granularity!r}, should be DateGranularity'
             )
+
+    def _validate_firstweekday(self):
+        if not isinstance(self._firstweekday, int):
+            raise TypeError
+        if not 0 <= self._firstweekday < 7:
+            raise ValueError
