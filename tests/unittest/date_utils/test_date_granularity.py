@@ -14,6 +14,12 @@ class DateGranularityDailyTestCase(TestCase):
         end_date = datetime.date(2024, 6, 17)
         self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
+    def test_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 17)
+        end_date = datetime.date(2024, 6, 15)
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
+
     def test_get_date_range_length(self):
         start_date = datetime.date(2024, 6, 15)
         end_date = datetime.date(2024, 6, 17)
@@ -21,6 +27,12 @@ class DateGranularityDailyTestCase(TestCase):
             self.granularity.get_date_range_length(start_date, end_date),
             3,
         )
+
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 17)
+        end_date = datetime.date(2024, 6, 15)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
 
     def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 12, 23)
@@ -46,6 +58,12 @@ class DateGranularityDailyTestCase(TestCase):
             datetime.date(2024, 7, 6),
         )
 
+    def test_get_end_date_with_invalid_length(self):
+        start_date = datetime.date(2024, 6, 24)
+        date_range_length = 0
+        with self.assertRaises(ValueError):
+            self.granularity.get_end_date(start_date, date_range_length)
+
 
 class DateGranularityWeeklyTestCase(TestCase):
 
@@ -56,6 +74,12 @@ class DateGranularityWeeklyTestCase(TestCase):
         start_date = datetime.date(2024, 5, 27)
         end_date = datetime.date(2024, 6, 23)
         self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
+
+    def test_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 23)
+        end_date = datetime.date(2024, 5, 27)
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
 
     def test_validate_partial_weeks(self):
         start_date = datetime.date(2024, 5, 30)
@@ -90,6 +114,12 @@ class DateGranularityWeeklyTestCase(TestCase):
             self.granularity.get_date_range_length(start_date, end_date),
             4,
         )
+
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 23)
+        end_date = datetime.date(2024, 5, 27)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
 
     def test_get_partial_date_range_length(self):
         sample_start_date = datetime.date(2024, 5, 25)
@@ -132,6 +162,12 @@ class DateGranularityWeeklyTestCase(TestCase):
             datetime.date(2024, 8, 4),
         )
 
+    def test_get_end_date_with_invalid_length(self):
+        start_date = datetime.date(2024, 6, 24)
+        date_range_length = -1
+        with self.assertRaises(ValueError):
+            self.granularity.get_end_date(start_date, date_range_length)
+
     def test_get_end_date_when_partial_with_sunday_start(self):
         sample_start_date = datetime.date(2024, 6, 24)
         sample_date_range_length = 6
@@ -167,6 +203,12 @@ class DateGranularityMonthlyTestCase(TestCase):
         end_date = datetime.date(2024, 6, 30)
         self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
+    def test_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 30)
+        end_date = datetime.date(2024, 1, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
+
     def test_validate_full_months_cross_year(self):
         start_date = datetime.date(2023, 2, 1)
         end_date = datetime.date(2024, 2, 29)
@@ -185,6 +227,12 @@ class DateGranularityMonthlyTestCase(TestCase):
             self.granularity.get_date_range_length(start_date, end_date),
             4,
         )
+
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 30)
+        end_date = datetime.date(2024, 3, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
 
     def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 11, 1)
@@ -210,6 +258,12 @@ class DateGranularityMonthlyTestCase(TestCase):
             datetime.date(2024, 7, 31),
         )
 
+    def test_get_end_date_with_invalid_length(self):
+        start_date = datetime.date(2024, 6, 1)
+        date_range_length = 0
+        with self.assertRaises(ValueError):
+            self.granularity.get_end_date(start_date, date_range_length)
+
     def test_get_end_date_in_leap_year_feb(self):
         start_date = datetime.date(2023, 11, 1)
         date_range_length = 4
@@ -229,6 +283,12 @@ class DateGranularityYearlyTestCase(TestCase):
         end_date = datetime.date(2024, 12, 31)
         self.assertIsNone(self.granularity.validate_date_completion(start_date, end_date))
 
+    def test_invalid_date_points(self):
+        start_date = datetime.date(2024, 12, 31)
+        end_date = datetime.date(2023, 1, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.validate_date_completion(start_date, end_date)
+
     def test_validate_partial_years(self):
         start_date = datetime.date(2023, 2, 1)
         end_date = datetime.date(2024, 2, 29)
@@ -243,6 +303,12 @@ class DateGranularityYearlyTestCase(TestCase):
             3,
         )
 
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 12, 31)
+        end_date = datetime.date(2022, 1, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
+
     def test_get_end_date(self):
         start_date = datetime.date(2022, 1, 1)
         date_range_length = 3
@@ -250,3 +316,9 @@ class DateGranularityYearlyTestCase(TestCase):
             self.granularity.get_end_date(start_date, date_range_length),
             datetime.date(2024, 12, 31),
         )
+
+    def test_get_end_date_with_invalid_length(self):
+        start_date = datetime.date(2024, 1, 1)
+        date_range_length = 0
+        with self.assertRaises(ValueError):
+            self.granularity.get_end_date(start_date, date_range_length)
