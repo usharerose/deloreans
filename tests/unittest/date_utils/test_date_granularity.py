@@ -28,6 +28,12 @@ class DateGranularityDailyTestCase(TestCase):
             3,
         )
 
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 17)
+        end_date = datetime.date(2024, 6, 15)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
+
     def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 12, 23)
         end_date = datetime.date(2023, 3, 12)
@@ -102,6 +108,12 @@ class DateGranularityWeeklyTestCase(TestCase):
             self.granularity.get_date_range_length(start_date, end_date),
             4,
         )
+
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 23)
+        end_date = datetime.date(2024, 5, 27)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
 
     def test_get_partial_date_range_length(self):
         sample_start_date = datetime.date(2024, 5, 25)
@@ -204,6 +216,12 @@ class DateGranularityMonthlyTestCase(TestCase):
             4,
         )
 
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 6, 30)
+        end_date = datetime.date(2024, 3, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
+
     def test_get_date_range_length_cross_year(self):
         start_date = datetime.date(2022, 11, 1)
         end_date = datetime.date(2023, 3, 31)
@@ -266,6 +284,12 @@ class DateGranularityYearlyTestCase(TestCase):
             self.granularity.get_date_range_length(start_date, end_date),
             3,
         )
+
+    def test_get_date_range_length_with_invalid_date_points(self):
+        start_date = datetime.date(2024, 12, 31)
+        end_date = datetime.date(2022, 1, 1)
+        with self.assertRaises(ValueError):
+            self.granularity.get_date_range_length(start_date, end_date)
 
     def test_get_end_date(self):
         start_date = datetime.date(2022, 1, 1)
