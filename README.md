@@ -26,6 +26,13 @@ DeLoreans abstracts the process of date range offset to the above parameters. Yo
 
 Above example stands for the scenario that year-over-year comparison on June 2024, which the compared date range is June 2023.
 
+## Installing DeLoreans
+DeLoreans is available on PyPI:
+
+```console
+$ python -m pip install deloreans
+```
+
 ## Development Environment
 ### Docker (Recommended)
 Execute the following commands, which sets up a service with development dependencies and enter into it.
