@@ -25,6 +25,11 @@ START_DATE_OVERFLOW_ERROR_MSG = """
 """
 
 
+PARTIAL_DATE_RANGE_TEMPLATE = """
+    Given date range {start_date} - {end_date} is not a full {date_granularity_name} period
+"""
+
+
 class IndexOverflowError(Exception):
 
     def __init__(self, *args, **kwargs):  # real signature unknown
