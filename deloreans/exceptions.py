@@ -18,3 +18,9 @@ INVALID_DATE_RANGE_TEMPLATE = """
 INVALID_WEEKDAY_ERROR_MSG = """
     weekday should be from 0 (Mon) to 6 (Sun)
 """
+
+
+class IndexOverflowError(Exception):
+
+    def __init__(self, *args, **kwargs):  # real signature unknown
+        pass

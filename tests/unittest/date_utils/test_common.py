@@ -47,6 +47,7 @@ from deloreans.date_utils.common import (
     get_compared_start_yearly_located_yearly,
     get_yearly_with_index_in_yearly,
 )
+from deloreans.exceptions import IndexOverflowError
 
 
 class GetWeeklyStartDateTestCase(TestCase):
@@ -641,7 +642,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_daily_with_invalid_index_in_daily(self):
         sample_date = datetime.date(2024, 6, 18)
         sample_index = 10
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_daily_with_index_in_daily(sample_date, sample_index)
 
     def test_get_daily_with_index_in_weekly(self):
@@ -655,7 +656,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_daily_with_invalid_index_in_weekly(self):
         sample_date = datetime.date(2024, 6, 17)
         sample_index = 7
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_daily_with_index_in_weekly(sample_date, sample_index)
 
     def test_get_daily_with_index_in_weekly_start_from_saturday(self):
@@ -682,7 +683,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_daily_with_exceeded_index_in_monthly(self):
         sample_date = datetime.date(2024, 11, 1)
         sample_index = 33
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_daily_with_index_in_monthly(sample_date, sample_index)
 
     def test_get_daily_with_index_in_yearly(self):
@@ -696,7 +697,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_daily_with_exceeded_index_in_yearly(self):
         sample_date = datetime.date(2023, 1, 1)
         sample_index = 365
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_daily_with_index_in_yearly(sample_date, sample_index)
 
     def test_get_daily_with_index_in_leap_year(self):
@@ -718,7 +719,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_weekly_with_invalid_index_in_weekly(self):
         sample_date = datetime.date(2024, 6, 3)
         sample_index = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_weekly_with_index_in_weekly(sample_date, sample_index)
 
     def test_get_weekly_with_index_in_weekly_which_start_from_sunday(self):
@@ -745,7 +746,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_weekly_with_exceed_index_in_monthly(self):
         sample_date = datetime.date(2024, 1, 29)
         sample_index = 5
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_weekly_with_index_in_monthly(sample_date, sample_index)
 
     def test_get_weekly_with_index_in_monthly_with_sunday_start(self):
@@ -774,7 +775,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_weekly_with_exceed_index_in_yearly(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 52
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_weekly_with_index_in_yearly(sample_date, sample_index)
 
     def test_get_weekly_with_index_in_yearly_with_saturday_start(self):
@@ -801,7 +802,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_monthly_with_invalid_index_in_monthly(self):
         sample_date = datetime.date(2024, 6, 1)
         sample_index = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_monthly_with_index_in_monthly(sample_date, sample_index)
 
     def test_get_monthly_with_index_in_yearly(self):
@@ -815,7 +816,7 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_monthly_with_exceed_index_in_yearly(self):
         sample_date = datetime.date(2023, 1, 1)
         sample_index = 12
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_monthly_with_index_in_yearly(sample_date, sample_index)
 
     def test_get_yearly_with_index_in_yearly(self):
@@ -829,5 +830,5 @@ class GetPeriodWithIndexInUnitPeriodTestCase(TestCase):
     def test_get_monthly_with_invalid_index_in_yearly(self):
         sample_date = datetime.date(2024, 1, 1)
         sample_index = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IndexOverflowError):
             get_yearly_with_index_in_yearly(sample_date, sample_index)

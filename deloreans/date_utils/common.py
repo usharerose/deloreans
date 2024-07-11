@@ -2,6 +2,8 @@ import datetime
 from datetime import timedelta
 from typing import Any
 
+from ..exceptions import IndexOverflowError
+
 
 def get_weekly_start_date(
     a_date: datetime.date,
@@ -467,7 +469,7 @@ def get_daily_with_index_in_daily(
     **kwargs: Any,  # NOQA
 ) -> datetime.date:
     if index != 0:
-        raise ValueError
+        raise IndexOverflowError
     return a_date
 
 
@@ -478,7 +480,7 @@ def get_daily_with_index_in_weekly(
 ) -> datetime.date:
     # since one week only has 7 days
     if not 0 <= index < 7:
-        raise ValueError
+        raise IndexOverflowError
     firstweekday: int = kwargs.get('firstweekday', 0)
     week_start_date = get_weekly_start_date(a_date, firstweekday=firstweekday)
     return week_start_date + timedelta(days=index)
@@ -502,7 +504,7 @@ def get_daily_with_index_in_monthly(
     )
     capacity = (next_month_start_date - timedelta(days=1)).day
     if not 0 <= index < capacity:
-        raise ValueError
+        raise IndexOverflowError
 
     month_start_date = datetime.date(a_date.year, a_date.month, 1)
     return month_start_date + timedelta(days=index)
@@ -517,7 +519,7 @@ def get_daily_with_index_in_yearly(
     year_end_date = datetime.date(a_date.year, 12, 31)
     capacity = (year_end_date - year_start_date).days + 1
     if not 0 <= index < capacity:
-        raise ValueError
+        raise IndexOverflowError
 
     year_start_date = datetime.date(a_date.year, 1, 1)
     return year_start_date + timedelta(days=index)
@@ -529,7 +531,7 @@ def get_weekly_with_index_in_weekly(
     **kwargs: Any,
 ) -> datetime.date:
     if index != 0:
-        raise ValueError
+        raise IndexOverflowError
     firstweekday: int = kwargs.get('firstweekday', 0)
     return get_weekly_start_date(a_date, firstweekday=firstweekday)
 
@@ -561,7 +563,7 @@ def get_weekly_with_index_in_monthly(
         week_anchor_date.year != anchor_date.year,
         week_anchor_date.month != anchor_date.month,
     ]):
-        raise ValueError
+        raise IndexOverflowError
     return start_date
 
 
@@ -586,7 +588,7 @@ def get_weekly_with_index_in_yearly(
     # if index is out of month's capacity, raise exception
     week_anchor_date = get_week_anchor_date(start_date, firstweekday)
     if week_anchor_date.year != anchor_date.year:
-        raise ValueError
+        raise IndexOverflowError
     return start_date
 
 
@@ -596,7 +598,7 @@ def get_monthly_with_index_in_monthly(
     **kwargs: Any,  # NOQA
 ) -> datetime.date:
     if index != 0:
-        raise ValueError
+        raise IndexOverflowError
     return datetime.date(a_date.year, a_date.month, 1)
 
 
@@ -607,7 +609,7 @@ def get_monthly_with_index_in_yearly(
 ) -> datetime.date:
     year_start_date = datetime.date(a_date.year, 1, 1)
     if not 0 <= index < 12:
-        raise ValueError
+        raise IndexOverflowError
     return datetime.date(year_start_date.year, year_start_date.month + index, 1)
 
 
@@ -617,5 +619,5 @@ def get_yearly_with_index_in_yearly(
     **kwargs: Any,  # NOQA
 ) -> datetime.date:
     if index != 0:
-        raise ValueError
+        raise IndexOverflowError
     return datetime.date(a_date.year, 1, 1)
