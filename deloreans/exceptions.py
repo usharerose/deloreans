@@ -20,6 +20,11 @@ INVALID_WEEKDAY_ERROR_MSG = """
 """
 
 
+START_DATE_OVERFLOW_ERROR_MSG = """
+    No start date as same as the given one in compared date period
+"""
+
+
 class IndexOverflowError(Exception):
 
     def __init__(self, *args, **kwargs):  # real signature unknown

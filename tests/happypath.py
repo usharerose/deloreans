@@ -316,3 +316,22 @@ class HappyPathTestCase(TestCase):
         expected_end_date = datetime.date(2023, 12, 3)
         self.assertEqual(actual_start_date, expected_start_date)
         self.assertEqual(actual_end_date, expected_end_date)
+
+    def test_start_date_overflow(self):
+        """
+        In some scenarios, there is no valid compared start date
+        e.g. 2024-05-31, compared with the same date in last month,
+             which should be 31st day of April 2024
+
+             However, April only has 30 days
+        DeLoreans currently doesn't handle this case
+        """
+        sample_kwargs = {
+            'start_date': datetime.date(2024, 5, 31),
+            'end_date': datetime.date(2024, 5, 31),
+            'date_granularity': DateGranularity.DAILY,
+            'offset': -1,
+            'offset_granularity': OffsetGranularity.MONTHLY,
+        }
+        with self.assertRaises(ValueError):
+            deloreans.get(**sample_kwargs)

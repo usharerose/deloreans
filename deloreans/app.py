@@ -15,6 +15,8 @@ from deloreans.date_utils import (
 )
 import deloreans.date_utils.common as common_date_utils
 from .exceptions import (
+    IndexOverflowError,
+    START_DATE_OVERFLOW_ERROR_MSG,
     UNREGISTERED_DATE_GRANULARITY_TEMPLATE,
     UNREGISTERED_GRANULARITY_COMBO_TEMPLATE,
 )
@@ -140,10 +142,13 @@ class DeLoreans:
         """
         start_period_index = self._get_start_period_index()
         base_start_date = self._get_compared_located_period_start_date()
-        compared_start_date = self._get_compared_start_date(
-            base_start_date,
-            start_period_index,
-        )
+        try:
+            compared_start_date = self._get_compared_start_date(
+                base_start_date,
+                start_period_index,
+            )
+        except IndexOverflowError:
+            raise ValueError(START_DATE_OVERFLOW_ERROR_MSG)
 
         date_granularity = self._date_range.date_granularity
         given_date_range_length = date_granularity.get_date_range_length(
