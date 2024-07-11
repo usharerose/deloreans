@@ -1,5 +1,7 @@
 from enum import Enum
 
+from ..exceptions import INVALID_DATA_TYPE_TEMPLATE
+
 
 class OffsetGranularity(Enum):
     """
@@ -35,7 +37,12 @@ class DatePeriodOffset:
     def _validate_offset(self) -> None:
         if not isinstance(self._offset, int):
             raise TypeError(
-                f'Invalid offset {self._offset!r}, should be int'
+                INVALID_DATA_TYPE_TEMPLATE.format(
+                    input_args=self._offset,
+                    input_dtype=type(self._offset),
+                    dtype=int,
+
+                )
             )
 
     def _validate_offset_granularity_type(self) -> None:
@@ -44,5 +51,9 @@ class DatePeriodOffset:
         """
         if not isinstance(self._offset_granularity, OffsetGranularity):
             raise TypeError(
-                f'Invalid offset granularity {self._offset_granularity!r}, should be OffsetGranularity'
+                INVALID_DATA_TYPE_TEMPLATE.format(
+                    input_args=self._offset_granularity,
+                    input_dtype=type(self._offset_granularity),
+                    dtype=OffsetGranularity,
+                )
             )
