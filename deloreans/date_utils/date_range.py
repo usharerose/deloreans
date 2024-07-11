@@ -53,7 +53,7 @@ class DateRange:
         """
         for a_date in (self._start_date, self._end_date):
             if not isinstance(a_date, datetime.date):
-                raise ValueError(
+                raise TypeError(
                     INVALID_DATA_TYPE_TEMPLATE.format(
                         input_args=a_date,
                         input_dtype=type(a_date),
@@ -78,7 +78,7 @@ class DateRange:
         date granularity should be defined enum
         """
         if not isinstance(self._date_granularity, DateGranularity):
-            raise ValueError(
+            raise TypeError(
                 INVALID_DATA_TYPE_TEMPLATE.format(
                     input_args=self._date_granularity,
                     input_dtype=type(self._date_granularity),

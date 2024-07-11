@@ -22,7 +22,7 @@ class DateRangeTestCase(TestCase):
         start_date = '2024-06-10'
         end_date = '2024-06-10'
         date_granularity = DateGranularity.DAILY
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             DateRange(start_date, end_date, date_granularity)  # NOQA
 
     def test_invalid_date_values(self):
@@ -36,7 +36,7 @@ class DateRangeTestCase(TestCase):
         start_date = datetime.date(2024, 6, 11)
         end_date = datetime.date(2024, 6, 15)
         date_granularity = 'daily'
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             DateRange(start_date, end_date, date_granularity)  # NOQA
 
     def test_firstweekday(self):
