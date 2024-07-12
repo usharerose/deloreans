@@ -5,9 +5,9 @@ This module provides components on date-related parameters management
 """
 from typing import Any, Iterable, List
 
-from deloreans.date_utils.date_granularity import DateGranularity
-from deloreans.date_utils.date_range import DateRange  # NOQA
-from deloreans.date_utils.offset_granularity import DatePeriodOffset, OffsetGranularity  # NOQA
+from .date_granularity import DateGranularity
+from .date_range import DateRange  # NOQA
+from .offset_granularity import DatePeriodOffset, OffsetGranularity  # NOQA
 
 
 def _strict_zip(*iterables: Iterable) -> Iterable:
