@@ -1,6 +1,6 @@
 import datetime
 
-from deloreans.date_utils.date_granularity import DateGranularity
+from .date_granularity import DateGranularity
 from ..exceptions import (
     INVALID_DATA_TYPE_TEMPLATE,
     INVALID_DATE_RANGE_TEMPLATE,

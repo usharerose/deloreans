@@ -6,8 +6,8 @@ This module implements the DeLoreans API
 import datetime
 from typing import Tuple
 
-from deloreans.app import DeLoreans
-from deloreans.date_utils import DateGranularity, OffsetGranularity
+from .app import DeLoreans
+from .date_utils import DateGranularity, OffsetGranularity
 
 
 def get(

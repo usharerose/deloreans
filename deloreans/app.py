@@ -6,14 +6,14 @@ This module provides a component 'DeLoreans' on core logic
 import datetime
 from typing import Tuple
 
-from deloreans.date_utils import (
+from .date_utils import (
+    common as common_date_utils,
     DateGranularity,
     DateRange,
     DatePeriodOffset,
     OffsetGranularity,
     VALID_GRAINS_COMB,
 )
-import deloreans.date_utils.common as common_date_utils
 from .date_utils.common import (
     GET_BASE_INDEX_FUNC_TEMPLATE,
     GET_COMPARED_LOCATED_PERIOD_FUNC_TEMPLATE,
