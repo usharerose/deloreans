@@ -14,6 +14,12 @@ from deloreans.date_utils import (
     VALID_GRAINS_COMB,
 )
 import deloreans.date_utils.common as common_date_utils
+from .exceptions import (
+    IndexOverflowError,
+    START_DATE_OVERFLOW_ERROR_MSG,
+    UNREGISTERED_DATE_GRANULARITY_TEMPLATE,
+    UNREGISTERED_GRANULARITY_COMBO_TEMPLATE,
+)
 
 
 class DeLoreans:
@@ -41,17 +47,19 @@ class DeLoreans:
     def _validate_grain_comb(self) -> None:
         date_granularity = self._date_range.date_granularity
         offset_granularity = self._date_period_offset.offset_granularity
-
         if date_granularity not in VALID_GRAINS_COMB:
             raise ValueError(
-                f"Date granularity {date_granularity!r} is not registered "
-                f"in granularity combinations."
+                UNREGISTERED_DATE_GRANULARITY_TEMPLATE.format(
+                    date_granularity=date_granularity,
+                )
             )
         valid_offset_granularity = VALID_GRAINS_COMB[date_granularity]
         if offset_granularity not in valid_offset_granularity:
             raise ValueError(
-                f"Invalid offset granularity {offset_granularity!r} "
-                f"when date granularity is {date_granularity!r}"
+                UNREGISTERED_GRANULARITY_COMBO_TEMPLATE.format(
+                    offset_granularity=offset_granularity,
+                    date_granularity=date_granularity,
+                )
             )
 
     def _get_start_period_index(self) -> int:
@@ -66,10 +74,7 @@ class DeLoreans:
                 f'get_{self._date_grain_name}_index_of_{offset_grain_name}',
             )
         except AttributeError:
-            raise NotImplementedError(
-                f'{self._date_grain_name} period\'s index in {self._offset_grain_name} period '
-                f'has not been implemented'
-            )
+            raise NotImplementedError
         return func(
             self._date_range.start_date,
             firstweekday=self._date_range.firstweekday,
@@ -93,10 +98,7 @@ class DeLoreans:
                 f'get_compared_start_{self._date_grain_name}_located_{offset_grain_name}',
             )
         except AttributeError:
-            raise NotImplementedError(
-                f'start {self._date_grain_name} period in {self._offset_grain_name} period '
-                f'has not been implemented'
-            )
+            raise NotImplementedError
         return func(
             self._date_range.start_date,
             offset,
@@ -119,10 +121,7 @@ class DeLoreans:
                 f'get_{self._date_grain_name}_with_index_in_{offset_grain_name}',
             )
         except AttributeError:
-            raise NotImplementedError(
-                f'{self._date_grain_name} period with index in {self._offset_grain_name} period '
-                f'has not been implemented'
-            )
+            raise NotImplementedError
         return func(
             located_period_start_date,
             period_index,
@@ -143,10 +142,13 @@ class DeLoreans:
         """
         start_period_index = self._get_start_period_index()
         base_start_date = self._get_compared_located_period_start_date()
-        compared_start_date = self._get_compared_start_date(
-            base_start_date,
-            start_period_index,
-        )
+        try:
+            compared_start_date = self._get_compared_start_date(
+                base_start_date,
+                start_period_index,
+            )
+        except IndexOverflowError:
+            raise ValueError(START_DATE_OVERFLOW_ERROR_MSG)
 
         date_granularity = self._date_range.date_granularity
         given_date_range_length = date_granularity.get_date_range_length(

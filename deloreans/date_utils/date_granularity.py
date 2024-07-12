@@ -10,6 +10,7 @@ from deloreans.date_utils.common import (
     get_start_yearly_of_yearly,
     get_compared_start_yearly_located_yearly,
 )
+from ..exceptions import PARTIAL_DATE_RANGE_TEMPLATE
 
 
 class BaseGranularity:
@@ -271,7 +272,13 @@ class DateGranularity(Enum):
             firstweekday,
         )
         if not is_completion:
-            raise ValueError
+            raise ValueError(
+                PARTIAL_DATE_RANGE_TEMPLATE.format(
+                    start_date=start_date,
+                    end_date=end_date,
+                    date_granularity_name=self.name.lower(),
+                )
+            )
 
     def get_date_range_length(
         self,
