@@ -197,6 +197,10 @@ def get_start_yearly_of_yearly(a_date: datetime.date) -> datetime.date:
 # =================================================================================================
 
 
+GET_BASE_INDEX_FUNC_TEMPLATE = \
+    'get_{date_granularity_name}_index_of_{offset_granularity_name}'
+
+
 def get_daily_index_of_daily(
     a_date: datetime.date,  # NOQA
     **kwargs: Any,  # NOQA
@@ -311,6 +315,10 @@ def get_yearly_index_of_yearly(
 #                                          then return '2024-06-03'
 #
 # =================================================================================================
+
+
+GET_COMPARED_LOCATED_PERIOD_FUNC_TEMPLATE = \
+    'get_compared_start_{date_granularity_name}_located_{offset_granularity_name}'
 
 
 def get_compared_start_daily_located_daily(
@@ -461,6 +469,10 @@ def get_compared_start_yearly_located_yearly(
 #       start_date (datetime.date): the start date which representing the target single period
 #
 # =================================================================================================
+
+
+GET_DATE_WITH_INDEX_FUNC_TEMPLATE = \
+    'get_{date_granularity_name}_with_index_in_{offset_granularity_name}'
 
 
 def get_daily_with_index_in_daily(
