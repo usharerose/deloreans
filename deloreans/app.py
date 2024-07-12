@@ -14,6 +14,11 @@ from deloreans.date_utils import (
     VALID_GRAINS_COMB,
 )
 import deloreans.date_utils.common as common_date_utils
+from .date_utils.common import (
+    GET_BASE_INDEX_FUNC_TEMPLATE,
+    GET_COMPARED_LOCATED_PERIOD_FUNC_TEMPLATE,
+    GET_DATE_WITH_INDEX_FUNC_TEMPLATE,
+)
 from .exceptions import (
     IndexOverflowError,
     START_DATE_OVERFLOW_ERROR_MSG,
@@ -71,7 +76,10 @@ class DeLoreans:
         try:
             func = getattr(
                 common_date_utils,
-                f'get_{self._date_grain_name}_index_of_{offset_grain_name}',
+                GET_BASE_INDEX_FUNC_TEMPLATE.format(
+                    date_granularity_name=self._date_grain_name,
+                    offset_granularity_name=offset_grain_name,
+                )
             )
         except AttributeError:
             raise NotImplementedError
@@ -95,7 +103,10 @@ class DeLoreans:
         try:
             func = getattr(
                 common_date_utils,
-                f'get_compared_start_{self._date_grain_name}_located_{offset_grain_name}',
+                GET_COMPARED_LOCATED_PERIOD_FUNC_TEMPLATE.format(
+                    date_granularity_name=self._date_grain_name,
+                    offset_granularity_name=offset_grain_name,
+                )
             )
         except AttributeError:
             raise NotImplementedError
@@ -118,7 +129,10 @@ class DeLoreans:
         try:
             func = getattr(
                 common_date_utils,
-                f'get_{self._date_grain_name}_with_index_in_{offset_grain_name}',
+                GET_DATE_WITH_INDEX_FUNC_TEMPLATE.format(
+                    date_granularity_name=self._date_grain_name,
+                    offset_granularity_name=offset_grain_name,
+                )
             )
         except AttributeError:
             raise NotImplementedError
